@@ -1,0 +1,68 @@
+Rekomendasi API gratis untuk chatbot herbal:
+
+1. **Mistral AI**  
+   - Free tier, cepat, hasil cukup bagus, mirip ChatGPT, mudah dipakai.
+   - Cocok untuk chatbot ringan, tidak perlu backend sendiri.
+   - https://docs.mistral.ai/
+
+2. **HuggingFace Inference API**  
+   - Banyak model open source, gratis terbatas (rate limit rendah).
+   - Jawaban kadang kurang natural, tapi bisa untuk demo/chat sederhana.
+   - https://huggingface.co/inference-api
+
+3. **OpenRouter.ai**  
+   - Banyak model open source, ada free trial, kadang perlu verifikasi.
+   - Bisa pilih model, tapi free limit cepat habis.
+   - https://openrouter.ai/
+
+**Saran:**  
+Untuk FE mobile, **Mistral AI** paling praktis dan stabil untuk chatbot gratis (selama free tier masih tersedia).  
+Jika ingin lebih bebas model, HuggingFace juga bisa, tapi lebih lambat dan rate limit kecil.
+
+**Kesimpulan:**  
+Pilih **Mistral AI** untuk chatbot herbal gratis yang mudah dan cepat.
+
+Cara mendapatkan API key Mistral AI (gratis):
+
+1. Buka website https://console.mistral.ai/
+2. Daftar akun gratis (gunakan email aktif).
+3. Setelah login, masuk ke menu "API Keys" di dashboard.
+4. Klik "Create API Key" → beri nama bebas → klik "Create".
+5. Salin API key yang muncul (format: `mistral-...`).
+6. Simpan API key tersebut, lalu gunakan di aplikasi kamu (misal di variabel `API_KEY` pada FE).
+
+Catatan:
+- Jangan bagikan API key ke publik.
+- Free tier Mistral AI cukup untuk chatbot ringan.
+- Dokumentasi: https://docs.mistral.ai/
+
+Berdasarkan screenshot dashboard Mistral AI:
+
+- Untuk mendapatkan API key, kamu **tidak perlu memilih "Create an Agent"** atau "Fine-tune a model" jika hanya ingin chatbot herbal sederhana.
+- Pilih menu **"API Requests"** di bagian Quickstart.
+- Di sana kamu akan menemukan petunjuk dan menu untuk membuat API key serta contoh penggunaan API chat completion.
+
+Jadi, **pilih "API Requests"** untuk mulai menggunakan chatbot herbal dengan API Mistral AI.
+
+Cara kerja chatbot herbal dengan Mistral AI di aplikasi kamu:
+
+1. User membuka halaman Konsultasi (ConsultationScreen).
+2. User mengetik pertanyaan seputar herbal di kolom chat.
+3. Saat user menekan tombol "Kirim", aplikasi FE akan:
+   - Mengirim pesan user ke API Mistral AI (endpoint chat completion) menggunakan API key.
+   - API Mistral AI memproses dan membalas dengan jawaban otomatis (mirip ChatGPT).
+4. Jawaban dari bot akan langsung tampil di layar chat aplikasi.
+5. Semua proses terjadi di FE, tidak perlu backend tambahan.
+6. Kamu bisa mengatur prompt awal/chatbot agar fokus pada konsultasi herbal.
+
+Catatan:
+- Pastikan API key Mistral AI sudah diisi di kode FE.
+- Jika free tier habis, user akan dapat error atau rate limit.
+- Jawaban bot tergantung kualitas model dan prompt yang kamu kirim.
+
+Tidak, chat di halaman konsultasi **bukan template**.
+
+Chatbot akan membalas secara otomatis dan dinamis sesuai pertanyaan user, karena jawaban dihasilkan oleh API Mistral AI (mirip ChatGPT).  
+Jadi, setiap pertanyaan user akan diproses dan dijawab oleh model AI, bukan dari template statis.
+
+Kamu bisa mengatur prompt awal agar bot lebih fokus ke konsultasi herbal, tapi jawaban tetap AI-generated, bukan template.

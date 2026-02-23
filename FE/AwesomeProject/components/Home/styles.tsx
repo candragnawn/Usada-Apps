@@ -1,0 +1,205 @@
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  searchContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: 'white',
+  margin: 15,
+  borderRadius: 10,
+  paddingHorizontal: 15,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3,
+  position: 'absolute', // Positioning the container absolutely
+  top: 280, // Adjust based on where you want the search container to be (use dynamic values or props)
+  left: 7, // Adjust this value as well
+  width: '90%', // Adjust width as needed
+
+    
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    height: 50,
+    fontSize: 16,
+    color: '#2C3E50',
+  },
+  sectionContainer: {
+    marginTop: 35,
+
+  },
+  sectionContainer1:{
+    marginTop: 18,
+  },
+  sectionContainer2:{
+    backgroundColor: '#E8F5E9',
+    
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+  },
+  sectionTitle2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    paddingHorizontal: 15,
+    marginTop: 20,
+  },
+  sectionTitle3: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    paddingHorizontal: 15,
+    
+  },
+  categoriesScrollView: {
+    paddingHorizontal: 5,
+  },
+   categoryCard: {
+    width: 140,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 7,
+    flexDirection: 'row', // This makes it horizontal (image + name)
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 10,
+  },
+  categoryName: {
+    color: '#4CAF50',
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginEnd:10, // Align text to the left
+ 
+  },
+  categoryImage: {
+    width: 60,
+    height: 60, 
+    borderRadius: 50,
+  },
+  quickServicesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 15,
+    borderTopStartRadius: 50,    
+    borderTopEndRadius: 50, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2, 
+    shadowRadius: 5,  
+    // Background color is now provided by the ImageBackground component
+    // but we keep it for fallback
+    backgroundColor: '#4F7942',
+    overflow: 'hidden', // Important for borderRadius with ImageBackground
+  },
+  quickServiceCard: {
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  quickServiceIconContainer: {
+    backgroundColor: '#E8F5E9',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  quickServiceText: {
+    fontSize: 12,
+    color: 'white',
+    fontWeight: '500', // Added for better readability against batik background
+    textShadowColor: 'rgba(0, 0, 0, 0.3)', // Added text shadow for better readability
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  herbalCategoriesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    backgroundColor: '#E8F5E9',
+    marginTop:5,
+
+  },
+  herbalCategoryCard: {
+    width: '48%',
+    backgroundColor: 'white',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginTop:5,
+  },
+  herbalCategoryName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2C3E50',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  herbalCategoryImage :{
+    width: 80,
+    height: 80,
+  },
+  featuredRemediesScroll: {
+    paddingHorizontal: 5,
+  },
+  featuredRemedyCard: {
+    width: 250,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginTop: 10,
+  },
+  featuredRemedyImagePlaceholder: {
+    width: '100%',
+    height: 150,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E8F5E9',
+  },
+  featuredRemedyContent: {
+    padding: 15,
+  },
+  featuredRemedyTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginBottom: 5,
+  },
+  featuredRemedyDescription: {
+    fontSize: 14,
+    color:'rgb(99, 99, 109)',
+  },
+});
+
+
+export default styles;

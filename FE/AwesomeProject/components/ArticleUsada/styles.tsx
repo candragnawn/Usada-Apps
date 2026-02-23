@@ -1,0 +1,156 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8FDF8',
+  },
+  header: {
+    backgroundColor: '#4F7942',
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+  
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+  },
+  headerContent: {
+    marginBottom: 10,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  headerStats: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    alignSelf: 'flex-start',
+  },
+  headerStatsText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 16,
+    paddingHorizontal: 16,
+    backgroundColor: '#F0F8F0',
+    borderRadius: 12,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#C8E6C9',
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    height: 50,
+    fontSize: 16,
+    color: '#2E5233',
+  },
+  categoryContainer: {
+    paddingHorizontal: 12,
+    marginBottom: 12,
+  },
+  categoryListContent: {
+    paddingHorizontal: 4,
+    paddingVertical: 8,
+  },
+  categoryChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginHorizontal: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#C8E6C9',
+    backgroundColor: '#F0F8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 80,
+    height: 40,
+  },
+  selectedCategoryChip: {
+    backgroundColor: '#4F7942',
+    borderColor: '#4F7942',
+  },
+  categoryChipText: {
+    fontSize: 14,
+    color: '#2E5233',
+    fontWeight: '500',
+  },
+  selectedCategoryChipText: {
+    color: '#fff',
+  },
+  articleList: {
+    flex: 1,
+  },
+  articleListContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+  },
+  articleCard: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8F5E9',
+    paddingBottom: 16,
+    backgroundColor: 'white',
+    padding: 12,
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  articleImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  articleContent: {
+    flex: 1,
+  },
+  categoryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  categoryText: {
+    fontSize: 14,
+    color: '#4F7942',
+    fontWeight: '500',
+    marginRight: 8,
+  },
+  additionalText: {
+    fontSize: 12,
+    color: '#86A789',
+    backgroundColor: '#F0F8F0',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+  },
+  articleTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#2E5233',
+    lineHeight: 22,
+  },
+});
