@@ -15,7 +15,7 @@ import { NavigationContainerRef, CommonActions } from '@react-navigation/native'
 // Import context
 import { useAuth } from '../context/AuthContext';
 
-// Import screens
+
 import HomeScreen from '../screens/HomeScreen';
 import UsadaScreen from '../screens/UsadaScreen';
 import ProductScreen from '../screens/ProductScreen';
@@ -54,7 +54,7 @@ const IS_IPHONE_WITH_DYNAMIC_ISLAND = Platform.OS === 'ios' &&
   (STATUSBAR_HEIGHT > 40 || (Platform.constants?.osVersion && parseInt(Platform.constants.osVersion) >= 16));
 
 // Custom tab bar icon with enhanced animation effects
-const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: string; iconName: string }) => {
+const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: string; iconName: React.ComponentProps<typeof Ionicons>['name'] }) => {
   return (
     <View style={styles.iconContainer}>
       {focused && <View style={styles.activeBackground} />}
@@ -67,7 +67,7 @@ const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: str
       {focused && <View style={styles.activeDot} />}
     </View>
   );
-};
+};  
 
 // Optimized screen options with better transitions
 const commonStackScreenOptions = {
@@ -150,24 +150,10 @@ const CartStackNavigator = () => {
 // Main Tab Navigator with optimized performance
 const MainTabNavigator = () => {
   const { isAuthenticated } = useAuth();
-  const tabNavigatorRef = useRef<NavigationContainerRef<any>>(null);
-
-  // Reset to home when auth state changes
-  useEffect(() => {
-    if (tabNavigatorRef.current) {
-      // Reset navigation stack and go to home
-      (tabNavigatorRef.current as any).dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'HomeScreen' }],
-        })
-      );
-    }
-  }, [isAuthenticated]);
 
   return (
     <Tab.Navigator
-      ref={tabNavigatorRef}
+      key={isAuthenticated ? 'authed' : 'unauthed'}
       initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
@@ -366,7 +352,12 @@ const styles = StyleSheet.create({
 });
 
 // CATATAN PENTING:
-// Untuk navigasi ke main tab/stack gunakan nama berikut:
+// Aplikasi ini menggunakan Expo Router UNTUK ENTRY POINT (/) tetapi
+// menggunakan React Navigation Stack/Tab untuk navigasi internal.
+// - Akses aplikasi via root URL: http://localhost:8081/
+// - JANGAN akses via /MainTabs karena route itu didefinisikan secara internal.
+//
+// Untuk navigasi antar screen di dalam kode:
 // - Produk: navigation.navigate('ProductScreen')
 // - Usada: navigation.navigate('UsadaScreen')
 // - Cart: navigation.navigate('CartStack')

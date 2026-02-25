@@ -9,10 +9,8 @@ interface ProductsProviderProps {
 }
 
 // API configuration
-// const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.18.207:8000';
-// const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE || 'http://192.168.18.207:8000/storage/';
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.0.100:8000';
-const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE || 'http://192.168.0.100:8000/storage';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL;
+const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage`;
 
 // API helper function
 const apiCall = async (endpoint: string, options: RequestInit = {}) => {

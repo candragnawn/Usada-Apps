@@ -20,7 +20,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import { useUsada } from '@/context/UsadaContext';
 
 const ArticleDetail = ({ route }) => {
-  // Safely extract params with fallbacks
+  
   const { articleId, articleSlug } = route?.params || {};
   const navigation = useNavigation();
   

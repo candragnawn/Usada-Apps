@@ -25,7 +25,7 @@ export const useAuthNavigation = (navigation, options = {}) => {
     defaultUnauthenticatedRoute = 'ProtectedProfile',
   } = options;
 
-  // Clear timeout on unmount
+ 
   useEffect(() => {
     return () => {
       if (navigationTimeoutRef.current) {
@@ -34,7 +34,7 @@ export const useAuthNavigation = (navigation, options = {}) => {
     };
   }, []);
 
-  // Get current route name
+
   const getCurrentRoute = useCallback(() => {
     try {
       const state = navigation.getState();

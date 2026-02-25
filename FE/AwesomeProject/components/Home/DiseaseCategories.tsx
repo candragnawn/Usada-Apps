@@ -10,53 +10,40 @@ const DiseaseCategories = () => {
   const navigation = useNavigation();
   const {
     articles,
+    categories: contextCategories,
+    loading,
     categoryHasArticles
   } = useUsada();
 
-  // Extract unique categories from articles
-  const getArticleCategories = () => {
-    if (!articles || articles.length === 0) return [];
-    
-    const uniqueCategories = [];
-    const seenCategories = new Set();
+  // Filter out 'Semua' and format categories for the UI
+  const getProcessedCategories = () => {
+    // We only want the disease categories from the contextCategories list
+    // excluding the 'Semua' filter option
+    const rawCategories: string[] = contextCategories ? 
+      contextCategories.filter((cat: any) => cat !== 'Semua' && cat !== 'All') : 
+      [];
 
-    articles.forEach(article => {
-      if (article.category && !seenCategories.has(article.category)) {
-        seenCategories.add(article.category);
-        uniqueCategories.push({
-          id: `category-${article.category}`,
-          name: article.category,
-          category: article.category,
-          articleCount: articles.filter(a => a.category === article.category).length
-        });
-      }
-    });
-
-    return uniqueCategories;
-  };
-
-  // Merge article categories with static icons
-  const mergeWithStaticIcons = (articleCategories) => {
-    return articleCategories.map((category, index) => {
-      const staticIcon = DISEASE_CATEGORIES.find(icon => 
-        icon.id === category.id || 
-        icon.name === category.category ||
-        icon.category === category.category
+    return rawCategories.map((catName: string, index: number) => {
+      const staticIcon = DISEASE_CATEGORIES.find((icon: any) => 
+        (icon as any).name === catName ||
+        (icon as any).category === catName
       ) || DISEASE_CATEGORIES[index % DISEASE_CATEGORIES.length];
       
       return {
-        ...category,
+        id: `category-${catName}`,
+        name: catName,
+        category: catName,
         icon: staticIcon ? staticIcon.image : null,
-        color: staticIcon ? staticIcon.color : '#E8F5E8'
+        color: (staticIcon as any).color || '#E8F5E8',
+        articleCount: articles.filter((a: any) => a.category === catName).length
       };
     });
   };
 
-  const articleCategories = getArticleCategories();
-  const diseaseCategories = mergeWithStaticIcons(articleCategories);
+  const diseaseCategories = getProcessedCategories();
 
   // Simplified and more reliable navigation function
-  const handleCategoryPress = async (category) => {
+  const handleCategoryPress = async (category: any) => {
     try {
       const categoryName = category.category || category.name;
       
@@ -82,92 +69,19 @@ const DiseaseCategories = () => {
         timestamp: Date.now()
       };
 
-      console.log('📦 Navigation params:', navigationParams);
+      // Navigation logic...
+      (navigation as any).navigate('UsadaScreen', {
+        screen: 'UsadaMain',
+        params: navigationParams
+      });
 
-      // Get navigation state to determine the best route
-      const state = navigation.getState();
-      const parentState = navigation.getParent()?.getState();
-      
-      // Simplified navigation strategy - try most common patterns first
-      let navigationSuccess = false;
-
-      // Strategy 1: Try nested navigation (most common in tab/stack structure)
-      try {
-        console.log('🎯 Trying nested navigation...');
-        navigation.navigate('UsadaScreen', {
-          screen: 'UsadaMain',
-          params: navigationParams
-        });
-        navigationSuccess = true;
-        console.log('✅ Nested navigation successful');
-      } catch (error) {
-        console.log('❌ Nested navigation failed:', error.message);
-        
-        // Strategy 2: Try direct navigation
-        try {
-          console.log('🎯 Trying direct navigation...');
-          const possibleRoutes = ['UsadaMain', 'Usada', 'UsadaScreen'];
-          
-          for (const routeName of possibleRoutes) {
-            if (state.routeNames?.includes(routeName)) {
-              navigation.navigate(routeName, navigationParams);
-              navigationSuccess = true;
-              console.log(`✅ Direct navigation to ${routeName} successful`);
-              break;
-            }
-          }
-        } catch (directError) {
-          console.log('❌ Direct navigation failed:', directError.message);
-        }
-      }
-
-      // Strategy 3: Try parent navigator if available
-      if (!navigationSuccess && navigation.getParent()) {
-        try {
-          console.log('🎯 Trying parent navigator...');
-          const parent = navigation.getParent();
-          parent.navigate('UsadaStack', {
-            screen: 'UsadaMain',
-            params: navigationParams
-          });
-          navigationSuccess = true;
-          console.log('✅ Parent navigation successful');
-        } catch (parentError) {
-          console.log('❌ Parent navigation failed:', parentError.message);
-        }
-      }
-
-      if (!navigationSuccess) {
-        console.error('🔥 All navigation attempts failed');
-        Alert.alert(
-          'Navigation Error', 
-          'Tidak dapat membuka halaman kategori. Silakan coba lagi.',
-          [
-            { text: 'OK', style: 'default' },
-            { 
-              text: 'Debug', 
-              style: 'default',
-              onPress: () => {
-                console.log('Debug Info:', {
-                  currentRoute: state.routes?.[state.index]?.name,
-                  availableRoutes: state.routeNames,
-                  parentRoutes: parentState?.routeNames,
-                  categoryName,
-                  navigationParams
-                });
-              }
-            }
-          ]
-        );
-      }
-
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Critical navigation error:', error);
       Alert.alert('Error', `Navigation failed: ${error.message}`);
     }
   };
 
-  const renderDiseaseCategory = (category) => {
+  const renderDiseaseCategory = (category: any) => {
     const hasArticles = categoryHasArticles ? categoryHasArticles(category.category) : true;
     
     return (
@@ -176,7 +90,7 @@ const DiseaseCategories = () => {
         style={[
           styles.categoryCard, 
           { backgroundColor: category.color || '#E8F5E8' },
-          !hasArticles && styles.disabledCategoryCard
+          !hasArticles && (styles as any).disabledCategoryCard
         ]}
         onPress={() => handleCategoryPress(category)}
         activeOpacity={hasArticles ? 0.7 : 0.3}
@@ -187,14 +101,14 @@ const DiseaseCategories = () => {
             source={category.icon}
             style={[
               styles.categoryImage,
-              !hasArticles && styles.disabledCategoryImage
+              !hasArticles && (styles as any).disabledCategoryImage
             ]}
             resizeMode="contain"
           />
         )}
         <Text style={[
           styles.categoryName,
-          !hasArticles && styles.disabledCategoryName
+          !hasArticles && (styles as any).disabledCategoryName
         ]}>
           {category.category || category.name || 'Unknown Category'}
         </Text>
@@ -203,7 +117,7 @@ const DiseaseCategories = () => {
   };
 
   // Handle loading and empty states
-  if (!articles || articles.length === 0) {
+  if (loading && (!diseaseCategories || diseaseCategories.length === 0)) {
     return (
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
@@ -236,4 +150,4 @@ const DiseaseCategories = () => {
   );
 };
 
-export default withProviders(DiseaseCategories);
+export default DiseaseCategories;

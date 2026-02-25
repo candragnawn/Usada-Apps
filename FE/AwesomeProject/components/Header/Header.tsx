@@ -1,6 +1,6 @@
 // components/Header/Header.js
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StatusBar, ImageBackground } from 'react-native';
+import { ScrollView,View, Text, TouchableOpacity, Image, StatusBar, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
@@ -25,6 +25,9 @@ const Header = () => {
   
   return (
     <>
+    <ScrollView>
+      
+    </ScrollView>
       <StatusBar backgroundColor="transparent" translucent barStyle="light-content" />
       <ImageBackground 
         source={require('../../assets/images/bgherbal.png')}

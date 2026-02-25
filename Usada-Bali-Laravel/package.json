@@ -20,6 +20,7 @@
         "alpinejs": "^3.14.7",
         "apexcharts": "^4.5.0",
         "dropzone": "^6.0.0-beta.2",
+        "expo": "^54.0.33",
         "flatpickr": "^4.6.13",
         "fullcalendar": "^6.1.15",
         "jsvectormap": "^1.6.0"

@@ -48,8 +48,7 @@ export type AuthContextType = {
 };
 
 // API Configuration
-// const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://192.168.18.207:8000';
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL;
 const API_ENDPOINTS = {
   LOGIN: `${API_BASE_URL}/api/login`,
   REGISTER: `${API_BASE_URL}/api/register`,

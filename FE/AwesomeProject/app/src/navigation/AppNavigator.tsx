@@ -53,7 +53,7 @@ const linking = {
   },
 };
 
-// Define colors for consistency
+
 const COLORS = {
   primary: '#4F7942',
   lightPrimary: 'rgba(79, 121, 66, 0.15)',

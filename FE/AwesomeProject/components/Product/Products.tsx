@@ -1,4 +1,4 @@
-// src/screens/ProductScreen.tsx
+
 import React, { useState } from 'react';
 import {
   View,
@@ -25,9 +25,9 @@ import { useNavigation } from '@react-navigation/native'; // Added navigation ho
 
 // Get screen dimensions for consistent card sizing
 const { width } = Dimensions.get('window');
-const PADDING = 15; // Outer container padding
-const GAP = 15; // Gap between cards
-const CARD_WIDTH = (width - (PADDING * 2) - GAP) / 2; // Calculate card width with consistent gap
+const PADDING = 15; 
+const GAP = 15; 
+const CARD_WIDTH = (width - (PADDING * 2) - GAP) / 2; 
 
 interface ProductScreenProps {
   onProductPress: (productId: number) => void;

@@ -1,14 +1,50 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
-// Create context
-const UsadaContext = createContext();
+// Create context with default values for better TS support
+const UsadaContext = createContext({
+  articles: [],
+  selectedArticle: null,
+  favorites: [],
+  loading: false,
+  error: null,
+  categories: ['Semua'],
+  currentFilter: null,
+  fetchArticles: async (params?: any) => {},
+  fetchArticleBySlug: async (slug: string) => {},
+  fetchArticleById: async (id: any) => {},
+  fetchArticlesByCategory: async (category: string, params?: any) => {},
+  searchArticles: async (searchTerm: string, category?: any, params?: any) => {},
+  fetchCategories: async () => [] as any[],
+  fetchLatestArticles: async (limit?: number) => [] as any[],
+  fetchPopularArticles: async (limit?: number) => [] as any[],
+  selectArticle: (article: any) => {},
+  toggleFavorite: (articleId: any) => {},
+  isFavorite: (articleId: any) => false,
+  getDiseaseCategories: () => [] as any[],
+  getAllCategories: () => [] as string[],
+  filterArticles: (category: any, searchText: any) => [] as any[],
+  getArticlesByDiseaseCategory: (categoryName: any) => [] as any[],
+  getFilteredArticlesForNavigation: (categoryName: any, searchText?: string) => [] as any[],
+  categoryHasArticles: (categoryName: any) => false,
+  setActiveFilter: (filterData: any) => {},
+  clearActiveFilter: () => {},
+  getActiveFilter: () => null as any,
+  navigateToCategory: (navigation: any, categoryName: any, categoryData?: any) => {},
+  navigateToArticle: (navigation: any, article: any, fromCategory?: any) => {},
+  handleCategoryNavigation: async (navigation: any, category: any) => ({ success: false }),
+  getCategoryForNavigation: (categoryObject: any) => '',
+  getFullImageUrl: (imagePath: any) => '',
+  clearError: () => {},
+  refreshData: async (params?: any) => {},
+  initializeData: async () => {},
+  API_BASE_URL: '',
+  IMAGE_BASE_URL: '',
+});
 
 // API Configuration
-// const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.18.207:8000';
-// const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE || 'http://192.168.18.207:8000/storage/';
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.0.100:8000';
-const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE || 'http://192.168.0.100:8000/storage';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || '';
+const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage`;
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -440,10 +476,11 @@ export const UsadaProvider = ({ children }) => {
       setError(null);
       
       // Check cache first
-      if (cache.categories) {
+      if (cache.categories && (cache.categories as any[]).length > 0) {
         console.log('📋 Using cached categories');
-        setCategories(['Semua', ...cache.categories]);
-        return ['Semua', ...cache.categories];
+        const finalCategories = ['Semua', ...(cache.categories as any[])];
+        setCategories(finalCategories);
+        return finalCategories;
       }
       
       // Try to fetch from API

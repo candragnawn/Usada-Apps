@@ -41,20 +41,19 @@ const OrderSuccessScreen = ({ navigation, route }) => {
       />
 
       <View style={styles.content}>
-        {/* Success Icon/Animation */}
         <View style={styles.iconContainer}>
           <View style={styles.successIcon}>
             <Feather name="check" size={60} color="white" />
           </View>
         </View>
 
-        {/* Success Message */}
+    
         <Text style={styles.title}>Order Placed Successfully!</Text>
         <Text style={styles.subtitle}>
           Thank you for your purchase. Your order has been received and will be processed shortly.
         </Text>
 
-        {/* Order Details */}
+
         {orderData && (
           <View style={styles.orderDetails}>
             <Text style={styles.orderDetailsTitle}>Order Details</Text>

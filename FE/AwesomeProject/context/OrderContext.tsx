@@ -3,8 +3,7 @@ import React, { createContext, useContext, useReducer, useCallback } from 'react
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // API configuration
-// const API_BASE_URL_ORDER = process.env.REACT_APP_API_URL_ORDER|| 'http://192.168.18.207:8000/api';
-const API_BASE_URL_ORDER = process.env.REACT_APP_API_URL_ORDER|| 'http://localhost:8000/api';
+const API_BASE_URL_ORDER = process.env.EXPO_PUBLIC_API_URL_ORDER || process.env.REACT_APP_API_URL_ORDER;
 
 // Initial state
 const initialState = {

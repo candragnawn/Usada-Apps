@@ -1,4 +1,4 @@
-// HerbalScanScreen.js - Herbal Plant Scanner Interface
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
@@ -23,7 +23,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 
 const { width, height } = Dimensions.get('window');
-const FLASK_API_URL = 'http://192.168.0.100:5000/predict'; // Ganti dengan IP Flask server kamu
+const FLASK_API_URL = process.env.EXPO_PUBLIC_AI_URL ? `${process.env.EXPO_PUBLIC_AI_URL}/predict` : undefined;
 
 // Scanning Animation Component
 const ScanningAnimation = ({ isScanning }) => {
@@ -287,6 +287,10 @@ const HerbalScanScreen = ({ route }) => {
 
       console.log('FormData:', formData);
       console.log('fileUri:', fileUri);
+
+      if (!FLASK_API_URL) {
+        throw new Error('AI API URL not configured');
+      }
 
       const response = await fetch(FLASK_API_URL, {
         method: 'POST',

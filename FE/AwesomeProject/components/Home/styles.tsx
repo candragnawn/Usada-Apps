@@ -1,44 +1,46 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
   searchContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: 'white',
-  margin: 15,
-  borderRadius: 10,
-  paddingHorizontal: 15,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 4,
-  elevation: 3,
-  position: 'absolute', // Positioning the container absolutely
-  top: 280, // Adjust based on where you want the search container to be (use dynamic values or props)
-  left: 7, // Adjust this value as well
-  width: '90%', // Adjust width as needed
-
-    
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginHorizontal: 15,
+    marginVertical: 10,
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    height: 55,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+    marginTop: -30, 
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 12,
   },
   searchInput: {
     flex: 1,
-    height: 50,
+    height: '100%',
     fontSize: 16,
     color: '#2C3E50',
+    // Remove focus outline on web
+    ...Platform.select({
+      web: {
+        outlineStyle: 'none',
+      },
+      default: {},
+    }) as any,
   },
   sectionContainer: {
     marginTop: 35,
-
   },
-  sectionContainer1:{
+  sectionContainer1: {
     marginTop: 18,
   },
-  sectionContainer2:{
+  sectionContainer2: {
     backgroundColor: '#E8F5E9',
-    
   },
   sectionTitle: {
     fontSize: 18,
@@ -59,19 +61,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2C3E50',
     paddingHorizontal: 15,
-    
   },
   categoriesScrollView: {
     paddingHorizontal: 5,
   },
-   categoryCard: {
+  categoryCard: {
     width: 140,
     height: 50,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 7,
-    flexDirection: 'row', // This makes it horizontal (image + name)
+    flexDirection: 'row',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -83,28 +84,26 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
     fontWeight: 'bold',
     fontSize: 14,
-    marginEnd:10, // Align text to the left
- 
+    marginEnd: 10,
   },
   categoryImage: {
     width: 60,
-    height: 60, 
+    height: 60,
     borderRadius: 50,
   },
   quickServicesContainer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 15,
-    borderTopStartRadius: 50,    
-    borderTopEndRadius: 50, 
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2, 
-    shadowRadius: 5,  
-    // Background color is now provided by the ImageBackground component
-    // but we keep it for fallback
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
     backgroundColor: '#4F7942',
-    overflow: 'hidden', // Important for borderRadius with ImageBackground
+    overflow: 'hidden',
   },
   quickServiceCard: {
     alignItems: 'center',
@@ -123,8 +122,8 @@ const styles = StyleSheet.create({
   quickServiceText: {
     fontSize: 12,
     color: 'white',
-    fontWeight: '500', // Added for better readability against batik background
-    textShadowColor: 'rgba(0, 0, 0, 0.3)', // Added text shadow for better readability
+    fontWeight: '500',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
@@ -134,8 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     backgroundColor: '#E8F5E9',
-    marginTop:5,
-
+    marginTop: 5,
   },
   herbalCategoryCard: {
     width: '48%',
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginTop:5,
+    marginTop: 5,
   },
   herbalCategoryName: {
     fontSize: 14,
@@ -158,7 +156,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
-  herbalCategoryImage :{
+  herbalCategoryImage: {
     width: 80,
     height: 80,
   },
@@ -197,9 +195,31 @@ const styles = StyleSheet.create({
   },
   featuredRemedyDescription: {
     fontSize: 14,
-    color:'rgb(99, 99, 109)',
+    color: 'rgb(99, 99, 109)',
+  },
+  disabledCategoryCard: {
+    opacity: 0.5,
+    backgroundColor: '#F5F5F5',
+    shadowOpacity: 0.05,
+    elevation: 1,
+  },
+  disabledCategoryImage: {
+    opacity: 0.5,
+  },
+  disabledCategoryName: {
+    color: '#9E9E9E',
+  },
+  noDataText: {
+    fontSize: 14,
+    color: '#95A5A6',
+    fontStyle: 'italic',
+    paddingHorizontal: 15,
+    marginTop: 5,
+  },
+  categoriesContent: {
+    paddingRight: 20,
+    alignItems: 'center',
   },
 });
-
 
 export default styles;
