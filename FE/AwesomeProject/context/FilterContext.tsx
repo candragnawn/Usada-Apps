@@ -10,7 +10,6 @@ interface PriceRange {
 }
 
 interface FilterContextType {
-  // Filter states
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
   sortBy: string;

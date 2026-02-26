@@ -35,6 +35,7 @@ const QuickServices = () => {
     <ImageBackground
       source={require('@/assets/images/batik.png')}
       style={styles.quickServicesContainer}
+      imageStyle={{ resizeMode: 'cover' }}
     >
       <TouchableOpacity style={styles.quickServiceCard} onPress={handleConsultationPress}>
         <View style={styles.quickServiceIconContainer}>

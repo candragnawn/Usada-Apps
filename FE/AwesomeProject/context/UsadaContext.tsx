@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
-// Create context with default values for better TS support
 const UsadaContext = createContext({
   articles: [],
   selectedArticle: null,
@@ -117,9 +116,9 @@ export const UsadaProvider = ({ children }) => {
       // Then fetch articles
       await fetchArticles();
       
-      console.log('✅ UsadaContext initialized successfully');
+      console.log(' UsadaContext initialized successfully');
     } catch (error) {
-      console.error('❌ Error initializing UsadaContext:', error);
+      console.error(' Error initializing UsadaContext:', error);
       setError(error.message);
     } finally {
       setLoading(false);

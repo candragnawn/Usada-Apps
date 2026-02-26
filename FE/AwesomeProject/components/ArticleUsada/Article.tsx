@@ -53,7 +53,7 @@ const Usada = () => {
       const categoryFromParams = params.selectedCategory;
       const searchTextFromParams = params.searchText || '';
       const fromCategorySelection = params.fromCategorySelection;
-      const timestamp = params.timestamp;
+      const timestamp = params.timestamp        ;
       
       console.log('🔄 Usada Focus Effect - Params:', {
         categoryFromParams,

@@ -14,7 +14,7 @@ Route::get('index_Product', function() {
 });
 
 Route::prefix("admin")->middleware('auth')->group(function () {
-  Route::get('/', DashboardController::class)->name('dashboard');
+  Route::get('/',  DashboardController::class)->name('dashboard');
   Route::post('/login', [DashboardController::class, 'login'])->name('login');
   Route::resource('categories', CategoryController::class);
   Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');

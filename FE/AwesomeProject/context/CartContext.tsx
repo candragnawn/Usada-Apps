@@ -7,7 +7,7 @@ import { Alert } from 'react-native';
 export interface CartItem {
   id: number;
   productId: number;
-  product_variant_id: number; // Menggunakan productId sebagai variant_id
+  product_variant_id: number; 
   name: string;
   price: number;
   quantity: number;
