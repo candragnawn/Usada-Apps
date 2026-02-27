@@ -15,10 +15,9 @@ const DiseaseCategories = () => {
     categoryHasArticles
   } = useUsada();
 
-  // Filter out 'Semua' and format categories for the UI
+
   const getProcessedCategories = () => {
-    // We only want the disease categories from the contextCategories list
-    // excluding the 'Semua' filter option
+  
     const rawCategories: string[] = contextCategories ? 
       contextCategories.filter((cat: any) => cat !== 'Semua' && cat !== 'All') : 
       [];
@@ -49,7 +48,7 @@ const DiseaseCategories = () => {
       
       if (!categoryName) {
         console.error('❌ Category name missing:', category);
-        Alert.alert('Error', 'Kategori tidak valid');
+
         return;
       }
 

@@ -7,23 +7,30 @@ export const DISEASE_CATEGORIES = [
   { 
     id: '1', 
     image: require('../assets/images/1.png'), 
-    
+    name: 'Pernapasan',
+    category: 'Pernapasan',
+  
   },
-   { 
+  { 
     id: '2',
     image: require('../assets/images/2.png'), 
-    
+    name: 'Pencernaan',
+    category: 'Pencernaan',
+
   },
   { 
     id: '3', 
-    image: require('../assets/images/0.png'),
-   
-  },
+    image: require('../assets/images/3.png'),
+    name: 'Demam & Flu',
+    category: 'Demam & Flu',
  
+  },
   { 
     id: '4', 
     image: require('../assets/images/3.png'), 
-  
+    name: 'Kulit & Luka',
+    category: 'Kulit & Luka',
+
   },
 ];
 

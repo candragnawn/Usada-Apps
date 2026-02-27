@@ -37,7 +37,6 @@ const FeaturedRemedies = () => {
       image: require('../../assets/images/1.png'),
       slug: 'loloh-cemcem'
     },
-    // ...tambahkan beberapa dummy remedies lain jika perlu...
   ];
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const FeaturedRemedies = () => {
     try {
       setIsLoading(true);
       
-      // Jika belum ada articles, fetch terlebih dahulu
       if (articles.length === 0) {
         await fetchArticles();
       }

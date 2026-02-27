@@ -300,7 +300,7 @@ const HerbalScanScreen = ({ route }) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.log('Flask error:', errorText);
-        throw new Error('Gagal klasifikasi gambar');l
+        throw new Error('Gagal klasifikasi gambar');
       }
 
       const result = await response.json();

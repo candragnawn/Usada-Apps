@@ -110,16 +110,16 @@ export const UsadaProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      // Fetch categories first
-      await fetchCategories();
+      // Fetch categories and articles in parallel for better performance
+      await Promise.all([
+        fetchCategories(),
+        fetchArticles()
+      ]);
       
-      // Then fetch articles
-      await fetchArticles();
-      
-      console.log(' UsadaContext initialized successfully');
+      console.log('✅ UsadaContext initialized successfully');
     } catch (error) {
-      console.error(' Error initializing UsadaContext:', error);
-      setError(error.message);
+      console.error('❌ Error initializing UsadaContext:', error);
+      setError(error instanceof Error ? error.message : 'Failed to initialize data');
     } finally {
       setLoading(false);
     }
@@ -730,16 +730,9 @@ export const UsadaProvider = ({ children }) => {
     navigation.navigate('ArticleDetail', {
       article: article,
       articleId: article.id,
-      slug: article.slug,
+      articleSlug: article.slug,
       fromCategory: fromCategory,
       backTo: fromCategory ? 'UsadaScreen' : 'Home',
-      backParams: fromCategory ? {
-        selectedCategory: fromCategory,
-        categoryFilter: {
-          name: fromCategory,
-          type: 'disease_category'
-        }
-      } : {}
     });
   };
 
@@ -782,7 +775,7 @@ export const UsadaProvider = ({ children }) => {
     return getArticlesByDiseaseCategory(categoryName).length > 0;
   };
 
-  // Enhanced filter management
+
   const setActiveFilter = (filterData) => {
     setCurrentFilter(filterData);
   };
@@ -795,12 +788,11 @@ export const UsadaProvider = ({ children }) => {
     return currentFilter;
   };
 
-  // Clear error function
   const clearError = () => {
     setError(null);
   };
 
-  // Refresh function
+
   const refreshData = async () => {
     setCache({
       categories: null,

@@ -28,7 +28,7 @@ import OrderSuccessScreen from '@/screens/OrderSuccessScreen';
 import MainTabNavigator from './MainTabNavigator';
 import withProviders from '@/utils/withProviders';
 import ConsultationScreen from '@/screens/ConsultationScreen';
-import ArticleDetail from '@/components/ArticleUsada/ArticleDetail';
+import ArticleDetailScreen from '@/screens/ArticleDetailScreen';
 import ProductScreen from '@/screens/ProductScreen';
 import WrappedProductScreen from '@/screens/WrappedProductScreen';
 import ProtectedProfileScreen from '@/screens/ProtectedProfileScreen';
@@ -262,6 +262,7 @@ const AppNavigator = () => {
   // 🔥 NAVIGATION STACK: Start with Opening Screen
   return (
     <SafeAreaView style={styles.container} edges={['right', 'left']}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
       <RootStack.Navigator
         screenOptions={fastScreenOptions}
         initialRouteName="Opening" // Start with opening screen
@@ -329,7 +330,7 @@ const AppNavigator = () => {
 
         <RootStack.Screen 
           name="ArticleDetail"
-          component={ArticleDetail}
+          component={ArticleDetailScreen}
           options={consultationScreenOptions}
         />
 
@@ -397,7 +398,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FDF8',
-    paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   loadingContainer: {
     flex: 1,

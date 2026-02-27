@@ -40,7 +40,7 @@ class Product extends Model
             if (!empty($product->images)) {
                 foreach ($product->images as $imagePath) {
                     if (Storage::disk('public')->exists($imagePath)) {
-                        Storage::disk('public')->delete($imagePath);
+                        Storage::disk(name: 'public')->delete($imagePath);
                     }
                 }
             }

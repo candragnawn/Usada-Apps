@@ -9,18 +9,20 @@ const HerbalCategories = () => {
   const navigation = useNavigation();
   const { setSelectedCategory, clearFilters } = useFilter();
 
-  const handleCategoryPress = (categoryName) => {
+  const handleCategoryPress = (categoryName: string) => {
     // Clear existing filters first
     clearFilters();
     
     // Set the selected category
     setSelectedCategory(categoryName);
     
-    // Navigate to ProductMain screen
-    navigation.navigate('ProductMain');
+    // Navigate to Product tab and then to ProductMain screen
+    (navigation as any).navigate('ProductScreen', { 
+      screen: 'ProductMain'
+    });
   };
 
-  const renderHerbalCategory = (category) => (
+  const renderHerbalCategory = (category: any) => (
     <TouchableOpacity 
       key={category.id} 
       style={styles.herbalCategoryCard}

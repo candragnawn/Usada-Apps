@@ -5,14 +5,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { 
   View, 
   StyleSheet, 
-  Platform, 
   StatusBar, 
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainerRef, CommonActions } from '@react-navigation/native';
 
-// Import context
 import { useAuth } from '../context/AuthContext';
 
 
@@ -47,13 +46,11 @@ const COLORS = {
   inactive: '#86A789',
 };
 
-// Get status bar height for different devices
 const STATUSBAR_HEIGHT = StatusBar.currentHeight || (Platform.OS === 'ios' ? 47 : 0);
 const IS_IPHONE_WITH_DYNAMIC_ISLAND = Platform.OS === 'ios' && 
   (Platform.constants?.interfaceIdiom === 'phone') && 
   (STATUSBAR_HEIGHT > 40 || (Platform.constants?.osVersion && parseInt(Platform.constants.osVersion) >= 16));
 
-// Custom tab bar icon with enhanced animation effects
 const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: string; iconName: React.ComponentProps<typeof Ionicons>['name'] }) => {
   return (
     <View style={styles.iconContainer}>
@@ -69,7 +66,7 @@ const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: str
   );
 };  
 
-// Optimized screen options with better transitions
+
 const commonStackScreenOptions = {
   headerShown: false,
   // cardStyle: { backgroundColor: '#F8FDF8' }, // Remove, not supported in TS
@@ -102,10 +99,6 @@ const UsadaStackNavigator = () => {
       <UsadaStack.Screen 
         name="UsadaMain" 
         component={UsadaScreen}
-      />
-      <UsadaStack.Screen
-        name="ArticleDetail"
-        component={ArticleDetailScreen}
       />
     </UsadaStack.Navigator>
   );
@@ -242,7 +235,7 @@ const RootStackNavigator = () => (
     <Stack.Screen name="HerbalScanScreen" component={HerbalScanScreen} />
     <Stack.Screen name="ScanHistory" component={ScanHistoryScreen} />
     <Stack.Screen name="ConsultationScreen" component={ConsultationScreen} />
-    {/* Tambahkan route lain jika perlu */}
+    <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
   </Stack.Navigator>
 );
 
@@ -280,6 +273,11 @@ const AppNavigatorContent = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['right', 'left']}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       {/* Ganti MainTabNavigator dengan RootStackNavigator */}
       <RootStackNavigator />
     </SafeAreaView>
@@ -299,7 +297,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FDF8',
-    paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   loadingContainer: {
     flex: 1,
@@ -317,7 +314,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
-    paddingBottom: Platform.OS === 'ios' ? 25 : 10,
     paddingTop: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
