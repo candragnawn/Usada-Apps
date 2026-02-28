@@ -47,7 +47,7 @@ const DiseaseCategories = () => {
       const categoryName = category.category || category.name;
       
       if (!categoryName) {
-        console.error('❌ Category name missing:', category);
+        console.error(' Category name missing:', category);
 
         return;
       }
@@ -58,7 +58,7 @@ const DiseaseCategories = () => {
         return;
       }
 
-      console.log('🚀 Navigating to category:', categoryName);
+      console.log('Navigating to category:', categoryName);
 
       // Create clear navigation parameters
       const navigationParams = {
@@ -68,7 +68,6 @@ const DiseaseCategories = () => {
         timestamp: Date.now()
       };
 
-      // Navigation logic...
       (navigation as any).navigate('UsadaScreen', {
         screen: 'UsadaMain',
         params: navigationParams
@@ -80,40 +79,6 @@ const DiseaseCategories = () => {
     }
   };
 
-  const renderDiseaseCategory = (category: any) => {
-    const hasArticles = categoryHasArticles ? categoryHasArticles(category.category) : true;
-    
-    return (
-      <TouchableOpacity
-        key={`category-${category.id}`}
-        style={[
-          styles.categoryCard, 
-          { backgroundColor: category.color || '#E8F5E8' },
-          !hasArticles && (styles as any).disabledCategoryCard
-        ]}
-        onPress={() => handleCategoryPress(category)}
-        activeOpacity={hasArticles ? 0.7 : 0.3}
-        disabled={!hasArticles}
-      >
-        {category.icon && (
-          <Image
-            source={category.icon}
-            style={[
-              styles.categoryImage,
-              !hasArticles && (styles as any).disabledCategoryImage
-            ]}
-            resizeMode="contain"
-          />
-        )}
-        <Text style={[
-          styles.categoryName,
-          !hasArticles && (styles as any).disabledCategoryName
-        ]}>
-          {category.category || category.name || 'Unknown Category'}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
 
   // Handle loading and empty states
   if (loading && (!diseaseCategories || diseaseCategories.length === 0)) {
@@ -136,14 +101,54 @@ const DiseaseCategories = () => {
 
   return (
     <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
+      <View style={(styles as any).sectionHeader}>
+        <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
+        <TouchableOpacity onPress={() => (navigation as any).navigate('UsadaScreen')}>
+          <Text style={(styles as any).seeAllText}>See All</Text>
+        </TouchableOpacity>
+      </View>
+      
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.categoriesScrollView}
         contentContainerStyle={styles.categoriesContent}
       >
-        {diseaseCategories.map(renderDiseaseCategory)}
+        {diseaseCategories.map((category: any) => {
+          const hasArticles = categoryHasArticles ? categoryHasArticles(category.category) : true;
+          
+          return (
+            <TouchableOpacity
+              key={`category-${category.id}`}
+              style={[
+                styles.categoryCard, 
+                !hasArticles && (styles as any).disabledCategoryCard
+              ]}
+              onPress={() => handleCategoryPress(category)}
+              activeOpacity={hasArticles ? 0.7 : 0.3}
+              disabled={!hasArticles}
+            >
+              <View style={(styles as any).categoryIconContainer}>
+                {category.icon && (
+                  <Image
+                    source={category.icon}
+                    style={[
+                      styles.categoryImage,
+                      !hasArticles && (styles as any).disabledCategoryImage
+                    ]}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+              <Text style={[
+                styles.categoryName,
+                !hasArticles && (styles as any).disabledCategoryName
+              ]}>
+                {category.category || category.name || 'Unknown Category'}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </View>
   );

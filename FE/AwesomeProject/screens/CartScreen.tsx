@@ -22,7 +22,6 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import withProviders from '@/utils/withProviders';
 
 interface CartScreenProps {
-  // Using navigation prop instead to fix navigation issues
   navigation?: any;
   route?: any;
 }

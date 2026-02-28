@@ -275,8 +275,7 @@ const AppNavigator = () => {
     
         <RootStack.Screen 
           name="MainApp"
-          component={MainTabNavigator}
-          options={{ 
+           options={{ 
             gestureEnabled: false,
             transitionSpec: {
               open: { 
