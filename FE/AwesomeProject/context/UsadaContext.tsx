@@ -45,7 +45,6 @@ const UsadaContext = createContext({
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || '';
 const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage`;
 
-// Create axios instance with default config
 const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
   timeout: 10000,
@@ -55,7 +54,6 @@ const apiClient = axios.create({
   },
 });
 
-// Add request interceptor for debugging
 apiClient.interceptors.request.use(
   (config) => {
     console.log('API Request:', config.method.toUpperCase(), config.url);
@@ -68,7 +66,6 @@ apiClient.interceptors.request.use(
 );
 
 
-// Add response interceptor for debugging and error handling
 apiClient.interceptors.response.use(
   (response) => {
     console.log('API Response:', response.status, response.config.url);

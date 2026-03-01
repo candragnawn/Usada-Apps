@@ -103,8 +103,17 @@ const DiseaseCategories = () => {
     <View style={styles.sectionContainer}>
       <View style={(styles as any).sectionHeader}>
         <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
-        <TouchableOpacity onPress={() => (navigation as any).navigate('UsadaScreen')}>
-          <Text style={(styles as any).seeAllText}>See All</Text>
+        <TouchableOpacity 
+          onPress={() => (navigation as any).navigate('UsadaScreen', {
+            screen: 'UsadaMain',
+            params: { 
+              selectedCategory: 'Semua', 
+              resetFilter: true,
+              timestamp: Date.now() 
+            }
+          })}
+        >
+          <Text style={(styles as any).seeAllText}>Lihat Semua</Text>
         </TouchableOpacity>
       </View>
       

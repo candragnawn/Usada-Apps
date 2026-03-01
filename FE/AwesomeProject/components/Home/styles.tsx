@@ -43,15 +43,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8F5E9',
   },
   sectionTitle: {
-    fontSize: 18  ,
+    fontSize: 16  ,
     fontWeight: 'medium',
     color: '#2C3E50',
     paddingHorizontal: 5,
     marginBottom: 10,
   },
   sectionTitle2: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: 'medium',
     color: '#2C3E50',
     paddingHorizontal: 15,
     marginTop: 20,

@@ -37,7 +37,7 @@ const Usada = () => {
   
   // State management
   const [selectedCategory, setSelectedCategory] = useState('Semua');
-  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState<any[]>([]);
   const [searchText, setSearchText] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,11 +49,12 @@ const Usada = () => {
   useFocusEffect(
     useCallback(() => {
       // Get parameters from route
-      const params = route.params || {};
+      const params: any = route.params || {};
       const categoryFromParams = params.selectedCategory;
       const searchTextFromParams = params.searchText || '';
       const fromCategorySelection = params.fromCategorySelection;
-      const timestamp = params.timestamp        ;
+      const resetFilter = params.resetFilter;
+      const timestamp = params.timestamp;
       
       console.log('🔄 Usada Focus Effect - Params:', {
         categoryFromParams,
@@ -64,53 +65,29 @@ const Usada = () => {
         currentSearch: searchText
       });
       
-      // Handle category selection from DiseaseCategories
-      if (fromCategorySelection && categoryFromParams && categoryFromParams !== selectedCategory) {
-        console.log('📝 Setting category from DiseaseCategories:', categoryFromParams);
-        setSelectedCategory(categoryFromParams);
+      // Handle category selection or reset from Home/Tab
+      if (resetFilter || fromCategorySelection || categoryFromParams) {
+        const targetCategory = categoryFromParams || 'Semua';
+        const targetSearch = searchTextFromParams || '';
         
-        // Clear search when coming from category selection
-        if (searchText !== '') {
-          console.log('🧹 Clearing search text for category focus');
-          setSearchText('');
-        }
+        console.log('🔄 Applying navigation params:', { targetCategory, targetSearch, resetFilter });
+        
+        setSelectedCategory(targetCategory);
+        setSearchText(targetSearch);
         
         // Force immediate filtering
         setTimeout(() => {
-          handleFilterArticles(categoryFromParams, '');
+          handleFilterArticles(targetCategory, targetSearch);
         }, 100);
         
-        // Clear the route params to prevent repeated actions
+        // Clear the route params to prevent repeated actions on subsequent focus
         navigation.setParams({
           selectedCategory: undefined,
+          searchText: undefined,
           fromCategorySelection: undefined,
+          resetFilter: undefined,
           timestamp: undefined
-        });
-      }
-      // Handle regular navigation with search
-      else if (categoryFromParams || searchTextFromParams) {
-        let shouldFilter = false;
-        
-        if (categoryFromParams && categoryFromParams !== selectedCategory) {
-          console.log('📝 Setting category from params:', categoryFromParams);
-          setSelectedCategory(categoryFromParams);
-          shouldFilter = true;
-        }
-        
-        if (searchTextFromParams && searchTextFromParams !== searchText) {
-          console.log('📝 Setting search text from params:', searchTextFromParams);
-          setSearchText(searchTextFromParams);
-          shouldFilter = true;
-        }
-        
-        if (shouldFilter) {
-          setTimeout(() => {
-            handleFilterArticles(
-              categoryFromParams || selectedCategory,
-              searchTextFromParams || searchText
-            );
-          }, 100);
-        }
+        } as any);
       }
       
       // Initialize if not done yet
