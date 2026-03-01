@@ -32,6 +32,8 @@ Route::get('/test', function () {
 // Public routes (tidak perlu login)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/doctors', [DoctorController::class, 'index']);
+Route::post('/doctors', [DoctorController::class, 'store']);
 
 // Health check route
 Route::get('/health', function () {
