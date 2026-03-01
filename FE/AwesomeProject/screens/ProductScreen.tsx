@@ -16,14 +16,7 @@ const ProductScreen = () => {
   };
   
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        <ProductComponent onProductPress={handleProductPress} />
-      </ScrollView>
-    </SafeAreaView>
+    <ProductComponent onProductPress={handleProductPress} />
   );
 };
 

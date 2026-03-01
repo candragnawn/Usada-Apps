@@ -133,7 +133,6 @@ const PaymentInfoScreen = ({ navigation, route }) => {
       
       console.log('📊 Current order status:', status);
 
-      // Update payment status based on order status
       switch (status) {
         case 'paid':
         case 'completed':
@@ -142,7 +141,6 @@ const PaymentInfoScreen = ({ navigation, route }) => {
           setPaymentStatus('success');
           clearStatusCheck();
           
-          // Navigate to success screen after short delay
           setTimeout(() => {
             navigation.replace('OrderSuccess', {
               orderId: orderId,

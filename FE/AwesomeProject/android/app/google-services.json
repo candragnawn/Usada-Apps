@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024648257019",
+    "project_id": "usada-apps",
+    "storage_bucket": "usada-apps.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024648257019:android:bcb91f17eb15cd79dfbf5e",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI39X39UASFYB1YHkmkqTJMnPgIgmSZyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

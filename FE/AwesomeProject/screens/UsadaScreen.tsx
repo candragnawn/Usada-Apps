@@ -5,11 +5,7 @@ import withProviders from '@/utils/withProviders';
 
 const UsadaScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <Usada />
-      </ScrollView>
-    </SafeAreaView>
+    <Usada />
   );
 };
 
