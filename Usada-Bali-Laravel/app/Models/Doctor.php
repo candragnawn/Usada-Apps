@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Doctor extends Model
 {
@@ -19,4 +20,22 @@ class Doctor extends Model
         'image',
         'description',
     ];
+
+    /**
+     *
+     * @var array
+     */
+    protected $casts = [
+        'expertise' => 'array',
+        'available' => 'boolean',
+        'nextAvailable' => 'datetime',
+        'rating' => 'float',
+        'price' => 'float',
+    ];
+
+    
+    public function consultations(): HasMany
+    {
+        return $this->hasMany(Consultation::class);
+    }
 }

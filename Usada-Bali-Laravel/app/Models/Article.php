@@ -45,7 +45,6 @@ class Article extends Model
         'updated_at'
     ];
 
-    // Automatically generate slug when creating article
     protected static function boot()
     {
         parent::boot();

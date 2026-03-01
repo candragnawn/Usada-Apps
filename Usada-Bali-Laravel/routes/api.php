@@ -4,6 +4,8 @@ use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BestSellerController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ConsultationController;
+use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
@@ -32,8 +34,10 @@ Route::get('/test', function () {
 // Public routes (tidak perlu login)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// Doctors Routes (Public for viewing, protected for storing)
 Route::get('/doctors', [DoctorController::class, 'index']);
-Route::post('/doctors', [DoctorController::class, 'store']);
+Route::get('/doctors/{id}', [DoctorController::class, 'show']);
 
 // Health check route
 Route::get('/health', function () {
@@ -139,12 +143,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
           Route::get('/orders/{id}/sync', [OrderController::class, 'syncOrderStatus']);
     });
+
+    // Consultation management routes
+    Route::prefix('consultations')->group(function () {
+        Route::post('/', [ConsultationController::class, 'createOrder']);
+        Route::get('/', [ConsultationController::class, 'getUserConsultations']);
+    });
     
     // ProductController protected routes (admin only)
     Route::middleware('admin')->group(function () {
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+        // Doctor management (admin only)
+        Route::post('/doctors', [DoctorController::class, 'store']);
     });
 
     // User dashboard route
