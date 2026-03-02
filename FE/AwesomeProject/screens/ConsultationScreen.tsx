@@ -16,9 +16,26 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-const ConsultationScreen = ({ navigation }) => {
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL;
+
+interface Doctor {
+  id: number;
+  name: string;
+  specialization: string;
+  experience: string | number;
+  expertise: string[];
+  rating: number;
+  consultations: number;
+  price: number;
+  available: boolean;
+  nextAvailable: string;
+  image: string;
+  description: string;
+}
+
+const ConsultationScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(true);
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
 
   // Mock data for herbal doctors
   const herbalDoctors = [
@@ -109,18 +126,30 @@ const ConsultationScreen = ({ navigation }) => {
   ];
 
   useEffect(() => {
-    // Simulate loading doctors data
     const loadDoctors = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setDoctors(herbalDoctors);
-      setLoading(false);
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/doctors`);
+        const result = await response.json();
+        
+        if (result.success) {
+          setDoctors(result.data);
+        } else {
+          setDoctors(result); // Support both formats
+        }
+      } catch (error) {
+        console.error('Fetch doctors error:', error);
+        // Fallback to mock if API fails during dev
+        setDoctors(herbalDoctors);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadDoctors();
   }, []);
 
-  const formatPrice = (price) => {
+  const formatPrice = (price: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
@@ -128,7 +157,7 @@ const ConsultationScreen = ({ navigation }) => {
     }).format(price);
   };
 
-  const handleDoctorSelect = (doctor) => {
+  const handleDoctorSelect = (doctor: Doctor) => {
     Alert.alert(
       'Pilih Konsultasi',
       `Apakah Anda ingin berkonsultasi dengan ${doctor.name}?\n\nBiaya: ${formatPrice(doctor.price)}`,
@@ -145,7 +174,7 @@ const ConsultationScreen = ({ navigation }) => {
     );
   };
 
-  const renderDoctorCard = (doctor) => (
+  const renderDoctorCard = (doctor: Doctor) => (
     <TouchableOpacity
       key={doctor.id}
       style={styles.doctorCard}
@@ -197,7 +226,7 @@ const ConsultationScreen = ({ navigation }) => {
       <View style={styles.expertiseContainer}>
         <Text style={styles.expertiseLabel}>Keahlian:</Text>
         <View style={styles.expertiseList}>
-          {doctor.expertise.map((skill, index) => (
+          {doctor.expertise.map((skill: string, index: number) => (
             <View key={index} style={styles.expertiseTag}>
               <Text style={styles.expertiseText}>{skill}</Text>
             </View>

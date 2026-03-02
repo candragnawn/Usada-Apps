@@ -22,9 +22,7 @@ class DoctorController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -58,9 +56,7 @@ class DoctorController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id): JsonResponse
     {
         $doctor = Doctor::find($id);

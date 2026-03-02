@@ -25,6 +25,8 @@ import CheckoutScreen from '../screens/CheckoutScreen';
 import HerbalScanScreen from '../screens/HerbalScanScreen';
 import ScanHistoryScreen from '../screens/ScanHistoryScreen';
 import ConsultationScreen from '../screens/ConsultationScreen';
+import ConsultationBookingScreen from '../screens/ConsultationBookingScreen';
+import ChatScreen from '../screens/ChatScreen';
 import withProviders from '../utils/withProviders';
 
 // Import separated ProfileStackNavigator
@@ -235,6 +237,8 @@ const RootStackNavigator = () => (
     <Stack.Screen name="HerbalScanScreen" component={HerbalScanScreen} />
     <Stack.Screen name="ScanHistory" component={ScanHistoryScreen} />
     <Stack.Screen name="ConsultationScreen" component={ConsultationScreen} />
+    <Stack.Screen name="ConsultationBooking" component={ConsultationBookingScreen} />
+    <Stack.Screen name="ChatScreen" component={ChatScreen} />
     <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
   </Stack.Navigator>
 );

@@ -66,16 +66,12 @@ Route::prefix('articles')->group(function () {
     Route::get('/{slug}', [ArticleController::class, 'getArticle']);
 });
 
-// Best Sellers Route
 Route::get('/best-sellers', [BestSellerController::class, 'index']);
 
-// Xendit webhook (no auth required) - PENTING: Tetap di atas middleware auth
 Route::post('/xendit/callback', [OrderController::class, 'webhookPayment']);
 
-// Routes yang butuh autentikasi (auth:sanctum)
 Route::middleware('auth:sanctum')->group(function () {
     
-    // Test route untuk user yang sudah login
     Route::get('/auth-test', function (Request $request) {
         return response()->json([
             'success' => true,
@@ -85,14 +81,12 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
     
-    // Auth Controller protected routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::put('/profile/update', [AuthController::class, 'updateProfile']);
     Route::put('/profile/change-password', [AuthController::class, 'changePassword']);
     Route::delete('/profile/delete', [AuthController::class, 'deleteAccount']);
     
-    // Token refresh route
     Route::post('/refresh', function (Request $request) {
         $user = $request->user();
         $user->currentAccessToken()->delete();

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
 
             $table->enum('status', ['pending', 'paid', 'active', 'completed'])->default('pending');
             $table->decimal('amount', 15, 2);
@@ -28,6 +28,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
+
+ 
     public function down(): void
     {
         Schema::dropIfExists('consultations');

@@ -45,7 +45,6 @@ export const useAuthNavigation = (navigation, options = {}) => {
     }
   }, [navigation]);
 
-  // Safe navigation with debouncing
   const navigateWithDelay = useCallback((targetScreen, delay = navigationDelay) => {
     if (isNavigatingRef.current) {
       if (debugMode) {
