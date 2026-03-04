@@ -1,4 +1,4 @@
-// src/contexts/ProductsContext.tsx
+console.log('🟣🟣🟣 [CRITICAL DEBUG] ProductsContext.tsx EVALUATING LINE 1');
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, Category, ProductsContextType } from '../types';
 

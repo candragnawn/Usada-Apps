@@ -1,3 +1,4 @@
+console.log('🔵🔵🔵 [CRITICAL DEBUG] app/app.tsx EVALUATING LINE 1');
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -15,6 +16,7 @@ import RootNavigator from './src/navigation/AppNavigator';
 import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
+  console.log('🔄 [DEBUG] App component in app/app.tsx is rendering');
   return (
     <SafeAreaProvider>
       <StatusBar barStyle="light-content" backgroundColor="#4F7942" />

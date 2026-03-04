@@ -1,3 +1,4 @@
+console.log('🔴🔴🔴 [CRITICAL DEBUG] app/index.tsx EVALUATING LINE 1');
 import React, { useEffect, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,8 +10,11 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainerRef, CommonActions } from '@react-navigation/native';
+
+// SplashScreen.hideAsync().catch(err => console.error('❌ [DEBUG] hideAsync failed:', err));
 
 import { useAuth } from '../context/AuthContext';
 
@@ -245,24 +249,25 @@ const RootStackNavigator = () => (
 
 // Main App Navigator Component with optimizations
 const AppNavigatorContent = () => {
-  const { isLoading, isAuthenticated } = useAuth();
-  const prevAuthState = useRef(isAuthenticated);
+  try {
+    const { isLoading, isAuthenticated } = useAuth();
+    console.log('🔄 [DEBUG] AppNavigatorContent rendering:', { isLoading, isAuthenticated });
 
   // Track auth state changes for cleanup
   useEffect(() => {
-    if (prevAuthState.current !== isAuthenticated) {
-      prevAuthState.current = isAuthenticated;
-      
-      // Clear any cached screens or data when auth state changes
-      if (!isAuthenticated) {
-        // User logged out - you can add cleanup logic here
-        console.log('User logged out - clearing cache...');
-      } else {
+    if (isAuthenticated) {
         // User logged in
         console.log('User logged in - initializing user data...');
-      }
+    } else {
+        // User logged out
+        console.log('User logged out - clearing cache...');
     }
-  }, [isAuthenticated]);
+    
+    // Hide splash screen once we're done loading auth
+    if (!isLoading) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [isAuthenticated, isLoading]);
 
   // Show loading screen while checking authentication
   if (isLoading) {
@@ -275,17 +280,24 @@ const AppNavigatorContent = () => {
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container} edges={['right', 'left']}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent={true}
-      />
-      {/* Ganti MainTabNavigator dengan RootStackNavigator */}
-      <RootStackNavigator />
-    </SafeAreaView>
-  );
+    return (
+      <SafeAreaView style={styles.container} edges={['right', 'left']}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent={true}
+        />
+        <RootStackNavigator />
+      </SafeAreaView>
+    );
+  } catch (error) {
+    console.error('💥 [DEBUG] AppNavigatorContent CRASHED:', error);
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
+        <ActivityIndicator size="large" color="white" />
+      </View>
+    );
+  }
 };
 
 // Root App Navigator

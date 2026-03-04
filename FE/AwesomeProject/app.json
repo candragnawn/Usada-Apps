@@ -1,21 +1,4 @@
 {
-  "name": "AwesomeProject",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "expo": "~48.0.0",
-    "react": "18.2.0",
-    "react-native": "0.71.3"
-  },
-  "devDependencies": {
-    "@react-native-community/cli": "latest"
-  },
   "expo": {
     "name": "AwesomeProject",
     "slug": "AwesomeProject",
@@ -24,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "awesomeproject",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.adikaananda.AwesomeProject",
@@ -37,8 +20,9 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.adikaananda.AwesomeProject"
+      "edgeToEdgeEnabled": false,
+      "package": "com.awesomeproject",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -50,12 +34,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "@react-native-firebase/app"
     ],
     "experiments": {
       "typedRoutes": true

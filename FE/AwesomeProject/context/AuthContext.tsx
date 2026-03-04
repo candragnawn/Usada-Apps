@@ -1,4 +1,4 @@
-// src/context/AuthContext.tsx - FIXED: Quick Logout with Instant State Update
+console.log('🟡🟡🟡 [CRITICAL DEBUG] AuthContext.tsx EVALUATING LINE 1');
 import React, { 
   createContext, 
   useState, 

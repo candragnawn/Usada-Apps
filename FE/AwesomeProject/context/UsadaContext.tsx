@@ -1,3 +1,4 @@
+console.log('🟢🟢🟢 [CRITICAL DEBUG] UsadaContext.tsx EVALUATING LINE 1');
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 

@@ -23,12 +23,10 @@ export interface Chat {
 }
 
 class FirebaseService {
-  private chatsCollection = firestore().collection('chats');
+  private get chatsCollection() {
+    return firestore().collection('chats');
+  }
 
-  /**
-   * Initialize a chat session in Firestore if it doesn't exist.
-   * Document ID is the consultationId from Laravel.
-   */
   async getOrCreateChat(consultationId: number, userId: string, doctorId: string): Promise<string> {
     const chatId = consultationId.toString();
     const chatDoc = await this.chatsCollection.doc(chatId).get();
