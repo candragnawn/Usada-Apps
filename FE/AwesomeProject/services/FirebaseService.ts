@@ -1,4 +1,6 @@
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
+const firestore = () => ({ collection: () => ({ doc: () => ({ get: () => ({ exists: false }), set: () => {}, update: () => {}, collection: () => ({ doc: () => ({ set: () => {}, update: () => {}, collection: () => ({ orderBy: () => ({ onSnapshot: () => () => {} }) }) }) }) }) }) }) as any;
+(firestore as any).FieldValue = { serverTimestamp: () => ({}) } as any;
 
 export interface Message {
   id?: string;

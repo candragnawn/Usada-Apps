@@ -52,9 +52,12 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
 const transformProduct = (product: any): Product => {
   return {
     ...product,
-    images: product.images?.map((imagePath: string) => 
-      imagePath.startsWith('http') ? imagePath : `${IMAGE_BASE_URL}${imagePath}`
-    ) || [],
+    images: product.images?.map((imagePath: string) => {
+      if (imagePath.startsWith('http')) return imagePath;
+      const base = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL : `${IMAGE_BASE_URL}/`;
+      const path = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+      return `${base}${path}`;
+    }) || [],
     // Ensure variants are properly structured
     variants: product.variants || [],
   };
@@ -74,8 +77,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
     try {
       const response = await apiCall('/api/products');
       
-      // Laravel returns { status: 'success', data: [...] }
-      if (response.status === 'success' && Array.isArray(response.data)) {
+      // Laravel returns { success: true, data: [...] }
+      if ((response.status === 'success' || response.success) && Array.isArray(response.data)) {
         const transformedProducts = response.data.map(transformProduct);
         setProducts(transformedProducts);
       } else {
@@ -98,8 +101,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
     try {
       const response = await apiCall(`/api/products/${id}`);
       
-      // Laravel returns { status: 'success', data: {...} }
-      if (response.status === 'success' && response.data && response.data.id) {
+      // Laravel returns { success: true, data: {...} }
+      if ((response.status === 'success' || response.success) && response.data && response.data.id) {
         const transformedProduct = transformProduct(response.data);
         setProduct(transformedProduct);
         return transformedProduct;
@@ -120,7 +123,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
       const response = await apiCall('/api/categories');
       
       // Handle Laravel response structure
-      if (response.status === 'success' && Array.isArray(response.data)) {
+      if ((response.status === 'success' || response.success) && Array.isArray(response.data)) {
         setCategories(response.data);
       } else if (Array.isArray(response)) {
         // Fallback for direct array response
@@ -144,8 +147,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
         body: productData,
       });
 
-      // Laravel returns { status: 'success', message: '...', data: {...} }
-      if (response.status === 'success') {
+      // Laravel returns { success: true, message: '...', data: {...} }
+      if (response.status === 'success' || response.success) {
         // Refresh products list
         await fetchProducts();
         return response.data;
@@ -169,8 +172,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
         body: productData,
       });
 
-      // Laravel returns { status: 'success', message: '...', data: {...} }
-      if (response.status === 'success') {
+      // Laravel returns { success: true, message: '...', data: {...} }
+      if (response.status === 'success' || response.success) {
         // Refresh products list
         await fetchProducts();
         return response.data;
@@ -190,8 +193,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
         method: 'DELETE',
       });
 
-      // Laravel returns { status: 'success', message: '...' }
-      if (response.status === 'success') {
+      // Laravel returns { success: true, message: '...' }
+      if (response.status === 'success' || response.success) {
         // Remove product from local state
         setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
       } else {

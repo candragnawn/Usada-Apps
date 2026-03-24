@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainerRef, CommonActions } from '@react-navigation/native';
+import { NavigationContainerRef, CommonActions, NavigationContainer } from '@react-navigation/native';
 
 // SplashScreen.hideAsync().catch(err => console.error('❌ [DEBUG] hideAsync failed:', err));
 
@@ -287,7 +287,9 @@ const AppNavigatorContent = () => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <RootStackNavigator />
+        <NavigationContainer independent={true}>
+          <RootStackNavigator />
+        </NavigationContainer>
       </SafeAreaView>
     );
   } catch (error) {

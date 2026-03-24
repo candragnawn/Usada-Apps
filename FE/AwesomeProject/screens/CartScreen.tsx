@@ -285,7 +285,7 @@ const CartScreen: React.FC<CartScreenProps> = ({ navigation, route }) => {
           onPress={() => handleNavigateToProduct(item.productId)}
         >
           <Image
-            source={{ uri: item.images }}
+            source={{ uri: item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150' }}
             style={styles.productImage}
             resizeMode="cover"
           />

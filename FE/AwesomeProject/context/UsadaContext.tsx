@@ -7,10 +7,10 @@ const UsadaContext = createContext({
   selectedArticle: null,
   favorites: [],
   loading: false,
-  error: null,
+  error: null as string | null,
   categories: ['Semua'],
   currentFilter: null,
-  fetchArticles: async (params?: any) => {},
+  fetchArticles: async (params?: any) => ({} as any),
   fetchArticleBySlug: async (slug: string) => {},
   fetchArticleById: async (id: any) => {},
   fetchArticlesByCategory: async (category: string, params?: any) => {},
@@ -44,7 +44,44 @@ const UsadaContext = createContext({
 
 // API Configuration
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || '';
-const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage`;
+// FIX 1: REACT_APP_IMAGE → REACT_APP_IMAGE_URL (typo fix)
+const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE_URL || `${API_BASE_URL}/storage`;
+
+/**
+ * Robust JSON parser that handles:
+ * 1. Stringified JSON (recursively if double-encoded)
+ * 2. Hidden control characters that break JSON.parse
+ * 3. Pre-parsed objects
+ */
+const robustJsonParse = (data: any, depth = 0): any => {
+  if (data === null || data === undefined) return data;
+  if (depth > 3) return data; // Prevent infinite recursion
+
+  if (typeof data === 'string') {
+    const trimmed = data.trim();
+    if (trimmed.length === 0) return data;
+
+    // If it looks like JSON
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        // Recursively check if the result is ANOTHER string that looks like JSON
+        return robustJsonParse(parsed, depth + 1);
+      } catch (e) {
+        // Cleaning approach: Strip raw control characters (0x00-0x1F except \t\n\r)
+        const cleaned = trimmed.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
+        try {
+          const secondParsed = JSON.parse(cleaned);
+          return robustJsonParse(secondParsed, depth + 1);
+        } catch (e2) {
+          // Final fallback
+          return data;
+        }
+      }
+    }
+  }
+  return data;
+};
 
 const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
@@ -66,14 +103,15 @@ apiClient.interceptors.request.use(
   }
 );
 
-
 apiClient.interceptors.response.use(
   (response) => {
     console.log('API Response:', response.status, response.config.url);
+    // Use robust parser to handle potential double-encoding or bad characters
+    response.data = robustJsonParse(response.data);
     return response;
   },
   (error) => {
-    console.error('API Response Error:', error.response?.status, error.response?.data);
+    console.error('API Response Error:', error.response?.status, error.message);
     return Promise.reject(error);
   }
 );
@@ -85,7 +123,7 @@ export const UsadaProvider = ({ children }) => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState(['Semua']);
   const [currentFilter, setCurrentFilter] = useState(null);
 
@@ -108,7 +146,6 @@ export const UsadaProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      // Fetch categories and articles in parallel for better performance
       await Promise.all([
         fetchCategories(),
         fetchArticles()
@@ -127,24 +164,48 @@ export const UsadaProvider = ({ children }) => {
   const getFullImageUrl = (imagePath) => {
     if (!imagePath) return null;
     if (imagePath.startsWith('http')) return imagePath;
-    return `${IMAGE_BASE_URL}${imagePath}`;
+    const base = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL : `${IMAGE_BASE_URL}/`;
+    const path = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+    return `${base}${path}`;
   };
 
-  // Helper function to transform article data
-  const transformArticle = (article) => ({
-    ...article,
-    image_url: getFullImageUrl(article.image_url || article.image),
-    image: getFullImageUrl(article.image_url || article.image), // For compatibility
-    // Ensure required fields exist
-    id: article.id,
-    title: article.title || 'Untitled',
-    description: article.description || article.excerpt || '',
-    category: article.category || 'Uncategorized',
-    created_at: article.created_at || article.published_at || new Date().toISOString(),
-    slug: article.slug || article.id?.toString() || '',
-  });
+  // FIX 2: transformArticle — handle images as JSON array (consistent with products table)
+  // Priority: images array (new format) → image_url string (old format) → image field
+  const transformArticle = (article) => {
+    // Parse images field — backend stores as JSON array: ["articles/xxx.jpg"]
+    let firstImage: string | null = null;
+    try {
+      if (Array.isArray(article.images)) {
+        firstImage = article.images[0] ?? null;
+      } else if (typeof article.images === 'string' && article.images.trim().startsWith('[')) {
+        const parsed = JSON.parse(article.images);
+        firstImage = Array.isArray(parsed) ? parsed[0] ?? null : null;
+      }
+    } catch {
+      // ignore JSON parse error
+    }
 
-  // API Functions
+    // Fallback to old image_url / image fields for backward compatibility
+    const resolvedImage = firstImage ?? article.image_url ?? article.image ?? null;
+
+    return {
+      ...article,
+      image_url: getFullImageUrl(resolvedImage),
+      image: getFullImageUrl(resolvedImage),
+      // Ensure required fields exist
+      id: article.id,
+      title: article.title || 'Untitled',
+      description: article.description || article.excerpt || '',
+      category: article.category || 'Uncategorized',
+      created_at: article.created_at || article.published_at || new Date().toISOString(),
+      slug: article.slug || article.id?.toString() || '',
+    };
+  };
+
+  // FIX 3: fetchArticles — handle all Laravel response formats
+  // Format 1: { success: true, data: [...] }       → API Resource
+  // Format 2: { data: [...], current_page: 1, ... } → Paginator
+  // Format 3: [...]                                 → Direct array
   const fetchArticles = async (params = {}) => {
     try {
       setLoading(true);
@@ -158,45 +219,58 @@ export const UsadaProvider = ({ children }) => {
         return { articles: cache.allArticles };
       }
       
-      const response = await apiClient.get('/articles', { params });
+      // Use native fetch instead of Axios to bypass React Native JSON parsing quirks
+      const queryString = Object.keys(params).length
+        ? '?' + new URLSearchParams(params as Record<string, string>).toString()
+        : '';
       
-      if (response.data && (response.data.success || response.data.data)) {
-        const articlesData = response.data.data || response.data;
-        const articlesWithFullUrls = Array.isArray(articlesData) 
-          ? articlesData.map(transformArticle)
-          : [];
-        
-        setArticles(articlesWithFullUrls);
-        
-        // Update cache
-        setCache(prev => ({
-          ...prev,
-          allArticles: articlesWithFullUrls,
-          lastFetch: now
-        }));
-        
-        console.log('✅ Articles fetched:', articlesWithFullUrls.length);
-        
-        return {
-          articles: articlesWithFullUrls,
-          meta: response.data.meta
-        };
-      } else {
-        throw new Error('Invalid response format');
+      let rawText = '';
+      try {
+        const fetchResponse = await fetch(`${API_BASE_URL}/api/articles${queryString}`, {
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        });
+        rawText = await fetchResponse.text();
+      } catch (networkErr) {
+        console.warn('📡 Network error fetching articles:', networkErr);
+        if (cache.allArticles) return { articles: cache.allArticles };
+        return { articles: [] };
       }
+
+      const raw = robustJsonParse(rawText);
+
+      // Resolve articles array from all possible formats
+      let articlesData: any[] = [];
+      if (Array.isArray(raw)) {
+        articlesData = raw;
+      } else if (Array.isArray(raw?.data)) {
+        articlesData = raw.data;
+      } else {
+        console.warn('🚨 fetchArticles: Invalid format, returning empty array');
+        if (cache.allArticles) return { articles: cache.allArticles };
+        return { articles: [] };
+      }
+
+      const articlesWithFullUrls = articlesData.map(transformArticle);
+      setArticles(articlesWithFullUrls);
+      setCache(prev => ({
+        ...prev,
+        allArticles: articlesWithFullUrls,
+        lastFetch: now
+      }));
+
+      console.log('✅ Articles fetched:', articlesWithFullUrls.length);
+      return {
+        articles: articlesWithFullUrls,
+        meta: raw?.meta
+      };
+
     } catch (err) {
-      console.error('❌ Error fetching articles:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch articles';
-      setError(errorMessage);
-      
-      // Return cached data if available
+      console.error('❌ Error in fetchArticles:', err);
       if (cache.allArticles) {
-        console.log('📋 Returning cached articles due to error');
         setArticles(cache.allArticles);
         return { articles: cache.allArticles };
       }
-      
-      throw new Error(errorMessage);
+      return { articles: [] };
     } finally {
       setLoading(false);
     }
@@ -263,21 +337,16 @@ export const UsadaProvider = ({ children }) => {
         params: { per_page: 100 }
       });
       
-      if (response.data && (response.data.success || response.data.data)) {
-        const articlesData = response.data.data || response.data;
-        const article = Array.isArray(articlesData) 
-          ? articlesData.find(article => article.id === parseInt(id))
-          : null;
-        
-        if (article) {
-          const articleWithFullUrl = transformArticle(article);
-          setSelectedArticle(articleWithFullUrl);
-          return articleWithFullUrl;
-        } else {
-          throw new Error('Article not found');
-        }
+      let raw = response.data;
+      const articlesData = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+      const article = articlesData.find((a: any) => a.id === parseInt(id));
+      
+      if (article) {
+        const articleWithFullUrl = transformArticle(article);
+        setSelectedArticle(articleWithFullUrl);
+        return articleWithFullUrl;
       } else {
-        throw new Error('Failed to fetch article');
+        throw new Error('Article not found');
       }
     } catch (err) {
       console.error('❌ Error fetching article by ID:', err);
@@ -301,7 +370,6 @@ export const UsadaProvider = ({ children }) => {
         return { articles: cache.categoryArticles[cacheKey] };
       }
       
-      // Try different API endpoints
       let response;
       const endpoints = [
         `/articles/category/${category}`,
@@ -329,47 +397,38 @@ export const UsadaProvider = ({ children }) => {
         throw new Error('All category endpoints failed');
       }
       
-      if (response.data && (response.data.success || response.data.data)) {
-        let articlesData = response.data.data || response.data;
-        
-        // If we got all articles, filter by category
-        if (Array.isArray(articlesData)) {
-          if (category !== 'Semua' && category !== 'All') {
-            articlesData = articlesData.filter(article => 
-              article.category === category ||
-              article.category?.toLowerCase() === category.toLowerCase()
-            );
-          }
-        }
-        
-        const articlesWithFullUrls = Array.isArray(articlesData) 
-          ? articlesData.map(transformArticle)
-          : [];
-        
-        // Update cache
-        setCache(prev => ({
-          ...prev,
-          categoryArticles: {
-            ...prev.categoryArticles,
-            [cacheKey]: articlesWithFullUrls
-          }
-        }));
-        
-        console.log('✅ Category articles fetched:', category, articlesWithFullUrls.length);
-        
-        return {
-          articles: articlesWithFullUrls,
-          meta: response.data.meta
-        };
-      } else {
-        throw new Error('Invalid response format');
+      let raw = response.data;
+      let articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+
+      // Filter by category if we got all articles
+      if (category !== 'Semua' && category !== 'All') {
+        articlesData = articlesData.filter(article =>
+          article.category === category ||
+          article.category?.toLowerCase() === category.toLowerCase()
+        );
       }
+
+      const articlesWithFullUrls = articlesData.map(transformArticle);
+      
+      setCache(prev => ({
+        ...prev,
+        categoryArticles: {
+          ...prev.categoryArticles,
+          [cacheKey]: articlesWithFullUrls
+        }
+      }));
+      
+      console.log('✅ Category articles fetched:', category, articlesWithFullUrls.length);
+      return {
+        articles: articlesWithFullUrls,
+        meta: raw?.meta
+      };
+
     } catch (err) {
       console.error('❌ Error fetching articles by category:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch articles by category';
       setError(errorMessage);
       
-      // Fallback to local filtering if we have articles
       if (articles.length > 0) {
         console.log('📋 Using local filtering for category:', category);
         const filtered = getArticlesByDiseaseCategory(category);
@@ -393,7 +452,7 @@ export const UsadaProvider = ({ children }) => {
 
       const searchParams = {
         q: searchTerm.trim(),
-        search: searchTerm.trim(), // Alternative parameter name
+        search: searchTerm.trim(),
         ...params
       };
       
@@ -401,7 +460,6 @@ export const UsadaProvider = ({ children }) => {
         searchParams.category = category;
       }
 
-      // Try different search endpoints
       let response;
       const endpoints = ['/articles/search', '/search', '/articles'];
       
@@ -416,31 +474,22 @@ export const UsadaProvider = ({ children }) => {
       }
       
       if (!response) {
-        // Fallback to local search
         console.log('🔍 Using local search fallback');
         return performLocalSearch(searchTerm, category);
       }
       
-      if (response.data && (response.data.success || response.data.data)) {
-        let articlesData = response.data.data || response.data;
-        
-        const articlesWithFullUrls = Array.isArray(articlesData) 
-          ? articlesData.map(transformArticle)
-          : [];
-        
-        console.log('✅ Search completed:', searchTerm, articlesWithFullUrls.length);
-        
-        return {
-          articles: articlesWithFullUrls,
-          meta: response.data.meta
-        };
-      } else {
-        throw new Error('Search failed');
-      }
+      let raw = response.data;
+      const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+      const articlesWithFullUrls = articlesData.map(transformArticle);
+      
+      console.log('✅ Search completed:', searchTerm, articlesWithFullUrls.length);
+      return {
+        articles: articlesWithFullUrls,
+        meta: raw?.meta
+      };
+
     } catch (err) {
       console.error('❌ Error searching articles:', err);
-      
-      // Fallback to local search
       console.log('🔍 Using local search fallback due to error');
       return performLocalSearch(searchTerm, category);
     } finally {
@@ -472,7 +521,6 @@ export const UsadaProvider = ({ children }) => {
     try {
       setError(null);
       
-      // Check cache first
       if (cache.categories && (cache.categories as any[]).length > 0) {
         console.log('📋 Using cached categories');
         const finalCategories = ['Semua', ...(cache.categories as any[])];
@@ -480,33 +528,27 @@ export const UsadaProvider = ({ children }) => {
         return finalCategories;
       }
       
-      // Try to fetch from API
       try {
         const response = await apiClient.get('/articles/categories');
+        const rawBody = robustJsonParse(response.data);
         
-        if (response.data && (response.data.success || response.data.data)) {
-          const categoriesData = response.data.data || response.data;
+        if (rawBody && (rawBody.success || rawBody.data || Array.isArray(rawBody))) {
+          const categoriesData = rawBody.data || rawBody;
           const validCategories = Array.isArray(categoriesData) 
             ? categoriesData.filter(Boolean)
             : [];
           
           const finalCategories = ['Semua', ...validCategories];
           setCategories(finalCategories);
-          
-          // Update cache
-          setCache(prev => ({
-            ...prev,
-            categories: validCategories
-          }));
+          setCache(prev => ({ ...prev, categories: validCategories }));
           
           console.log('✅ Categories fetched from API:', validCategories.length);
           return finalCategories;
         }
       } catch (apiError) {
-        console.log('API categories fetch failed, extracting from articles');
+        console.warn('📡 API categories fetch failed, extracting from articles');
       }
       
-      // Fallback: extract from articles
       if (articles.length > 0) {
         const extractedCategories = [...new Set(
           articles.map(article => article.category).filter(Boolean)
@@ -519,7 +561,6 @@ export const UsadaProvider = ({ children }) => {
         return finalCategories;
       }
       
-      // Final fallback
       const fallbackCategories = ['Semua'];
       setCategories(fallbackCategories);
       return fallbackCategories;
@@ -529,7 +570,6 @@ export const UsadaProvider = ({ children }) => {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch categories';
       setError(errorMessage);
       
-      // Return basic categories on error
       const fallbackCategories = ['Semua'];
       setCategories(fallbackCategories);
       return fallbackCategories;
@@ -541,37 +581,30 @@ export const UsadaProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const response = await apiClient.get('/articles/latest', { 
-        params: { limit } 
-      });
-      
-      if (response.data && (response.data.success || response.data.data)) {
-        const articlesData = response.data.data || response.data;
-        const articlesWithFullUrls = Array.isArray(articlesData) 
-          ? articlesData.map(transformArticle)
-          : [];
-        
-        console.log('✅ Latest articles fetched:', articlesWithFullUrls.length);
-        return articlesWithFullUrls;
-      } else {
-        // Fallback to regular articles sorted by date
-        const sortedArticles = [...articles]
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, limit);
-        
-        console.log('✅ Latest articles from fallback:', sortedArticles.length);
-        return sortedArticles;
+      const response = await apiClient.get('/articles/latest', { params: { limit } });
+      const raw = robustJsonParse(response.data);
+      const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+
+      if (articlesData.length > 0) {
+        const result = articlesData.map(transformArticle);
+        console.log('✅ Latest articles fetched:', result.length);
+        return result;
       }
+
+      // Fallback to local sort
+      const sorted = [...articles]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, limit);
+      console.log('✅ Latest articles from fallback:', sorted.length);
+      return sorted;
+
     } catch (err) {
       console.error('❌ Error fetching latest articles:', err);
-      
-      // Fallback to local sorting
-      const sortedArticles = [...articles]
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      const sorted = [...articles]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
         .slice(0, limit);
-      
-      console.log('✅ Latest articles from local fallback:', sortedArticles.length);
-      return sortedArticles;
+      console.log('✅ Latest articles from local fallback:', sorted.length);
+      return sorted;
     } finally {
       setLoading(false);
     }
@@ -582,43 +615,31 @@ export const UsadaProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const response = await apiClient.get('/articles/popular', { 
-        params: { limit } 
-      });
-      
-      if (response.data && (response.data.success || response.data.data)) {
-        const articlesData = response.data.data || response.data;
-        const articlesWithFullUrls = Array.isArray(articlesData) 
-          ? articlesData.map(transformArticle)
-          : [];
-        
-        console.log('✅ Popular articles fetched:', articlesWithFullUrls.length);
-        return articlesWithFullUrls;
-      } else {
-        // Fallback to random articles
-        const randomArticles = [...articles]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, limit);
-        
-        console.log('✅ Popular articles from fallback:', randomArticles.length);
-        return randomArticles;
+      const response = await apiClient.get('/articles/popular', { params: { limit } });
+      const raw = robustJsonParse(response.data);
+      const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+
+      if (articlesData.length > 0) {
+        const result = articlesData.map(transformArticle);
+        console.log('✅ Popular articles fetched:', result.length);
+        return result;
       }
+
+      const random = [...articles].sort(() => 0.5 - Math.random()).slice(0, limit);
+      console.log('✅ Popular articles from fallback:', random.length);
+      return random;
+
     } catch (err) {
       console.error('❌ Error fetching popular articles:', err);
-      
-      // Fallback to random selection
-      const randomArticles = [...articles]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, limit);
-      
-      console.log('✅ Popular articles from local fallback:', randomArticles.length);
-      return randomArticles;
+      const random = [...articles].sort(() => 0.5 - Math.random()).slice(0, limit);
+      console.log('✅ Popular articles from local fallback:', random.length);
+      return random;
     } finally {
       setLoading(false);
     }
   };
 
-  // Enhanced local utility functions for UI compatibility
+  // Local utility functions
   const selectArticle = (articleId) => {
     const article = articles.find(article => article.id === articleId);
     setSelectedArticle(article);
@@ -694,18 +715,15 @@ export const UsadaProvider = ({ children }) => {
     return filtered;
   };
 
-  // Enhanced navigation functions
   const navigateToCategory = (navigation, categoryName, categoryData = null) => {
     console.log('🧭 Navigating to category:', categoryName);
     
-    // Set current filter for state management
     setCurrentFilter({
       type: 'category',
       name: categoryName,
       data: categoryData
     });
 
-    // Navigate with comprehensive category data
     navigation.navigate('UsadaScreen', {
       selectedCategory: categoryName,
       categoryId: categoryData?.id,
@@ -738,12 +756,10 @@ export const UsadaProvider = ({ children }) => {
     try {
       const categoryName = getCategoryForNavigation(category);
       
-      // Optionally fetch fresh articles for this category
       if (categoryName !== 'Semua' && categoryName !== 'All') {
         await fetchArticlesByCategory(categoryName);
       }
       
-      // Navigate with category context
       navigateToCategory(navigation, categoryName, category);
       
       return {
@@ -752,7 +768,7 @@ export const UsadaProvider = ({ children }) => {
         articleCount: getArticlesByDiseaseCategory(categoryName).length
       };
     } catch (error) {
-      console.error('❌ Error in category navigation:', error);
+      console.error(' Error in category navigation:', error);
       setError(error.message);
       return {
         success: false,
@@ -773,7 +789,6 @@ export const UsadaProvider = ({ children }) => {
     return getArticlesByDiseaseCategory(categoryName).length > 0;
   };
 
-
   const setActiveFilter = (filterData) => {
     setCurrentFilter(filterData);
   };
@@ -790,7 +805,6 @@ export const UsadaProvider = ({ children }) => {
     setError(null);
   };
 
-
   const refreshData = async () => {
     setCache({
       categories: null,
@@ -804,18 +818,13 @@ export const UsadaProvider = ({ children }) => {
   return (
     <UsadaContext.Provider
       value={{
-        // Data
         articles,
         selectedArticle,
         favorites,
         categories,
         currentFilter,
-        
-        // States
         loading,
         error,
-        
-        // Local functions (UI compatibility)
         selectArticle,
         toggleFavorite,
         isFavorite,
@@ -825,19 +834,13 @@ export const UsadaProvider = ({ children }) => {
         getArticlesByDiseaseCategory,
         getFilteredArticlesForNavigation,
         categoryHasArticles,
-        
-        // Enhanced navigation functions
         navigateToCategory,
         navigateToArticle,
         handleCategoryNavigation,
         getCategoryForNavigation,
-        
-        // Filter management
         setActiveFilter,
         clearActiveFilter,
         getActiveFilter,
-        
-        // API functions
         fetchArticles,
         fetchArticleBySlug,
         fetchArticleById,
@@ -846,14 +849,10 @@ export const UsadaProvider = ({ children }) => {
         fetchCategories,
         fetchLatestArticles,
         fetchPopularArticles,
-        
-        // Utilities
         getFullImageUrl,
         clearError,
         refreshData,
         initializeData,
-        
-        // API Configuration
         API_BASE_URL,
         IMAGE_BASE_URL,
       }}
@@ -863,7 +862,6 @@ export const UsadaProvider = ({ children }) => {
   );
 };
 
-// Custom hook for using the context
 export const useUsada = () => {
   const context = useContext(UsadaContext);
   if (!context) {

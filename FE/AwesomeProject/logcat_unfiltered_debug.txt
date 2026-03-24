@@ -1,0 +1,353 @@
+﻿
+03-10 03:27:17.855  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:27:27.857  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:27:37.854  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:27:47.862  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:27:57.856  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:07.855  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:17.856  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:27.855  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:37.857  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:47.867  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:28:57.916  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:07.859  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:17.859  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:27.858  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:37.858  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:47.857  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:29:57.858  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:07.863  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:17.859  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:27.861  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:37.864  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:47.860  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:30:57.862  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:07.861  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:17.860  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:27.864  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:37.863  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:47.862  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:31:57.861  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:07.862  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:17.862  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:27.864  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:37.865  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:47.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:32:57.863  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:07.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:17.864  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:27.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:37.865  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:47.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:33:57.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:07.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:17.866  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:27.869  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:37.867  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:47.868  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:34:57.869  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:35:07.872  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:35:17.868  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+03-10 03:35:27.872  1219  
+1355 D 
+SatelliteController: getCar
+rierRoamingNtnConnectType: 
+Falling back to global 
+carrier config connect 
+type: 0
+
+
