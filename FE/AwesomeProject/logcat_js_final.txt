@@ -1,6 +1,0 @@
-﻿--------- beginning of main
-03-04 07:46:51.111 I/ReactNativeJS(19063): Running "main"
-03-04 07:46:52.906 I/ReactNativeJS(19063): { error: [AbortError: Aborted] }
-03-04 07:51:28.450 I/ReactNativeJS(19348): Running "main"
-03-10 03:23:46.086 I/ReactNativeJS(24442): Running "main"
-03-10 03:23:47.900 I/ReactNativeJS(24442): { error: [AbortError: Aborted] }
