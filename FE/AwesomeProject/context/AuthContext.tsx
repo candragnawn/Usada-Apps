@@ -11,6 +11,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
+import { robustJsonParse } from '../utils/apiUtils';
 
 // Define types for user and auth context
 export type User = {
@@ -199,7 +200,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       if (userJson && tokenData) {
         try {
-          const userData = JSON.parse(userJson);
+          const userData = robustJsonParse(userJson);
           
           if (userData && typeof userData === 'object' && userData.id && userData.email) {
             setUser(userData);
@@ -277,7 +278,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         let errorMessage = 'Login failed';
         
         try {
-          const errorData = JSON.parse(errorText);
+          const errorData = robustJsonParse(errorText);
           if (errorData.errors) {
             errorMessage = Object.values(errorData.errors).flat().join(', ');
           } else if (errorData.message) {
@@ -290,7 +291,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
+      const rawText = await response.text();
+      const data = robustJsonParse(rawText);
       
       if (!data.success || !data.data) {
         throw new Error(data.message || 'Invalid response format');

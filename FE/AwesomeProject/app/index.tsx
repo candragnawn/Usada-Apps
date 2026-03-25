@@ -176,29 +176,27 @@ const MainTabNavigator = () => {
       />
       
       <Tab.Screen
-        name="UsadaScreen"
+        name="ArticlesTab"
         component={UsadaStackNavigator}
         options={{
           tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
             <TabBarIcon focused={focused} color={color} iconName="book" />
           ),
         }}
-        listeners={{
-          tabPress: (e: any) => {
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            console.log('📖 [TAB PRESS] ArticlesTab button clicked');
             e.preventDefault();
-            const navigation = e.target?.navigation ?? e.navigation;
-            if (navigation) {
-              navigation.navigate('UsadaScreen', {
-                screen: 'UsadaMain',
-                params: {
-                  resetFilter: true,
-                  fromTabNavigation: true,
-                  timestamp: Date.now()
-                }
-              });
-            }
-          }
-        }}
+            navigation.navigate('ArticlesTab', {
+              screen: 'UsadaMain',
+              params: {
+                resetFilter: true,
+                fromTabNavigation: true,
+                timestamp: Date.now()
+              }
+            });
+          },
+        })}
       />
       
       <Tab.Screen

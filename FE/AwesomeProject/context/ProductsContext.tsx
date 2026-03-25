@@ -1,6 +1,7 @@
 console.log('🟣🟣🟣 [CRITICAL DEBUG] ProductsContext.tsx EVALUATING LINE 1');
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, Category, ProductsContextType } from '../types';
+import { robustJsonParse } from '../utils/apiUtils';
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
@@ -40,7 +41,8 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     
-    const data = await response.json();
+    const text = await response.text();
+    const data = robustJsonParse(text);
     return data;
   } catch (error) {
     console.error(`API call failed for ${endpoint}:`, error);

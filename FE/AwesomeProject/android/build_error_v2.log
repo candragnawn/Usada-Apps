@@ -1,0 +1,753 @@
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:processResources NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:jar UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-autolinking-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileJava NO-SOURCE
+> Task :expo-updates-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :expo-gradle-plugin:expo-autolinking-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-updates-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:classes UP-TO-DATE
+> Task :expo-module-gradle-plugin:processResources UP-TO-DATE
+> Task :expo-updates-gradle-plugin:processResources UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+> Task :expo-updates-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-module-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-updates-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-module-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-updates-gradle-plugin:classes UP-TO-DATE
+> Task :expo-module-gradle-plugin:classes UP-TO-DATE
+> Task :expo-updates-gradle-plugin:jar UP-TO-DATE
+> Task :expo-module-gradle-plugin:jar UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-dev-launcher-gradle-plugin:classes UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:jar UP-TO-DATE
+
+> Configure project :app
+ ℹ️  [33mApplying gradle plugin[0m '[32mexpo-dev-launcher-gradle-plugin[0m'
+ ℹ️  [33mApplying gradle plugin[0m '[32mexpo-updates-gradle-plugin[0m'
+
+> Configure project :
+[32m[ExpoRootProject][0m Using the following versions:
+  - buildTools:  [32m35.0.0[0m
+  - minSdk:      [32m24[0m
+  - compileSdk:  [32m35[0m
+  - targetSdk:   [32m35[0m
+  - ndk:         [32m27.1.12297006[0m
+  - kotlin:      [32m2.0.21[0m
+  - ksp:         [32m2.0.21-1.0.28[0m
+
+> Configure project :expo
+
+Using expo modules
+  - [32mexpo-constants[0m (17.1.8)
+  - [32mexpo-dev-client[0m (55.0.11)
+  - [32mexpo-dev-launcher[0m (55.0.12)
+  - [32mexpo-dev-menu[0m (55.0.11)
+  - [32mexpo-dev-menu-interface[0m (55.0.1)
+  - [32mexpo-eas-client[0m (0.14.4)
+  - [32mexpo-image-loader[0m (5.1.0)
+  - [32mexpo-json-utils[0m (0.15.0)
+  - [32mexpo-manifests[0m (0.16.6)
+  - [32mexpo-modules-core[0m (2.5.0)
+  - [32mexpo-structured-headers[0m (4.1.0)
+  - [32mexpo-updates[0m (0.28.18)
+  - [32mexpo-updates-interface[0m (1.1.0)
+  - [33m[📦][0m [32mexpo-asset[0m (11.1.7)
+  - [33m[📦][0m [32mexpo-blur[0m (14.1.5)
+  - [33m[📦][0m [32mexpo-camera[0m (16.1.11)
+  - [33m[📦][0m [32mexpo-file-system[0m (18.1.11)
+  - [33m[📦][0m [32mexpo-font[0m (13.3.2)
+  - [33m[📦][0m [32mexpo-haptics[0m (14.1.4)
+  - [33m[📦][0m [32mexpo-image[0m (2.1.7)
+  - [33m[📦][0m [32mexpo-image-picker[0m (16.1.4)
+  - [33m[📦][0m [32mexpo-keep-awake[0m (14.1.4)
+  - [33m[📦][0m [32mexpo-linear-gradient[0m (14.1.5)
+  - [33m[📦][0m [32mexpo-linking[0m (7.1.7)
+  - [33m[📦][0m [32mexpo-splash-screen[0m (0.30.10)
+  - [33m[📦][0m [32mexpo-system-ui[0m (5.0.11)
+  - [33m[📦][0m [32mexpo-web-browser[0m (14.1.6)
+
+
+> Configure project :react-native-firebase_app
+:react-native-firebase_app package.json found at C:\Usada Apps\FE\AwesomeProject\node_modules\@react-native-firebase\app\package.json
+:react-native-firebase_app:firebase.bom using default value: 34.8.0
+:react-native-firebase_app:play.play-services-auth using default value: 21.4.0
+:react-native-firebase_app package.json found at C:\Usada Apps\FE\AwesomeProject\node_modules\@react-native-firebase\app\package.json
+:react-native-firebase_app:version set from package.json: 23.8.6 (23,8,6 - 23008006)
+:react-native-firebase_app:android.compileSdk using custom value: 35
+:react-native-firebase_app:android.targetSdk using custom value: 35
+:react-native-firebase_app:android.minSdk using custom value: 24
+:react-native-firebase_app:reactNativeAndroidDir C:\Usada Apps\FE\AwesomeProject\node_modules\react-native\android
+
+> Configure project :react-native-firebase_firestore
+:react-native-firebase_firestore package.json found at C:\Usada Apps\FE\AwesomeProject\node_modules\@react-native-firebase\firestore\package.json
+:react-native-firebase_app package.json found at C:\Usada Apps\FE\AwesomeProject\node_modules\@react-native-firebase\app\package.json
+:react-native-firebase_firestore:firebase.bom using default value: 34.8.0
+:react-native-firebase_firestore package.json found at C:\Usada Apps\FE\AwesomeProject\node_modules\@react-native-firebase\firestore\package.json
+:react-native-firebase_firestore:version set from package.json: 23.8.6 (23,8,6 - 23008006)
+:react-native-firebase_firestore:android.compileSdk using custom value: 35
+:react-native-firebase_firestore:android.targetSdk using custom value: 35
+:react-native-firebase_firestore:android.minSdk using custom value: 24
+:react-native-firebase_firestore:reactNativeAndroidDir C:\Usada Apps\FE\AwesomeProject\node_modules\react-native\android
+
+> Configure project :react-native-reanimated
+Android gradle plugin: 8.8.2
+Gradle: 8.13
+
+> Configure project :react-native-video
+Kotlin version is correct: 2.0.21
+AndroidX version is correct: 1.9.3
+useExoplayerIMA: false
+useExoplayerSmoothStreaming: true
+useExoplayerDash: true
+useExoplayerHls: true
+useExoplayerRtsp: false
+buildFromSource: false
+
+> Task :app:generateAutolinkingNewArchitectureFiles UP-TO-DATE
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :expo:generatePackagesList UP-TO-DATE
+> Task :expo:preBuild UP-TO-DATE
+> Task :expo:preDebugBuild UP-TO-DATE
+> Task :expo:writeDebugAarMetadata UP-TO-DATE
+
+> Task :expo-constants:createExpoConfig
+The NODE_ENV environment variable is required but was not specified. Ensure the project is bundled with Expo CLI or NODE_ENV is set. Using only .env.local and .env
+env: load .env
+env: export EXPO_PUBLIC_API_URL EXPO_PUBLIC_API_URL_ORDER EXPO_PUBLIC_IMAGE_URL EXPO_PUBLIC_AI_URL
+
+> Task :expo-constants:preBuild
+> Task :expo-constants:preDebugBuild
+> Task :expo-constants:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-dev-client:preBuild UP-TO-DATE
+> Task :expo-dev-client:preDebugBuild UP-TO-DATE
+> Task :expo-dev-client:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-dev-launcher:preBuild UP-TO-DATE
+> Task :expo-dev-launcher:preDebugBuild UP-TO-DATE
+> Task :expo-dev-launcher:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-dev-menu:preBuild UP-TO-DATE
+> Task :expo-dev-menu:preDebugBuild UP-TO-DATE
+> Task :expo-dev-menu:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-dev-menu-interface:preBuild UP-TO-DATE
+> Task :expo-dev-menu-interface:preDebugBuild UP-TO-DATE
+> Task :expo-dev-menu-interface:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-eas-client:preBuild UP-TO-DATE
+> Task :expo-eas-client:preDebugBuild UP-TO-DATE
+> Task :expo-eas-client:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-image-loader:preBuild UP-TO-DATE
+> Task :expo-image-loader:preDebugBuild UP-TO-DATE
+> Task :expo-image-loader:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-json-utils:preBuild UP-TO-DATE
+> Task :expo-json-utils:preDebugBuild UP-TO-DATE
+> Task :expo-json-utils:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-manifests:preBuild UP-TO-DATE
+> Task :expo-manifests:preDebugBuild UP-TO-DATE
+> Task :expo-manifests:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-modules-core:preBuild UP-TO-DATE
+> Task :expo-modules-core:preDebugBuild UP-TO-DATE
+> Task :expo-modules-core:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-structured-headers:preBuild UP-TO-DATE
+> Task :expo-structured-headers:preDebugBuild UP-TO-DATE
+> Task :expo-structured-headers:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-updates:preBuild UP-TO-DATE
+> Task :expo-updates:preDebugBuild UP-TO-DATE
+> Task :expo-updates:writeDebugAarMetadata UP-TO-DATE
+> Task :expo-updates-interface:preBuild UP-TO-DATE
+> Task :expo-updates-interface:preDebugBuild UP-TO-DATE
+> Task :expo-updates-interface:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preDebugBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-config:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-config:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-config:preBuild UP-TO-DATE
+> Task :react-native-config:preDebugBuild UP-TO-DATE
+> Task :react-native-config:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-firebase_app:preBuild UP-TO-DATE
+> Task :react-native-firebase_app:preDebugBuild UP-TO-DATE
+> Task :react-native-firebase_app:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-firebase_firestore:preBuild UP-TO-DATE
+> Task :react-native-firebase_firestore:preDebugBuild UP-TO-DATE
+> Task :react-native-firebase_firestore:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-gesture-handler:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-gesture-handler:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-gesture-handler:preBuild UP-TO-DATE
+> Task :react-native-gesture-handler:preDebugBuild UP-TO-DATE
+> Task :react-native-gesture-handler:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-mmkv:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-mmkv:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-mmkv:preBuild UP-TO-DATE
+> Task :react-native-mmkv:preDebugBuild UP-TO-DATE
+> Task :react-native-mmkv:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-picker_picker:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-picker_picker:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-picker_picker:preBuild UP-TO-DATE
+> Task :react-native-picker_picker:preDebugBuild UP-TO-DATE
+> Task :react-native-picker_picker:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-reanimated:assertMinimalReactNativeVersionTask SKIPPED
+> Task :react-native-reanimated:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-reanimated:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-reanimated:prepareReanimatedHeadersForPrefabs UP-TO-DATE
+> Task :react-native-reanimated:prepareWorkletsHeadersForPrefabs UP-TO-DATE
+> Task :react-native-reanimated:preBuild UP-TO-DATE
+> Task :react-native-reanimated:preDebugBuild UP-TO-DATE
+> Task :react-native-reanimated:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:preDebugBuild UP-TO-DATE
+> Task :react-native-safe-area-context:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-screens:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-screens:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-screens:preBuild UP-TO-DATE
+> Task :react-native-screens:preDebugBuild UP-TO-DATE
+> Task :react-native-screens:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-vector-icons:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-vector-icons:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-vector-icons:preBuild UP-TO-DATE
+> Task :react-native-vector-icons:preDebugBuild UP-TO-DATE
+> Task :react-native-vector-icons:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-video:preBuild UP-TO-DATE
+> Task :react-native-video:preDebugBuild UP-TO-DATE
+> Task :react-native-video:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-webview:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-webview:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-webview:preBuild UP-TO-DATE
+> Task :react-native-webview:preDebugBuild UP-TO-DATE
+> Task :react-native-webview:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :expo:generateDebugResValues UP-TO-DATE
+> Task :expo:generateDebugResources UP-TO-DATE
+> Task :expo:packageDebugResources UP-TO-DATE
+> Task :expo-constants:generateDebugResValues UP-TO-DATE
+> Task :expo-constants:generateDebugResources UP-TO-DATE
+> Task :expo-constants:packageDebugResources UP-TO-DATE
+> Task :expo-dev-client:generateDebugResValues UP-TO-DATE
+> Task :expo-dev-client:generateDebugResources UP-TO-DATE
+> Task :expo-dev-client:packageDebugResources UP-TO-DATE
+> Task :expo-dev-launcher:generateDebugResValues UP-TO-DATE
+> Task :expo-dev-launcher:generateDebugResources UP-TO-DATE
+> Task :expo-dev-launcher:packageDebugResources UP-TO-DATE
+> Task :expo-dev-menu:generateDebugResValues UP-TO-DATE
+> Task :expo-dev-menu:generateDebugResources UP-TO-DATE
+> Task :expo-dev-menu:packageDebugResources UP-TO-DATE
+> Task :expo-dev-menu-interface:generateDebugResValues UP-TO-DATE
+> Task :expo-dev-menu-interface:generateDebugResources UP-TO-DATE
+> Task :expo-dev-menu-interface:packageDebugResources UP-TO-DATE
+> Task :expo-eas-client:generateDebugResValues UP-TO-DATE
+> Task :expo-eas-client:generateDebugResources UP-TO-DATE
+> Task :expo-eas-client:packageDebugResources UP-TO-DATE
+> Task :expo-image-loader:generateDebugResValues UP-TO-DATE
+> Task :expo-image-loader:generateDebugResources UP-TO-DATE
+> Task :expo-image-loader:packageDebugResources UP-TO-DATE
+> Task :expo-json-utils:generateDebugResValues UP-TO-DATE
+> Task :expo-json-utils:generateDebugResources UP-TO-DATE
+> Task :expo-json-utils:packageDebugResources UP-TO-DATE
+> Task :expo-manifests:generateDebugResValues UP-TO-DATE
+> Task :expo-manifests:generateDebugResources UP-TO-DATE
+> Task :expo-manifests:packageDebugResources UP-TO-DATE
+> Task :expo-modules-core:generateDebugResValues UP-TO-DATE
+> Task :expo-modules-core:generateDebugResources UP-TO-DATE
+> Task :expo-modules-core:packageDebugResources UP-TO-DATE
+> Task :expo-structured-headers:generateDebugResValues UP-TO-DATE
+> Task :expo-structured-headers:generateDebugResources UP-TO-DATE
+> Task :expo-structured-headers:packageDebugResources UP-TO-DATE
+> Task :expo-updates:generateDebugResValues UP-TO-DATE
+> Task :expo-updates:generateDebugResources UP-TO-DATE
+> Task :expo-updates:packageDebugResources UP-TO-DATE
+> Task :expo-updates-interface:generateDebugResValues UP-TO-DATE
+> Task :expo-updates-interface:generateDebugResources UP-TO-DATE
+> Task :expo-updates-interface:packageDebugResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateDebugResValues UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateDebugResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:packageDebugResources UP-TO-DATE
+> Task :react-native-config:generateDebugResValues UP-TO-DATE
+> Task :react-native-config:generateDebugResources UP-TO-DATE
+> Task :react-native-config:packageDebugResources UP-TO-DATE
+> Task :react-native-firebase_app:generateDebugResValues UP-TO-DATE
+> Task :react-native-firebase_app:generateDebugResources UP-TO-DATE
+> Task :react-native-firebase_app:packageDebugResources UP-TO-DATE
+> Task :react-native-firebase_firestore:generateDebugResValues UP-TO-DATE
+> Task :react-native-firebase_firestore:generateDebugResources UP-TO-DATE
+> Task :react-native-firebase_firestore:packageDebugResources UP-TO-DATE
+> Task :react-native-gesture-handler:generateDebugResValues UP-TO-DATE
+> Task :react-native-gesture-handler:generateDebugResources UP-TO-DATE
+> Task :react-native-gesture-handler:packageDebugResources UP-TO-DATE
+> Task :react-native-mmkv:generateDebugResValues UP-TO-DATE
+> Task :react-native-mmkv:generateDebugResources UP-TO-DATE
+> Task :react-native-mmkv:packageDebugResources UP-TO-DATE
+> Task :react-native-picker_picker:generateDebugResValues UP-TO-DATE
+> Task :react-native-picker_picker:generateDebugResources UP-TO-DATE
+> Task :react-native-picker_picker:packageDebugResources UP-TO-DATE
+> Task :react-native-reanimated:generateDebugResValues UP-TO-DATE
+> Task :react-native-reanimated:generateDebugResources UP-TO-DATE
+> Task :react-native-reanimated:packageDebugResources UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugResValues UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugResources UP-TO-DATE
+> Task :react-native-safe-area-context:packageDebugResources UP-TO-DATE
+> Task :react-native-screens:generateDebugResValues UP-TO-DATE
+> Task :react-native-screens:generateDebugResources UP-TO-DATE
+> Task :react-native-screens:packageDebugResources UP-TO-DATE
+> Task :react-native-vector-icons:generateDebugResValues UP-TO-DATE
+> Task :react-native-vector-icons:generateDebugResources UP-TO-DATE
+> Task :react-native-vector-icons:packageDebugResources UP-TO-DATE
+> Task :react-native-video:generateDebugResValues UP-TO-DATE
+> Task :react-native-video:generateDebugResources UP-TO-DATE
+> Task :react-native-video:packageDebugResources UP-TO-DATE
+> Task :react-native-webview:generateDebugResValues UP-TO-DATE
+> Task :react-native-webview:generateDebugResources UP-TO-DATE
+> Task :react-native-webview:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :expo:extractDeepLinksDebug UP-TO-DATE
+> Task :expo:processDebugManifest UP-TO-DATE
+> Task :expo-constants:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-constants:processDebugManifest UP-TO-DATE
+> Task :expo-dev-client:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-dev-client:processDebugManifest UP-TO-DATE
+> Task :expo-dev-launcher:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-dev-launcher:processDebugManifest UP-TO-DATE
+> Task :expo-dev-menu:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-dev-menu:processDebugManifest UP-TO-DATE
+> Task :expo-dev-menu-interface:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-dev-menu-interface:processDebugManifest UP-TO-DATE
+> Task :expo-eas-client:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-eas-client:processDebugManifest UP-TO-DATE
+> Task :expo-image-loader:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-image-loader:processDebugManifest UP-TO-DATE
+> Task :expo-json-utils:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-json-utils:processDebugManifest UP-TO-DATE
+> Task :expo-manifests:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-manifests:processDebugManifest UP-TO-DATE
+> Task :expo-modules-core:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-modules-core:processDebugManifest UP-TO-DATE
+> Task :expo-structured-headers:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-structured-headers:processDebugManifest UP-TO-DATE
+> Task :expo-updates:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-updates:processDebugManifest UP-TO-DATE
+> Task :expo-updates-interface:extractDeepLinksDebug UP-TO-DATE
+> Task :expo-updates-interface:processDebugManifest UP-TO-DATE
+> Task :react-native-async-storage_async-storage:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-async-storage_async-storage:processDebugManifest UP-TO-DATE
+> Task :react-native-config:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-config:processDebugManifest UP-TO-DATE
+> Task :react-native-firebase_app:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-firebase_app:processDebugManifest UP-TO-DATE
+> Task :react-native-firebase_firestore:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-firebase_firestore:processDebugManifest UP-TO-DATE
+> Task :react-native-gesture-handler:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-gesture-handler:processDebugManifest UP-TO-DATE
+> Task :react-native-mmkv:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-mmkv:processDebugManifest UP-TO-DATE
+> Task :react-native-picker_picker:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-picker_picker:processDebugManifest UP-TO-DATE
+> Task :react-native-reanimated:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-reanimated:processDebugManifest UP-TO-DATE
+> Task :react-native-safe-area-context:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-safe-area-context:processDebugManifest UP-TO-DATE
+> Task :react-native-screens:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-screens:processDebugManifest UP-TO-DATE
+> Task :react-native-vector-icons:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-vector-icons:processDebugManifest UP-TO-DATE
+> Task :react-native-video:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-video:processDebugManifest UP-TO-DATE
+> Task :react-native-webview:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-webview:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :expo:compileDebugLibraryResources UP-TO-DATE
+> Task :expo:parseDebugLocalResources UP-TO-DATE
+> Task :expo:generateDebugRFile UP-TO-DATE
+> Task :expo-constants:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-constants:parseDebugLocalResources UP-TO-DATE
+> Task :expo-constants:generateDebugRFile UP-TO-DATE
+> Task :expo-dev-client:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-dev-client:parseDebugLocalResources UP-TO-DATE
+> Task :expo-dev-client:generateDebugRFile UP-TO-DATE
+> Task :expo-dev-launcher:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-dev-launcher:parseDebugLocalResources UP-TO-DATE
+> Task :expo-dev-launcher:generateDebugRFile UP-TO-DATE
+> Task :expo-dev-menu:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-dev-menu:parseDebugLocalResources UP-TO-DATE
+> Task :expo-dev-menu:generateDebugRFile UP-TO-DATE
+> Task :expo-dev-menu-interface:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-dev-menu-interface:parseDebugLocalResources UP-TO-DATE
+> Task :expo-dev-menu-interface:generateDebugRFile UP-TO-DATE
+> Task :expo-eas-client:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-eas-client:parseDebugLocalResources UP-TO-DATE
+> Task :expo-eas-client:generateDebugRFile UP-TO-DATE
+> Task :expo-image-loader:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-image-loader:parseDebugLocalResources UP-TO-DATE
+> Task :expo-image-loader:generateDebugRFile UP-TO-DATE
+> Task :expo-json-utils:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-json-utils:parseDebugLocalResources UP-TO-DATE
+> Task :expo-json-utils:generateDebugRFile UP-TO-DATE
+> Task :expo-manifests:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-manifests:parseDebugLocalResources UP-TO-DATE
+> Task :expo-manifests:generateDebugRFile UP-TO-DATE
+> Task :expo-modules-core:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-modules-core:parseDebugLocalResources UP-TO-DATE
+> Task :expo-modules-core:generateDebugRFile UP-TO-DATE
+> Task :expo-structured-headers:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-structured-headers:parseDebugLocalResources UP-TO-DATE
+> Task :expo-structured-headers:generateDebugRFile UP-TO-DATE
+> Task :expo-updates:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-updates:parseDebugLocalResources UP-TO-DATE
+> Task :expo-updates:generateDebugRFile UP-TO-DATE
+> Task :expo-updates-interface:compileDebugLibraryResources UP-TO-DATE
+> Task :expo-updates-interface:parseDebugLocalResources UP-TO-DATE
+> Task :expo-updates-interface:generateDebugRFile UP-TO-DATE
+> Task :react-native-async-storage_async-storage:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateDebugRFile UP-TO-DATE
+> Task :react-native-config:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-config:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-config:generateDebugRFile UP-TO-DATE
+> Task :react-native-firebase_app:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-firebase_app:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-firebase_app:generateDebugRFile UP-TO-DATE
+> Task :react-native-firebase_firestore:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-firebase_firestore:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-firebase_firestore:generateDebugRFile UP-TO-DATE
+> Task :react-native-gesture-handler:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-gesture-handler:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-gesture-handler:generateDebugRFile UP-TO-DATE
+> Task :react-native-mmkv:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-mmkv:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-mmkv:generateDebugRFile UP-TO-DATE
+> Task :react-native-picker_picker:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-picker_picker:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-picker_picker:generateDebugRFile UP-TO-DATE
+> Task :react-native-reanimated:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-reanimated:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-reanimated:generateDebugRFile UP-TO-DATE
+> Task :react-native-safe-area-context:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-safe-area-context:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugRFile UP-TO-DATE
+> Task :react-native-screens:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-screens:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-screens:generateDebugRFile UP-TO-DATE
+> Task :react-native-vector-icons:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-vector-icons:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-vector-icons:generateDebugRFile UP-TO-DATE
+> Task :react-native-video:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-video:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-video:generateDebugRFile UP-TO-DATE
+> Task :react-native-webview:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-webview:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-webview:generateDebugRFile UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :expo:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-constants:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-constants:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-modules-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-modules-core:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-modules-core:compileDebugKotlin UP-TO-DATE
+> Task :expo-modules-core:javaPreCompileDebug UP-TO-DATE
+> Task :expo-modules-core:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-modules-core:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-constants:compileDebugKotlin UP-TO-DATE
+> Task :expo-constants:javaPreCompileDebug UP-TO-DATE
+> Task :expo-constants:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-constants:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-dev-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-client:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :expo-dev-client:dataBindingGenBaseClassesDebug UP-TO-DATE
+> Task :expo-dev-client:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-dev-client:compileDebugKotlin NO-SOURCE
+> Task :expo-dev-client:javaPreCompileDebug UP-TO-DATE
+> Task :expo-dev-client:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-dev-client:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-dev-launcher:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-launcher:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :expo-dev-launcher:dataBindingGenBaseClassesDebug UP-TO-DATE
+> Task :expo-dev-launcher:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-dev-launcher:checkApolloVersions UP-TO-DATE
+> Task :expo-dev-launcher:generateServiceApolloOptions UP-TO-DATE
+> Task :expo-dev-launcher:generateServiceApolloSources UP-TO-DATE
+> Task :expo-dev-menu:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-menu:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-dev-menu-interface:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-menu-interface:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-dev-menu-interface:compileDebugKotlin NO-SOURCE
+> Task :expo-dev-menu-interface:javaPreCompileDebug UP-TO-DATE
+> Task :expo-dev-menu-interface:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-dev-menu-interface:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-json-utils:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-json-utils:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-json-utils:compileDebugKotlin UP-TO-DATE
+> Task :expo-json-utils:javaPreCompileDebug UP-TO-DATE
+> Task :expo-json-utils:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-json-utils:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-manifests:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-manifests:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-manifests:compileDebugKotlin UP-TO-DATE
+> Task :expo-manifests:javaPreCompileDebug UP-TO-DATE
+> Task :expo-manifests:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-manifests:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-dev-menu:javaPreCompileDebug UP-TO-DATE
+> Task :expo-updates-interface:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-updates-interface:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-updates-interface:compileDebugKotlin UP-TO-DATE
+> Task :expo-updates-interface:javaPreCompileDebug UP-TO-DATE
+> Task :expo-updates-interface:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-updates-interface:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-dev-launcher:javaPreCompileDebug UP-TO-DATE
+> Task :expo-eas-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-eas-client:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-eas-client:compileDebugKotlin UP-TO-DATE
+> Task :expo-eas-client:javaPreCompileDebug UP-TO-DATE
+> Task :expo-eas-client:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-eas-client:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-image-loader:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-image-loader:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-image-loader:compileDebugKotlin UP-TO-DATE
+> Task :expo-image-loader:javaPreCompileDebug UP-TO-DATE
+> Task :expo-image-loader:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-image-loader:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-structured-headers:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-structured-headers:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-structured-headers:compileDebugKotlin NO-SOURCE
+> Task :expo-structured-headers:javaPreCompileDebug UP-TO-DATE
+> Task :expo-structured-headers:compileDebugJavaWithJavac UP-TO-DATE
+> Task :expo-structured-headers:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :expo-updates:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-updates:generateDebugBuildConfig UP-TO-DATE
+> Task :expo-updates:kspDebugKotlin UP-TO-DATE
+> Task :expo-updates:javaPreCompileDebug UP-TO-DATE
+> Task :expo:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-async-storage_async-storage:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-async-storage_async-storage:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-async-storage_async-storage:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-config:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-config:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-config:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-config:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-firebase_app:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-firebase_app:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-firebase_app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-firebase_app:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-firebase_firestore:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-firebase_firestore:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-firebase_firestore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-firebase_firestore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-gesture-handler:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-gesture-handler:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-reanimated:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-reanimated:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-reanimated:packageNdkLibs NO-SOURCE
+> Task :react-native-reanimated:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-reanimated:bundleLibCompileToJarDebug UP-TO-DATE
+
+> Task :expo-dev-menu:compileDebugKotlin FAILED
+e: org.jetbrains.kotlin.util.FileAnalysisException: While analysing C:/Usada Apps/FE/AwesomeProject/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:16:46: java.lang.IllegalArgumentException: source must not be null
+	at org.jetbrains.kotlin.util.AnalysisExceptionsKt.wrapIntoFileAnalysisExceptionIfNeeded(AnalysisExceptions.kt:57)
+	at org.jetbrains.kotlin.fir.FirCliExceptionHandler.handleExceptionOnFileAnalysis(Utils.kt:249)
+	at org.jetbrains.kotlin.fir.pipeline.AnalyseKt.runCheckers(analyse.kt:46)
+	at org.jetbrains.kotlin.fir.pipeline.FirUtilsKt.resolveAndCheckFir(firUtils.kt:77)
+	at org.jetbrains.kotlin.fir.pipeline.FirUtilsKt.buildResolveAndCheckFirViaLightTree(firUtils.kt:88)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.compileModuleToAnalyzedFir(jvmCompilerPipeline.kt:319)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.compileModulesUsingFrontendIrAndLightTree(jvmCompilerPipeline.kt:118)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:148)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:43)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:103)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:49)
+	at org.jetbrains.kotlin.cli.common.CLITool.exec(CLITool.kt:101)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:464)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:73)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.doCompile(IncrementalCompilerRunner.kt:506)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileImpl(IncrementalCompilerRunner.kt:423)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileNonIncrementally(IncrementalCompilerRunner.kt:301)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compile(IncrementalCompilerRunner.kt:129)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.execIncrementalCompiler(CompileServiceImpl.kt:675)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.access$execIncrementalCompiler(CompileServiceImpl.kt:92)
+	at org.jetbrains.kotlin.daemon.CompileServiceImpl.compile(CompileServiceImpl.kt:1660)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:360)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:598)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:844)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:721)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:720)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.IllegalArgumentException: source must not be null
+	at org.jetbrains.kotlin.diagnostics.KtDiagnosticReportHelpersKt.requireNotNull(KtDiagnosticReportHelpers.kt:68)
+	at org.jetbrains.kotlin.diagnostics.KtDiagnosticReportHelpersKt.reportOn(KtDiagnosticReportHelpers.kt:39)
+	at org.jetbrains.kotlin.diagnostics.KtDiagnosticReportHelpersKt.reportOn$default(KtDiagnosticReportHelpers.kt:31)
+	at org.jetbrains.kotlin.fir.analysis.checkers.expression.FirIncompatibleClassExpressionChecker.checkSourceElement(FirIncompatibleClassExpressionChecker.kt:50)
+	at org.jetbrains.kotlin.fir.analysis.checkers.expression.FirIncompatibleClassExpressionChecker.checkType$checkers(FirIncompatibleClassExpressionChecker.kt:42)
+	at org.jetbrains.kotlin.fir.analysis.checkers.type.FirIncompatibleClassTypeChecker.check(FirIncompatibleClassTypeChecker.kt:17)
+	at org.jetbrains.kotlin.fir.analysis.collectors.components.TypeCheckersDiagnosticComponent.check(TypeCheckersDiagnosticComponent.kt:81)
+	at org.jetbrains.kotlin.fir.analysis.collectors.components.TypeCheckersDiagnosticComponent.visitResolvedTypeRef(TypeCheckersDiagnosticComponent.kt:53)
+	at org.jetbrains.kotlin.fir.analysis.collectors.components.TypeCheckersDiagnosticComponent.visitResolvedTypeRef(TypeCheckersDiagnosticComponent.kt:19)
+	at org.jetbrains.kotlin.fir.types.FirResolvedTypeRef.accept(FirResolvedTypeRef.kt:28)
+	at org.jetbrains.kotlin.fir.analysis.collectors.CheckerRunningDiagnosticCollectorVisitor.checkElement(CheckerRunningDiagnosticCollectorVisitor.kt:24)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitResolvedTypeRef(AbstractDiagnosticCollectorVisitor.kt:248)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitResolvedTypeRef(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.types.FirResolvedTypeRef.accept(FirResolvedTypeRef.kt:28)
+	at org.jetbrains.kotlin.fir.declarations.impl.FirAnonymousFunctionImpl.acceptChildren(FirAnonymousFunctionImpl.kt:70)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitWithDeclarationAndReceiver(AbstractDiagnosticCollectorVisitor.kt:311)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitAnonymousFunction(AbstractDiagnosticCollectorVisitor.kt:141)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitAnonymousFunctionExpression(AbstractDiagnosticCollectorVisitor.kt:134)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitAnonymousFunctionExpression(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression.accept(FirAnonymousFunctionExpression.kt:30)
+	at org.jetbrains.kotlin.fir.expressions.impl.FirResolvedArgumentList.acceptChildren(FirResolvedArgumentList.kt:35)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitElement(AbstractDiagnosticCollectorVisitor.kt:53)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitElement(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.visitors.FirVisitor.visitArgumentList(FirVisitor.kt:81)
+	at org.jetbrains.kotlin.fir.expressions.FirArgumentList.accept(FirArgumentList.kt:25)
+	at org.jetbrains.kotlin.fir.expressions.impl.FirFunctionCallImpl.acceptChildren(FirFunctionCallImpl.kt:55)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitElement(AbstractDiagnosticCollectorVisitor.kt:49)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitWithCallOrAssignment(AbstractDiagnosticCollectorVisitor.kt:346)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitFunctionCall(AbstractDiagnosticCollectorVisitor.kt:255)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitFunctionCall(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.expressions.FirFunctionCall.accept(FirFunctionCall.kt:41)
+	at org.jetbrains.kotlin.fir.declarations.impl.FirValueParameterImpl.acceptChildren(FirValueParameterImpl.kt:85)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitValueParameter(AbstractDiagnosticCollectorVisitor.kt:1045)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitValueParameter(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.declarations.FirValueParameter.accept(FirValueParameter.kt:60)
+	at org.jetbrains.kotlin.fir.declarations.impl.FirPrimaryConstructor.acceptChildren(FirPrimaryConstructor.kt:70)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitConstructor(AbstractDiagnosticCollectorVisitor.kt:785)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitConstructor(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.declarations.FirConstructor.accept(FirConstructor.kt:52)
+	at org.jetbrains.kotlin.fir.declarations.impl.FirRegularClassImpl.acceptChildren(FirRegularClassImpl.kt:63)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitWithDeclarationAndReceiver(AbstractDiagnosticCollectorVisitor.kt:311)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitClassAndChildren(AbstractDiagnosticCollectorVisitor.kt:87)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitRegularClass(AbstractDiagnosticCollectorVisitor.kt:92)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitRegularClass(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.declarations.FirRegularClass.accept(FirRegularClass.kt:48)
+	at org.jetbrains.kotlin.fir.declarations.impl.FirFileImpl.acceptChildren(FirFileImpl.kt:57)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitNestedElements(AbstractDiagnosticCollectorVisitor.kt:38)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitFile(AbstractDiagnosticCollectorVisitor.kt:1151)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor.visitFile(AbstractDiagnosticCollectorVisitor.kt:30)
+	at org.jetbrains.kotlin.fir.declarations.FirFile.accept(FirFile.kt:42)
+	at org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollector.collectDiagnostics(AbstractDiagnosticCollector.kt:36)
+	at org.jetbrains.kotlin.fir.pipeline.AnalyseKt.runCheckers(analyse.kt:34)
+	... 33 more
+
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/26a50d27a8464d32c73d903d0b61ae29/transformed/internal-shared-debug-api.jar!/META-INF/internal-shared_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/391fefc531fb7089a9cd1c91dd9b904b/transformed/composeunstyled-platformtheme-debug-api.jar!/META-INF/composeunstyled-platformtheme_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/4ccea12ee59c6eacd24ab9bbf07dce28/transformed/composeunstyled-primitives-debug-api.jar!/META-INF/composeunstyled-primitives_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/6c4352edc902bd960249344ead21126a/transformed/composeunstyled-debug-api.jar!/META-INF/composeunstyled_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/a8639a3d8a9cad44184ebfd88c6f726b/transformed/composeunstyled-theming-debug-api.jar!/META-INF/composeunstyled-theming_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/8.13/transforms/b55e38272818e667ac1962ec4b64dc12/transformed/core-debug-api.jar!/META-INF/core_debug.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.2.20/5380b19fa1924399b62ce3a1faffebb2b4f82272/kotlin-stdlib-2.2.20.jar!/META-INF/kotlin-stdlib-jdk7.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.2.20/5380b19fa1924399b62ce3a1faffebb2b4f82272/kotlin-stdlib-2.2.20.jar!/META-INF/kotlin-stdlib-jdk8.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+e: file:///C:/Users/CANDRAGNAWN/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.2.20/5380b19fa1924399b62ce3a1faffebb2b4f82272/kotlin-stdlib-2.2.20.jar!/META-INF/kotlin-stdlib.kotlin_module Module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.2.0, expected version is 2.0.0.
+
+> Task :react-native-gesture-handler:compileDebugKotlin UP-TO-DATE
+
+> Task :expo-updates:compileDebugKotlin
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesConfiguration.kt:250:13 'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesDevLauncherController.kt:4:8 'class AsyncTask<Params : Any!, Progress : Any!, Result : Any!> : Any' is deprecated. Deprecated in Java.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesDevLauncherController.kt:202:138 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesDevLauncherController.kt:306:5 'class AsyncTask<Params : Any!, Progress : Any!, Result : Any!> : Any' is deprecated. Deprecated in Java.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesDevLauncherController.kt:306:15 'static fun execute(p0: Runnable!): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/UpdatesModule.kt:95:38 'fun toString(): String' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/db/Converters.kt:56:30 Java type mismatch: inferred type is 'kotlin.ByteArray?', but 'kotlin.ByteArray' was expected.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/db/DatabaseIntegrityCheck.kt:38:39 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/db/Reaper.kt:50:41 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/db/Reaper.kt:68:41 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/loader/Loader.kt:299:65 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/loader/LoaderTask.kt:393:105 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/manifest/EmbeddedUpdate.kt:30:89 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/manifest/ExpoUpdatesUpdate.kt:35:92 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/procedures/CheckForUpdateProcedure.kt:153:100 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/procedures/CheckForUpdateProcedure.kt:186:100 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/procedures/StartupProcedure.kt:159:36 'fun getCurrentState(): UpdatesStateValue' is deprecated. Avoid needing to access current state to know how to transition to next state.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/procedures/StartupProcedure.kt:193:34 'fun getCurrentState(): UpdatesStateValue' is deprecated. Avoid needing to access current state to know how to transition to next state.
+w: file:///C:/Usada%20Apps/FE/AwesomeProject/node_modules/expo-updates/android/src/main/java/expo/modules/updates/procedures/StateMachineSerialExecutorQueue.kt:62:45 'fun getCurrentState(): UpdatesStateValue' is deprecated. Avoid needing to access current state to know how to transition to next state.
+
+[Incubating] Problems report is available at: file:///C:/Usada%20Apps/FE/AwesomeProject/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':expo-dev-menu:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Internal compiler error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 21s
+407 actionable tasks: 7 executed, 400 up-to-date

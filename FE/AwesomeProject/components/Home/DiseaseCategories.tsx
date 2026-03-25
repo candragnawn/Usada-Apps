@@ -68,7 +68,7 @@ const DiseaseCategories = () => {
         timestamp: Date.now()
       };
 
-      (navigation as any).navigate('UsadaScreen', {
+      (navigation as any).navigate('ArticlesTab', {
         screen: 'UsadaMain',
         params: navigationParams
       });
@@ -104,7 +104,7 @@ const DiseaseCategories = () => {
       <View style={(styles as any).sectionHeader}>
         <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
         <TouchableOpacity 
-          onPress={() => (navigation as any).navigate('UsadaScreen', {
+          onPress={() => (navigation as any).navigate('ArticlesTab', {
             screen: 'UsadaMain',
             params: { 
               selectedCategory: 'Semua', 

@@ -14,7 +14,7 @@ const QuickServices = () => {
   };
 
   const handleUsadaPress = () => {
-    navigation.navigate('UsadaScreen', { screen: 'UsadaMain' });
+    navigation.navigate('ArticlesTab', { screen: 'UsadaMain' });
   };
 
   const handleScanPress = () => {

@@ -20,7 +20,7 @@ import { useOrder } from '@/context/OrderContext';
 import withProviders from '@/utils/withProviders';
 
 const CheckoutScreen = ({ navigation, route }) => {
-  const { cartItems, totalAmount, clearCart } = useCart();
+  const { cartItems, totalAmount, clearCart, isLoading } = useCart();
   const { 
     shippingInfo, 
     updateShippingInfo, 
@@ -61,14 +61,15 @@ const CheckoutScreen = ({ navigation, route }) => {
   }, [error]);
 
   useEffect(() => {
-    if (!cartItems || cartItems.length === 0) {
+    // Only show alert if we finished loading and cart is still empty
+    if (!isLoading && (!cartItems || cartItems.length === 0)) {
       Alert.alert(
         'Empty Cart',
         'Your cart is empty. Please add items before checkout.',
         [{ text: 'Go Back', onPress: () => navigation.goBack() }]
       );
     }
-  }, [cartItems, navigation]);
+  }, [cartItems, isLoading, navigation]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {

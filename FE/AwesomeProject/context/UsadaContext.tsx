@@ -1,6 +1,7 @@
 console.log('🟢🟢🟢 [CRITICAL DEBUG] UsadaContext.tsx EVALUATING LINE 1');
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { robustJsonParse } from '../utils/apiUtils';
 
 const UsadaContext = createContext({
   articles: [],
@@ -11,28 +12,28 @@ const UsadaContext = createContext({
   categories: ['Semua'],
   currentFilter: null,
   fetchArticles: async (params?: any) => ({} as any),
-  fetchArticleBySlug: async (slug: string) => {},
-  fetchArticleById: async (id: any) => {},
-  fetchArticlesByCategory: async (category: string, params?: any) => {},
-  searchArticles: async (searchTerm: string, category?: any, params?: any) => {},
+  fetchArticleBySlug: async (slug: string) => ({} as any),
+  fetchArticleById: async (id: any) => ({} as any),
+  fetchArticlesByCategory: async (category: string, params?: any) => ({} as any),
+  searchArticles: async (searchTerm: string, category?: any, params?: any) => ({} as any),
   fetchCategories: async () => [] as any[],
   fetchLatestArticles: async (limit?: number) => [] as any[],
   fetchPopularArticles: async (limit?: number) => [] as any[],
   selectArticle: (article: any) => {},
   toggleFavorite: (articleId: any) => {},
-  isFavorite: (articleId: any) => false,
+  isFavorite: (articleId: any) => false as boolean,
   getDiseaseCategories: () => [] as any[],
   getAllCategories: () => [] as string[],
   filterArticles: (category: any, searchText: any) => [] as any[],
   getArticlesByDiseaseCategory: (categoryName: any) => [] as any[],
   getFilteredArticlesForNavigation: (categoryName: any, searchText?: string) => [] as any[],
-  categoryHasArticles: (categoryName: any) => false,
+  categoryHasArticles: (categoryName: any) => false as boolean,
   setActiveFilter: (filterData: any) => {},
   clearActiveFilter: () => {},
   getActiveFilter: () => null as any,
   navigateToCategory: (navigation: any, categoryName: any, categoryData?: any) => {},
   navigateToArticle: (navigation: any, article: any, fromCategory?: any) => {},
-  handleCategoryNavigation: async (navigation: any, category: any) => ({ success: false }),
+  handleCategoryNavigation: async (navigation: any, category: any) => ({ success: false } as any),
   getCategoryForNavigation: (categoryObject: any) => '',
   getFullImageUrl: (imagePath: any) => '',
   clearError: () => {},
@@ -46,42 +47,6 @@ const UsadaContext = createContext({
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || '';
 // FIX 1: REACT_APP_IMAGE → REACT_APP_IMAGE_URL (typo fix)
 const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE_URL || `${API_BASE_URL}/storage`;
-
-/**
- * Robust JSON parser that handles:
- * 1. Stringified JSON (recursively if double-encoded)
- * 2. Hidden control characters that break JSON.parse
- * 3. Pre-parsed objects
- */
-const robustJsonParse = (data: any, depth = 0): any => {
-  if (data === null || data === undefined) return data;
-  if (depth > 3) return data; // Prevent infinite recursion
-
-  if (typeof data === 'string') {
-    const trimmed = data.trim();
-    if (trimmed.length === 0) return data;
-
-    // If it looks like JSON
-    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-      try {
-        const parsed = JSON.parse(trimmed);
-        // Recursively check if the result is ANOTHER string that looks like JSON
-        return robustJsonParse(parsed, depth + 1);
-      } catch (e) {
-        // Cleaning approach: Strip raw control characters (0x00-0x1F except \t\n\r)
-        const cleaned = trimmed.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
-        try {
-          const secondParsed = JSON.parse(cleaned);
-          return robustJsonParse(secondParsed, depth + 1);
-        } catch (e2) {
-          // Final fallback
-          return data;
-        }
-      }
-    }
-  }
-  return data;
-};
 
 const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
@@ -119,8 +84,8 @@ apiClient.interceptors.response.use(
 // Custom provider component
 export const UsadaProvider = ({ children }) => {
   // Core state
-  const [articles, setArticles] = useState([]);
-  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -128,7 +93,12 @@ export const UsadaProvider = ({ children }) => {
   const [currentFilter, setCurrentFilter] = useState(null);
 
   // Cache for better performance
-  const [cache, setCache] = useState({
+  const [cache, setCache] = useState<{
+    categories: any[] | null;
+    allArticles: any[] | null;
+    categoryArticles: Record<string, any[]>;
+    lastFetch: number | null;
+  }>({
     categories: null,
     allArticles: null,
     categoryArticles: {},
@@ -202,79 +172,56 @@ export const UsadaProvider = ({ children }) => {
     };
   };
 
-  // FIX 3: fetchArticles — handle all Laravel response formats
-  // Format 1: { success: true, data: [...] }       → API Resource
-  // Format 2: { data: [...], current_page: 1, ... } → Paginator
-  // Format 3: [...]                                 → Direct array
-  const fetchArticles = async (params = {}) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Check cache first (cache for 5 minutes)
-      const now = Date.now();
-      if (cache.allArticles && cache.lastFetch && (now - cache.lastFetch) < 300000) {
-        console.log('📋 Using cached articles');
-        setArticles(cache.allArticles);
-        return { articles: cache.allArticles };
-      }
-      
-      // Use native fetch instead of Axios to bypass React Native JSON parsing quirks
-      const queryString = Object.keys(params).length
-        ? '?' + new URLSearchParams(params as Record<string, string>).toString()
-        : '';
-      
-      let rawText = '';
-      try {
-        const fetchResponse = await fetch(`${API_BASE_URL}/api/articles${queryString}`, {
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        });
-        rawText = await fetchResponse.text();
-      } catch (networkErr) {
-        console.warn('📡 Network error fetching articles:', networkErr);
-        if (cache.allArticles) return { articles: cache.allArticles };
-        return { articles: [] };
-      }
+  // Standardized fetchArticles using Axios (apiClient)
+ const fetchArticles = async (params = {}) => {
+  try {
+    setLoading(true);
+    setError(null);
 
-      const raw = robustJsonParse(rawText);
+    // 1. Tambahkan limit secara default (misal 10) 
+    // agar data tidak terlalu besar dan tidak terpotong (truncated)
+    const safeParams = { 
+      limit: 10, 
+      ...params 
+    };
 
-      // Resolve articles array from all possible formats
-      let articlesData: any[] = [];
-      if (Array.isArray(raw)) {
-        articlesData = raw;
-      } else if (Array.isArray(raw?.data)) {
-        articlesData = raw.data;
-      } else {
-        console.warn('🚨 fetchArticles: Invalid format, returning empty array');
-        if (cache.allArticles) return { articles: cache.allArticles };
-        return { articles: [] };
-      }
+    // 2. Gunakan Axios (apiClient) - Interceptor akan memanggil robustJsonParse
+    const response = await apiClient.get('/articles', { params: safeParams });
 
-      const articlesWithFullUrls = articlesData.map(transformArticle);
-      setArticles(articlesWithFullUrls);
-      setCache(prev => ({
-        ...prev,
-        allArticles: articlesWithFullUrls,
-        lastFetch: now
-      }));
+    // 3. Pastikan data terurai dengan benar (menangani double-encoding jika ada)
+    const raw = robustJsonParse(response.data);
+    const articlesData = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
 
-      console.log('✅ Articles fetched:', articlesWithFullUrls.length);
-      return {
-        articles: articlesWithFullUrls,
-        meta: raw?.meta
-      };
-
-    } catch (err) {
-      console.error('❌ Error in fetchArticles:', err);
-      if (cache.allArticles) {
-        setArticles(cache.allArticles);
-        return { articles: cache.allArticles };
-      }
-      return { articles: [] };
-    } finally {
-      setLoading(false);
+    if (!articlesData || !Array.isArray(articlesData)) {
+      throw new Error("Format data dari server tidak dikenali");
     }
-  };
+
+    // 4. Transformasi data
+    const transformed = articlesData.map(transformArticle);
+    
+    setArticles(transformed);
+    setCache(prev => ({
+      ...prev,
+      allArticles: transformed,
+      lastFetch: Date.now()
+    }));
+
+    console.log('✅ [UsadaContext] Sukses memuat ' + transformed.length + ' artikel');
+    return { articles: transformed, meta: raw?.meta };
+
+  } catch (err: any) {
+    // 5. JANGAN PAKSA PARSING kalau error. Balikkan cache saja jika tersedia.
+    console.error('❌ [UsadaContext] Error Jaringan/Server:', err.message);
+    
+    if (cache.allArticles) {
+      setArticles(cache.allArticles);
+      return { articles: cache.allArticles };
+    }
+    return { articles: [] };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchArticleBySlug = async (slug) => {
     try {
@@ -366,7 +313,7 @@ export const UsadaProvider = ({ children }) => {
       // Check cache first
       const cacheKey = `${category}_${JSON.stringify(params)}`;
       if (cache.categoryArticles[cacheKey]) {
-        console.log('📋 Using cached category articles:', category);
+        console.log('📋 [UsadaContext] Using cached category articles:', category);
         return { articles: cache.categoryArticles[cacheKey] };
       }
       
@@ -376,6 +323,8 @@ export const UsadaProvider = ({ children }) => {
         `/articles?category=${category}`,
         '/articles'
       ];
+      
+      console.log(`📡 [UsadaContext] Fetching articles for category: ${category}`);
       
       for (const endpoint of endpoints) {
         try {
@@ -388,7 +337,7 @@ export const UsadaProvider = ({ children }) => {
           }
           break;
         } catch (endpointError) {
-          console.log(`Endpoint ${endpoint} failed, trying next...`);
+          console.log(`📡 [UsadaContext] Endpoint ${endpoint} failed, trying next...`);
           continue;
         }
       }
@@ -397,10 +346,11 @@ export const UsadaProvider = ({ children }) => {
         throw new Error('All category endpoints failed');
       }
       
-      let raw = response.data;
+      const raw = robustJsonParse(response.data);
+
       let articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
 
-      // Filter by category if we got all articles
+      // Filter by category if we got all articles from the generic /articles fallback
       if (category !== 'Semua' && category !== 'All') {
         articlesData = articlesData.filter(article =>
           article.category === category ||
@@ -408,34 +358,32 @@ export const UsadaProvider = ({ children }) => {
         );
       }
 
-      const articlesWithFullUrls = articlesData.map(transformArticle);
+      const transformed = articlesData.map(transformArticle);
       
       setCache(prev => ({
         ...prev,
         categoryArticles: {
           ...prev.categoryArticles,
-          [cacheKey]: articlesWithFullUrls
+          [cacheKey]: transformed
         }
       }));
       
-      console.log('✅ Category articles fetched:', category, articlesWithFullUrls.length);
+      console.log('✅ [UsadaContext] Category articles fetched:', category, transformed.length);
       return {
-        articles: articlesWithFullUrls,
+        articles: transformed,
         meta: raw?.meta
       };
 
-    } catch (err) {
-      console.error('❌ Error fetching articles by category:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch articles by category';
-      setError(errorMessage);
+    } catch (err: any) {
+      console.error('❌ [UsadaContext] Error fetching articles by category:', err.message);
       
       if (articles.length > 0) {
-        console.log('📋 Using local filtering for category:', category);
+        console.log('📋 [UsadaContext] Falling back to local filtering for:', category);
         const filtered = getArticlesByDiseaseCategory(category);
         return { articles: filtered };
       }
       
-      throw new Error(errorMessage);
+      return { articles: [] };
     } finally {
       setLoading(false);
     }
@@ -478,13 +426,14 @@ export const UsadaProvider = ({ children }) => {
         return performLocalSearch(searchTerm, category);
       }
       
-      let raw = response.data;
+      const raw = robustJsonParse(response.data);
+
       const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
-      const articlesWithFullUrls = articlesData.map(transformArticle);
+      const transformed = articlesData.map(transformArticle);
       
-      console.log('✅ Search completed:', searchTerm, articlesWithFullUrls.length);
+      console.log('✅ [UsadaContext] Search completed:', searchTerm, transformed.length);
       return {
-        articles: articlesWithFullUrls,
+        articles: transformed,
         meta: raw?.meta
       };
 
@@ -542,7 +491,7 @@ export const UsadaProvider = ({ children }) => {
           setCategories(finalCategories);
           setCache(prev => ({ ...prev, categories: validCategories }));
           
-          console.log('✅ Categories fetched from API:', validCategories.length);
+          console.log('✅ [UsadaContext] Categories fetched from API:', validCategories.length);
           return finalCategories;
         }
       } catch (apiError) {
@@ -583,11 +532,12 @@ export const UsadaProvider = ({ children }) => {
       
       const response = await apiClient.get('/articles/latest', { params: { limit } });
       const raw = robustJsonParse(response.data);
+
       const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
 
       if (articlesData.length > 0) {
         const result = articlesData.map(transformArticle);
-        console.log('✅ Latest articles fetched:', result.length);
+        console.log('✅ [UsadaContext] Latest articles fetched:', result.length);
         return result;
       }
 
@@ -617,11 +567,12 @@ export const UsadaProvider = ({ children }) => {
       
       const response = await apiClient.get('/articles/popular', { params: { limit } });
       const raw = robustJsonParse(response.data);
+
       const articlesData: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
 
       if (articlesData.length > 0) {
         const result = articlesData.map(transformArticle);
-        console.log('✅ Popular articles fetched:', result.length);
+        console.log('✅ [UsadaContext] Popular articles fetched:', result.length);
         return result;
       }
 
@@ -748,7 +699,7 @@ export const UsadaProvider = ({ children }) => {
       articleId: article.id,
       articleSlug: article.slug,
       fromCategory: fromCategory,
-      backTo: fromCategory ? 'UsadaScreen' : 'Home',
+      backTo: fromCategory ? 'ArticlesTab' : 'Home',
     });
   };
 
@@ -786,6 +737,14 @@ export const UsadaProvider = ({ children }) => {
   };
 
   const categoryHasArticles = (categoryName) => {
+    if (!categoryName) return false;
+    
+    // Optimistic: if category is in our formal list from server, assume it's available
+    if (cache.categories && cache.categories.includes(categoryName)) {
+      return true;
+    }
+    
+    // Fallback: check currently loaded articles
     return getArticlesByDiseaseCategory(categoryName).length > 0;
   };
 

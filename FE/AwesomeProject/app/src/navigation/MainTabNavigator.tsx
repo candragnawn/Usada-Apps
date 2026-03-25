@@ -69,7 +69,7 @@ const MainTabNavigator = () => {
             index: 4, // Navigate to Profile tab (index 4)
             routes: [
               { name: 'HomeScreen' },
-              { name: 'UsadaScreen' },
+              { name: 'ArticlesTab' },
               { name: 'ProductScreen' },
               { name: 'CartStack' },
               { 
@@ -114,14 +114,18 @@ const MainTabNavigator = () => {
       />
       
       <Tab.Screen
-        name="UsadaScreen"
+        name="ArticlesTab"
         component={UsadaStackNavigator}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <TabBarIcon focused={focused} color={color} iconName="book" />
           ),
-          tabBarOnPress: ({ navigation }) => {
-            navigation.navigate('UsadaScreen', {
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            // Prevent default to ensure our custom logic runs reliably
+            e.preventDefault(); 
+            navigation.navigate('ArticlesTab', {
               screen: 'UsadaMain',
               params: {
                 resetFilter: true,
@@ -130,7 +134,7 @@ const MainTabNavigator = () => {
               }
             });
           },
-        }}
+        })}
       />
       
       <Tab.Screen
@@ -161,11 +165,13 @@ const MainTabNavigator = () => {
           tabBarIcon: ({ focused, color }) => (
             <TabBarIcon focused={focused} color={color} iconName="person" />
           ),
-          tabBarOnPress: ({ navigation, defaultHandler }) => {
-            console.log('👆 Profile tab pressed - Using ProfileStackNavigator');
-            defaultHandler();
-          },
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            console.log('👆 Profile tab pressed - Using ProfileStackNavigator');
+            // Allow default behavior but keep the log or custom logic if needed
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -182,7 +188,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
-    paddingBottom: Platform.OS === 'ios' ? 25 : 10,
     paddingTop: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

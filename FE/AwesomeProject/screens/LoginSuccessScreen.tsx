@@ -61,7 +61,7 @@ const LoginSuccessScreen = ({ navigation, route, authNav }) => {
                   index: 4, // ProfileStack tab index
                   routes: [
                     { name: 'HomeScreen' },
-                    { name: 'UsadaScreen' },
+                    { name: 'ArticlesTab' },
                     { name: 'ProductScreen' },
                     { name: 'CartStack' },
                     { 
