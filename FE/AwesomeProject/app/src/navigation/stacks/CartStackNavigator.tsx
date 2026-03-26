@@ -12,29 +12,31 @@ import OrdersScreen from '@/screens/OrdersScreen';
 import LoginScreen from '@/screens/LoginScreen';
 import RegisterScreen from '@/screens/RegisterScreen';
 
-const CartStack = createStackNavigator();
+import { CartStackParamList } from '@/types/navigation';
+
+const CartStack = createStackNavigator<CartStackParamList>();
 
 // Common screen options
 const commonStackScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   transitionSpec: {
     open: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 250,
       },
     },
     close: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 200,
       },
     },
   },
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -50,7 +52,7 @@ const commonStackScreenOptions = {
   },
 };
 
-const CartStackNavigator = ({ navigation }) => {
+const CartStackNavigator = ({ navigation }: { navigation: any }) => {
   const { isAuthenticated } = useAuth();
 
   // Reset navigation stack when auth status changes

@@ -34,7 +34,13 @@ const IS_IPHONE_WITH_DYNAMIC_ISLAND = Platform.OS === 'ios' &&
   (STATUSBAR_HEIGHT > 40 || (Platform.constants?.osVersion && parseInt(Platform.constants.osVersion) >= 16));
 
 // Custom tab bar icon with enhanced animation effects
-const TabBarIcon = ({ focused, color, iconName }) => {
+interface TabBarIconProps {
+  focused: boolean;
+  color: string;
+  iconName: React.ComponentProps<typeof Ionicons>['name'];
+}
+
+const TabBarIcon = ({ focused, color, iconName }: TabBarIconProps) => {
   return (
     <View style={styles.iconContainer}>
       {focused && <View style={styles.activeBackground} />}
@@ -64,7 +70,7 @@ const MainTabNavigator = () => {
       if (!isAuthenticated) {
         console.log('🔄 User logged out - resetting to ProfileStackNavigator');
         
-        tabNavigatorRef.current.dispatch(
+        (tabNavigatorRef.current as any).dispatch(
           CommonActions.reset({
             index: 4, // Navigate to Profile tab (index 4)
             routes: [
@@ -90,7 +96,6 @@ const MainTabNavigator = () => {
 
   return (
     <Tab.Navigator
-      ref={tabNavigatorRef}
       initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
@@ -100,7 +105,7 @@ const MainTabNavigator = () => {
         tabBarShowLabel: false,
         lazy: true,
         tabBarHideOnKeyboard: true,
-        unmountOnBlur: false,
+        // unmountOnBlur: false, // REMOVED for v7 compatibility
       }}
     >
       <Tab.Screen

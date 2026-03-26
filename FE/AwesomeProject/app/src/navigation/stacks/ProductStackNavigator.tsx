@@ -5,29 +5,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ProductScreen from '@/screens/ProductScreen';
 import ProductDetailScreen from '@/screens/ProductDetailScreen';
 
-const ProductStack = createStackNavigator();
+import { ProductStackParamList } from '@/types/navigation';
+
+const ProductStack = createStackNavigator<ProductStackParamList>();
 
 // Common screen options
 const commonStackScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   transitionSpec: {
     open: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 250,
       },
     },
     close: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 200,
       },
     },
   },
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [

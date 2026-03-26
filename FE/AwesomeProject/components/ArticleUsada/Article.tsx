@@ -21,9 +21,9 @@ import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/nativ
 import { useUsada } from '@/context/UsadaContext';
 
 const Usada = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const searchTimeoutRef = useRef(null);
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const searchTimeoutRef = useRef<any>(null);
   
   const { 
     articles,
@@ -183,13 +183,13 @@ const Usada = () => {
   }, [articles, selectedCategory, searchText]);
 
   // Handle search with debouncing
-  const handleSearch = useCallback((text) => {
+  const handleSearch = useCallback((text: string) => {
     console.log('🔍 Search input:', text);
     setSearchText(text);
     
     // Clear previous timeout
     if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
+      clearTimeout(searchTimeoutRef.current as any);
     }
     
     // Debounce search
@@ -199,7 +199,7 @@ const Usada = () => {
   }, [selectedCategory, handleFilterArticles]);
 
   // Handle category selection
-  const handleCategorySelect = useCallback((category) => {
+  const handleCategorySelect = useCallback((category: string) => {
     console.log('🏷️ Category selected:', category, 'Current:', selectedCategory);
     
     if (category === selectedCategory) {
@@ -236,7 +236,7 @@ const Usada = () => {
   }, [articles, selectedCategory, searchText, handleFilterArticles]);
 
   // Navigate to article detail
-  const navigateToArticleDetail = useCallback((article) => {
+  const navigateToArticleDetail = useCallback((article: any) => {
     navigation.navigate('ArticleDetail', { 
       articleId: article.id,
       articleSlug: article.slug 
@@ -283,7 +283,7 @@ const Usada = () => {
   }, []);
 
   // Render category filter chips
-  const renderCategoryItem = ({ item }) => {
+  const renderCategoryItem = ({ item }: { item: string }) => {
     const isSelected = selectedCategory === item;
     
     return (
@@ -307,7 +307,7 @@ const Usada = () => {
   };
 
   // Render article list item
-  const renderArticleItem = ({ item }) => (
+  const renderArticleItem = ({ item }: { item: any }) => (
     <TouchableOpacity 
       style={styles.articleCard}
       onPress={() => navigateToArticleDetail(item)}

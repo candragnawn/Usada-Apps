@@ -18,8 +18,17 @@ import { Feather } from '@expo/vector-icons';
 import { useCart } from '@/context/CartContext';
 import { useOrder } from '@/context/OrderContext';
 import withProviders from '@/utils/withProviders';
+import { OrderContextType } from '@/types/order';
+import { CartItem } from '@/context/CartContext';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/types/navigation';
+// REMOVED: import styles from './styles';
 
-const CheckoutScreen = ({ navigation, route }) => {
+type Props = StackScreenProps<RootStackParamList, 'Checkout'>;
+
+const CheckoutScreen = ({ navigation, route }: Props) => {
   const { cartItems, totalAmount, clearCart, isLoading } = useCart();
   const { 
     shippingInfo, 
@@ -29,10 +38,10 @@ const CheckoutScreen = ({ navigation, route }) => {
     loading, 
     error, 
     clearError 
-  } = useOrder();
+  } = useOrder() as OrderContextType;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<Record<string, string | null>>({});
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 
   const shippingFee = 10000;
@@ -71,7 +80,7 @@ const CheckoutScreen = ({ navigation, route }) => {
     }
   }, [cartItems, isLoading, navigation]);
 
-  const formatPrice = (price) => {
+  const formatPrice = (price: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
@@ -79,7 +88,7 @@ const CheckoutScreen = ({ navigation, route }) => {
     }).format(price);
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     if (formErrors[field]) {
       setFormErrors(prev => ({ ...prev, [field]: null }));
     }
@@ -104,21 +113,21 @@ const CheckoutScreen = ({ navigation, route }) => {
         addressDescription: 'address_description'
       };
 
-      const mappedField = fieldMapping[field];
+      const mappedField = fieldMapping[field as keyof typeof fieldMapping];
       if (mappedField) {
         updateShippingInfo({ [mappedField]: value });
       }
     }
   };
 
-  const handlePaymentMethodSelect = (methodKey) => {
+  const handlePaymentMethodSelect = (methodKey: string) => {
     setSelectedPaymentMethod(methodKey);
     // Clear error if any
     setFormErrors(prev => ({ ...prev, paymentMethod: null }));
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: Record<string, string> = {};
     
     if (!shippingInfo.first_name?.trim()) {
       errors.name = 'Please enter your full name';
@@ -177,7 +186,7 @@ const CheckoutScreen = ({ navigation, route }) => {
     return Object.keys(errors).length === 0;
   };
 
-  const extractItemPrice = (item) => {
+  const extractItemPrice = (item: any) => {
     const priceFields = [
       'price',           
       'product_price',   
@@ -223,7 +232,7 @@ const CheckoutScreen = ({ navigation, route }) => {
     return 0;
   };
 
-  const extractVariantId = (item) => {
+  const extractVariantId = (item: any) => {
     const variantFields = [
       'product_variant_id',
       'variant_id', 
@@ -278,7 +287,7 @@ const CheckoutScreen = ({ navigation, route }) => {
         throw new Error(`Missing or invalid price for: ${item.name || 'Unknown Product'}`);
       }
 
-      const quantity = parseInt(item.quantity);
+      const quantity = item.quantity;
       if (!quantity || quantity < 1 || quantity > 1000) {
         throw new Error(`Invalid quantity for: ${item.name || 'Unknown Product'} (must be 1-1000)`);
       }
@@ -324,17 +333,17 @@ const CheckoutScreen = ({ navigation, route }) => {
     ];
 
     for (const { field, maxLength, minValue } of requiredFields) {
-      const value = orderData[field];
+        const val = (orderData as any)[field];
       
-      if (!value) {
+      if (!val) {
         throw new Error(`Missing required field: ${field}`);
       }
       
-      if (maxLength && typeof value === 'string' && value.length > maxLength) {
+      if (maxLength && typeof val === 'string' && val.length > maxLength) {
         throw new Error(`Field ${field} exceeds maximum length of ${maxLength} characters`);
       }
       
-      if (minValue && typeof value === 'number' && value < minValue) {
+      if (minValue && typeof val === 'number' && val < minValue) {
         throw new Error(`Field ${field} must be at least ${minValue}`);
       }
     }
@@ -410,7 +419,7 @@ const CheckoutScreen = ({ navigation, route }) => {
           throw new Error(errorMessage);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       const errorMessage = err.message || 'Failed to process order. Please try again.';
       Alert.alert('Order Failed', errorMessage, [{ text: 'OK' }]);
     } finally {
@@ -426,7 +435,7 @@ const CheckoutScreen = ({ navigation, route }) => {
           <Text style={styles.emptyText}>Your cart is empty</Text>
           <TouchableOpacity 
             style={styles.backToShopButton}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('ArticlesTab', { screen: 'UsadaMain' })}
           >
             <Text style={styles.backToShopText}>Continue Shopping</Text>
           </TouchableOpacity>
@@ -486,7 +495,7 @@ const CheckoutScreen = ({ navigation, route }) => {
                 return (
                   <View key={index} style={styles.orderItem}>
                     <Text style={styles.itemName}>
-                      {item.name || item.product?.name || 'Unknown Product'}
+                      {item.name || (item as any).product?.name || 'Unknown Product'}
                     </Text>
                     <Text style={styles.itemDetails}>
                       Qty: {item.quantity} × {formatPrice(itemPrice)}

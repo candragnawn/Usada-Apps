@@ -62,13 +62,13 @@ export const NavigationUtils = {
   /**
    * Get the appropriate route based on authentication state
    */
-  getRouteForAuthState: (isAuthenticated, currentRoute) => {
+  getRouteForAuthState: (isAuthenticated: boolean, currentRoute: string | null) => {
     const flow = isAuthenticated 
       ? ROUTING_FLOWS.AUTHENTICATION.AUTHENTICATED
       : ROUTING_FLOWS.AUTHENTICATION.UNAUTHENTICATED;
     
     // Check if current route needs redirect
-    if (flow.redirectFrom.includes(currentRoute)) {
+    if (currentRoute && flow.redirectFrom.includes(currentRoute as string)) {
       return {
         shouldRedirect: true,
         targetRoute: flow.redirectTo,
@@ -86,7 +86,7 @@ export const NavigationUtils = {
   /**
    * Check if a route is allowed for current auth state
    */
-  isRouteAllowed: (isAuthenticated, routeName) => {
+  isRouteAllowed: (isAuthenticated: boolean, routeName: string) => {
     const flow = isAuthenticated 
       ? ROUTING_FLOWS.AUTHENTICATION.AUTHENTICATED
       : ROUTING_FLOWS.AUTHENTICATION.UNAUTHENTICATED;
@@ -97,7 +97,7 @@ export const NavigationUtils = {
   /**
    * Get initial route based on auth state
    */
-  getInitialRoute: (isAuthenticated, isLoading) => {
+  getInitialRoute: (isAuthenticated: boolean, isLoading: boolean) => {
     if (isLoading) {
       return ROUTE_NAMES.PROTECTED_PROFILE;
     }
@@ -110,8 +110,8 @@ export const NavigationUtils = {
   /**
    * Get user-friendly route descriptions
    */
-  getRouteDescription: (routeName) => {
-    const descriptions = {
+  getRouteDescription: (routeName: string) => {
+    const descriptions: { [key: string]: string } = {
       [ROUTE_NAMES.PROTECTED_PROFILE]: 'Protected Profile (Login Required)',
       [ROUTE_NAMES.LOGIN]: 'Login Screen',
       [ROUTE_NAMES.REGISTER]: 'Registration Screen',
@@ -125,7 +125,12 @@ export const NavigationUtils = {
 
 // 🎯 Routing flow manager
 export class RoutingFlowManager {
-  constructor(navigation, authContext) {
+  navigation: any;
+  authContext: any;
+  isNavigating: boolean;
+  debugMode: boolean;
+
+  constructor(navigation: any, authContext: any) {
     this.navigation = navigation;
     this.authContext = authContext;
     this.isNavigating = false;
@@ -135,7 +140,7 @@ export class RoutingFlowManager {
   /**
    * Log routing activity
    */
-  log(message, data = {}) {
+  log(message: string, data: any = {}) {
     if (this.debugMode) {
       console.log(`🔄 RoutingFlow: ${message}`, data);
     }
@@ -157,7 +162,7 @@ export class RoutingFlowManager {
   /**
    * Navigate with delay and safety checks
    */
-  async navigateWithDelay(targetRoute, delay = 150) {
+  async navigateWithDelay(targetRoute: string, delay: number = 150) {
     if (this.isNavigating) {
       this.log('Navigation already in progress, skipping');
       return false;
@@ -193,7 +198,7 @@ export class RoutingFlowManager {
     }
 
     const currentRoute = this.getCurrentRoute();
-    const routingDecision = NavigationUtils.getRouteForAuthState(isAuthenticated, currentRoute);
+    const routingDecision = NavigationUtils.getRouteForAuthState(isAuthenticated, currentRoute as any);
 
     this.log('Auto-routing check', {
       currentRoute,
@@ -209,7 +214,7 @@ export class RoutingFlowManager {
         reason: routingDecision.reason,
       });
       
-      this.navigateWithDelay(routingDecision.targetRoute);
+      this.navigateWithDelay(routingDecision.targetRoute as string);
     }
   }
 

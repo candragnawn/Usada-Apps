@@ -12,15 +12,15 @@ const Header = () => {
   const { user, isAuthenticated } = useAuth();
   
   const handleProfilePress = () => {
-    navigation.navigate('ProfileMain');
+    (navigation as any).navigate('ProfileScreen', { screen: 'ProfileMain' });
   }
   
   const handleCartPress = () => {
-    navigation.navigate('CartMain');
+    (navigation as any).navigate('CartStack', { screen: 'CartMain' });
   }
   
   const handleUsadaPress = () => {
-    navigation.navigate('UsadaMain');
+    (navigation as any).navigate('ArticlesTab', { screen: 'UsadaMain' });
   }
   
   return (

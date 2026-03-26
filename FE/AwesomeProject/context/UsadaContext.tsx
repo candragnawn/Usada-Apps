@@ -1,9 +1,10 @@
 console.log('🟢🟢🟢 [CRITICAL DEBUG] UsadaContext.tsx EVALUATING LINE 1');
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { robustJsonParse } from '../utils/apiUtils';
+import { Article, UsadaContextType } from '../types/usada';
 
-const UsadaContext = createContext({
+const UsadaContext = createContext<UsadaContextType>({
   articles: [],
   selectedArticle: null,
   favorites: [],
@@ -59,10 +60,10 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    console.log('API Request:', config.method.toUpperCase(), config.url);
+    console.log('API Request:', config.method?.toUpperCase(), config.url);
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     console.error('API Request Error:', error);
     return Promise.reject(error);
   }
@@ -75,22 +76,22 @@ apiClient.interceptors.response.use(
     response.data = robustJsonParse(response.data);
     return response;
   },
-  (error) => {
+  (error: AxiosError) => {
     console.error('API Response Error:', error.response?.status, error.message);
     return Promise.reject(error);
   }
 );
 
 // Custom provider component
-export const UsadaProvider = ({ children }) => {
+export const UsadaProvider = ({ children }: { children: React.ReactNode }) => {
   // Core state
-  const [articles, setArticles] = useState<any[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<any>(null);
-  const [favorites, setFavorites] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [favorites, setFavorites] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [categories, setCategories] = useState(['Semua']);
-  const [currentFilter, setCurrentFilter] = useState(null);
+  const [categories, setCategories] = useState<string[]>(['Semua']);
+  const [currentFilter, setCurrentFilter] = useState<any>(null);
 
   // Cache for better performance
   const [cache, setCache] = useState<{
@@ -122,7 +123,7 @@ export const UsadaProvider = ({ children }) => {
       ]);
       
       console.log('✅ UsadaContext initialized successfully');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('❌ Error initializing UsadaContext:', error);
       setError(error instanceof Error ? error.message : 'Failed to initialize data');
     } finally {
@@ -131,7 +132,7 @@ export const UsadaProvider = ({ children }) => {
   };
 
   // Helper function to get full image URL
-  const getFullImageUrl = (imagePath) => {
+  const getFullImageUrl = (imagePath: string | null) => {
     if (!imagePath) return null;
     if (imagePath.startsWith('http')) return imagePath;
     const base = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL : `${IMAGE_BASE_URL}/`;
@@ -141,7 +142,7 @@ export const UsadaProvider = ({ children }) => {
 
   // FIX 2: transformArticle — handle images as JSON array (consistent with products table)
   // Priority: images array (new format) → image_url string (old format) → image field
-  const transformArticle = (article) => {
+  const transformArticle = (article: any): Article => {
     // Parse images field — backend stores as JSON array: ["articles/xxx.jpg"]
     let firstImage: string | null = null;
     try {
@@ -173,7 +174,7 @@ export const UsadaProvider = ({ children }) => {
   };
 
   // Standardized fetchArticles using Axios (apiClient)
- const fetchArticles = async (params = {}) => {
+ const fetchArticles = async (params: Record<string, any> = {}) => {
   try {
     setLoading(true);
     setError(null);
@@ -209,9 +210,9 @@ export const UsadaProvider = ({ children }) => {
     console.log('✅ [UsadaContext] Sukses memuat ' + transformed.length + ' artikel');
     return { articles: transformed, meta: raw?.meta };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     // 5. JANGAN PAKSA PARSING kalau error. Balikkan cache saja jika tersedia.
-    console.error('❌ [UsadaContext] Error Jaringan/Server:', err.message);
+    console.error('❌ [UsadaContext] Error Jaringan/Server:', err instanceof Error ? err.message : String(err));
     
     if (cache.allArticles) {
       setArticles(cache.allArticles);
@@ -223,7 +224,7 @@ export const UsadaProvider = ({ children }) => {
   }
 };
 
-  const fetchArticleBySlug = async (slug) => {
+  const fetchArticleBySlug = async (slug: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -244,7 +245,7 @@ export const UsadaProvider = ({ children }) => {
       } else {
         throw new Error('Article not found');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('❌ Error fetching article by slug:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch article';
       setError(errorMessage);
@@ -254,13 +255,13 @@ export const UsadaProvider = ({ children }) => {
     }
   };
 
-  const fetchArticleById = async (id) => {
+  const fetchArticleById = async (id: number | string) => {
     try {
       setLoading(true);
       setError(null);
       
       // First try to find in current articles
-      const existingArticle = articles.find(article => article.id === parseInt(id));
+      const existingArticle = articles.find(article => article.id === parseInt(id as string));
       if (existingArticle) {
         setSelectedArticle(existingArticle);
         return existingArticle;
@@ -275,7 +276,7 @@ export const UsadaProvider = ({ children }) => {
           setSelectedArticle(articleWithFullUrl);
           return articleWithFullUrl;
         }
-      } catch (directError) {
+      } catch (directError: unknown) {
         console.log('Direct fetch failed, trying list approach');
       }
       
@@ -286,7 +287,7 @@ export const UsadaProvider = ({ children }) => {
       
       let raw = response.data;
       const articlesData = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
-      const article = articlesData.find((a: any) => a.id === parseInt(id));
+      const article = articlesData.find((a: any) => a.id === parseInt(id as string));
       
       if (article) {
         const articleWithFullUrl = transformArticle(article);
@@ -295,7 +296,7 @@ export const UsadaProvider = ({ children }) => {
       } else {
         throw new Error('Article not found');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('❌ Error fetching article by ID:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch article';
       setError(errorMessage);
@@ -305,7 +306,7 @@ export const UsadaProvider = ({ children }) => {
     }
   };
 
-  const fetchArticlesByCategory = async (category, params = {}) => {
+  const fetchArticlesByCategory = async (category: string, params: Record<string, any> = {}) => {
     try {
       setLoading(true);
       setError(null);
@@ -336,7 +337,7 @@ export const UsadaProvider = ({ children }) => {
             response = await apiClient.get(endpoint, { params });
           }
           break;
-        } catch (endpointError) {
+        } catch (endpointError: unknown) {
           console.log(`📡 [UsadaContext] Endpoint ${endpoint} failed, trying next...`);
           continue;
         }
@@ -374,8 +375,8 @@ export const UsadaProvider = ({ children }) => {
         meta: raw?.meta
       };
 
-    } catch (err: any) {
-      console.error('❌ [UsadaContext] Error fetching articles by category:', err.message);
+    } catch (err: unknown) {
+      console.error('❌ [UsadaContext] Error fetching articles by category:', err instanceof Error ? err.message : String(err));
       
       if (articles.length > 0) {
         console.log('📋 [UsadaContext] Falling back to local filtering for:', category);
@@ -389,7 +390,7 @@ export const UsadaProvider = ({ children }) => {
     }
   };
 
-  const searchArticles = async (searchTerm, category = null, params = {}) => {
+  const searchArticles = async (searchTerm: string, category: string | null = null, params: Record<string, any> = {}) => {
     try {
       setLoading(true);
       setError(null);
@@ -398,7 +399,7 @@ export const UsadaProvider = ({ children }) => {
         throw new Error('Search term is required');
       }
 
-      const searchParams = {
+      const searchParams: Record<string, any> = {
         q: searchTerm.trim(),
         search: searchTerm.trim(),
         ...params
@@ -415,7 +416,7 @@ export const UsadaProvider = ({ children }) => {
         try {
           response = await apiClient.get(endpoint, { params: searchParams });
           break;
-        } catch (endpointError) {
+        } catch (endpointError: unknown) {
           console.log(`Search endpoint ${endpoint} failed, trying next...`);
           continue;
         }
@@ -437,7 +438,7 @@ export const UsadaProvider = ({ children }) => {
         meta: raw?.meta
       };
 
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('❌ Error searching articles:', err);
       console.log('🔍 Using local search fallback due to error');
       return performLocalSearch(searchTerm, category);
@@ -447,7 +448,7 @@ export const UsadaProvider = ({ children }) => {
   };
 
   // Local search fallback
-  const performLocalSearch = (searchTerm, category = null) => {
+  const performLocalSearch = (searchTerm: string, category: string | null = null) => {
     const searchLower = searchTerm.toLowerCase();
     let filtered = articles.filter(article =>
       article.title?.toLowerCase().includes(searchLower) ||
@@ -472,7 +473,7 @@ export const UsadaProvider = ({ children }) => {
       
       if (cache.categories && (cache.categories as any[]).length > 0) {
         console.log('📋 Using cached categories');
-        const finalCategories = ['Semua', ...(cache.categories as any[])];
+        const finalCategories = ['Semua', ...(cache.categories as string[])];
         setCategories(finalCategories);
         return finalCategories;
       }
@@ -494,7 +495,7 @@ export const UsadaProvider = ({ children }) => {
           console.log('✅ [UsadaContext] Categories fetched from API:', validCategories.length);
           return finalCategories;
         }
-      } catch (apiError) {
+      } catch (apiError: unknown) {
         console.warn('📡 API categories fetch failed, extracting from articles');
       }
       
@@ -514,7 +515,7 @@ export const UsadaProvider = ({ children }) => {
       setCategories(fallbackCategories);
       return fallbackCategories;
       
-    } catch (err) {
+    } catch (err: any) {
       console.error('❌ Error fetching categories:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch categories';
       setError(errorMessage);
@@ -548,7 +549,7 @@ export const UsadaProvider = ({ children }) => {
       console.log('✅ Latest articles from fallback:', sorted.length);
       return sorted;
 
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('❌ Error fetching latest articles:', err);
       const sorted = [...articles]
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
@@ -580,7 +581,7 @@ export const UsadaProvider = ({ children }) => {
       console.log('✅ Popular articles from fallback:', random.length);
       return random;
 
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('❌ Error fetching popular articles:', err);
       const random = [...articles].sort(() => 0.5 - Math.random()).slice(0, limit);
       console.log('✅ Popular articles from local fallback:', random.length);
@@ -591,12 +592,12 @@ export const UsadaProvider = ({ children }) => {
   };
 
   // Local utility functions
-  const selectArticle = (articleId) => {
+  const selectArticle = (articleId: number) => {
     const article = articles.find(article => article.id === articleId);
-    setSelectedArticle(article);
+    setSelectedArticle(article || null);
   };
 
-  const toggleFavorite = (articleId) => {
+  const toggleFavorite = (articleId: number) => {
     if (favorites.includes(articleId)) {
       setFavorites(favorites.filter(id => id !== articleId));
     } else {
@@ -604,13 +605,13 @@ export const UsadaProvider = ({ children }) => {
     }
   };
 
-  const isFavorite = (articleId) => {
+  const isFavorite = (articleId: number) => {
     return favorites.includes(articleId);
   };
 
   const getDiseaseCategories = () => {
-    const uniqueCategories = [];
-    const seenCategories = new Set();
+    const uniqueCategories: { id: string; name: string; category: string; icon: string | null; color: string; articleCount: number }[] = [];
+    const seenCategories = new Set<string>();
 
     articles.forEach(article => {
       if (article.category && !seenCategories.has(article.category)) {
@@ -619,7 +620,7 @@ export const UsadaProvider = ({ children }) => {
           id: `category-${article.category}`,
           name: article.category,
           category: article.category,
-          icon: article.image_url || article.image,
+          icon: (article.image_url || article.image || null) as string | null,
           color: '#E8F5E8',
           articleCount: articles.filter(a => a.category === article.category).length
         });
@@ -633,7 +634,7 @@ export const UsadaProvider = ({ children }) => {
     return categories;
   };
 
-  const getArticlesByDiseaseCategory = (categoryName) => {
+  const getArticlesByDiseaseCategory = (categoryName: any) => {
     if (!categoryName || categoryName === 'Semua' || categoryName === 'All') {
       return articles;
     }
@@ -644,7 +645,7 @@ export const UsadaProvider = ({ children }) => {
     );
   };
 
-  const filterArticles = (category, searchText) => {
+  const filterArticles = (category: any, searchText: any) => {
     let filtered = articles;
 
     if (searchText && searchText.trim()) {
@@ -666,7 +667,7 @@ export const UsadaProvider = ({ children }) => {
     return filtered;
   };
 
-  const navigateToCategory = (navigation, categoryName, categoryData = null) => {
+  const navigateToCategory = (navigation: any, categoryName: any, categoryData: any = null) => {
     console.log('🧭 Navigating to category:', categoryName);
     
     setCurrentFilter({
@@ -691,7 +692,7 @@ export const UsadaProvider = ({ children }) => {
     });
   };
 
-  const navigateToArticle = (navigation, article, fromCategory = null) => {
+  const navigateToArticle = (navigation: any, article: any, fromCategory: any = null) => {
     console.log('🧭 Navigating to article:', article.title);
     
     navigation.navigate('ArticleDetail', {
@@ -703,7 +704,7 @@ export const UsadaProvider = ({ children }) => {
     });
   };
 
-  const handleCategoryNavigation = async (navigation, category) => {
+  const handleCategoryNavigation = async (navigation: any, category: any) => {
     try {
       const categoryName = getCategoryForNavigation(category);
       
@@ -718,25 +719,25 @@ export const UsadaProvider = ({ children }) => {
         categoryName,
         articleCount: getArticlesByDiseaseCategory(categoryName).length
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error(' Error in category navigation:', error);
-      setError(error.message);
+      setError(error.message || 'Navigation error');
       return {
         success: false,
-        error: error.message
+        error: error.message || 'Navigation error'
       };
     }
   };
 
-  const getCategoryForNavigation = (categoryObject) => {
+  const getCategoryForNavigation = (categoryObject: any) => {
     return categoryObject?.category || categoryObject?.name || categoryObject;
   };
 
-  const getFilteredArticlesForNavigation = (categoryName, searchText = '') => {
+  const getFilteredArticlesForNavigation = (categoryName: any, searchText = '') => {
     return filterArticles(categoryName, searchText);
   };
 
-  const categoryHasArticles = (categoryName) => {
+  const categoryHasArticles = (categoryName: any) => {
     if (!categoryName) return false;
     
     // Optimistic: if category is in our formal list from server, assume it's available
@@ -748,7 +749,7 @@ export const UsadaProvider = ({ children }) => {
     return getArticlesByDiseaseCategory(categoryName).length > 0;
   };
 
-  const setActiveFilter = (filterData) => {
+  const setActiveFilter = (filterData: any) => {
     setCurrentFilter(filterData);
   };
 

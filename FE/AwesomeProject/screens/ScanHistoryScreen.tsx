@@ -28,14 +28,14 @@ const DUMMY_HISTORY = [
 ];
 
 const ScanHistoryScreen = () => {
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState<any[]>([]);
 
   useEffect(() => {
     // Simulasi fetch dari local storage/server
     setHistory(DUMMY_HISTORY);
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: any }) => (
     <View style={styles.card}>
       <Image source={item.image} style={styles.image} />
       <View style={styles.info}>
@@ -56,7 +56,7 @@ const ScanHistoryScreen = () => {
       ) : (
         <FlatList
           data={history}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: any) => item.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 20 }}
         />

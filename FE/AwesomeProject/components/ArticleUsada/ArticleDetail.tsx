@@ -1,5 +1,5 @@
 // ArticleDetail.js - Fixed version with backend variable alignment
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -19,10 +19,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { useUsada } from '@/context/UsadaContext';
 
-const ArticleDetail = ({ route }) => {
+const ArticleDetail = ({ route }: { route: any }) => {
   
   const { articleId, articleSlug } = route?.params || {};
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
+  const searchTimeoutRef = useRef<number | null>(null);
   
   // Safely destructure context with fallbacks
   const usadaContext = useUsada();
@@ -38,8 +39,8 @@ const ArticleDetail = ({ route }) => {
   
   const [localLoading, setLocalLoading] = useState(false);
   const [favorite, setFavorite] = useState(false);
-  const [article, setArticle] = useState(null);
-  const [error, setError] = useState(null);
+  const [article, setArticle] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Memoize article data to prevent unnecessary re-renders
   const currentArticle = useMemo(() => {
@@ -108,7 +109,7 @@ const ArticleDetail = ({ route }) => {
           throw new Error('Article not found');
         }
 
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error loading article:', err);
         setError(err.message || 'Failed to load article');
       } finally {
@@ -154,7 +155,7 @@ const ArticleDetail = ({ route }) => {
       }
       
       await Share.share(shareContent);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sharing article:', error);
       // Don't show alert for share cancellation
       if (error.message !== 'User did not share') {
@@ -188,11 +189,11 @@ const ArticleDetail = ({ route }) => {
       }
       
       // Handle object format (if steps are stored as object properties)
-      if (typeof preparationData === 'object') {
+      if (typeof preparationData === 'object' && preparationData !== null) {
         return Object.values(preparationData)
-          .filter(step => step && typeof step === 'string')
-          .map(step => step.trim())
-          .filter(step => step.length > 0);
+          .filter((step: any) => step && typeof step === 'string')
+          .map((step: any) => step.trim())
+          .filter((step: string) => step.length > 0);
       }
     } catch (err) {
       console.warn('Error parsing preparation steps:', err);
@@ -202,7 +203,7 @@ const ArticleDetail = ({ route }) => {
   }, [currentArticle]);
 
   // Safe array rendering helper
-  const renderArrayItems = useCallback((items, renderItem) => {
+  const renderArrayItems = useCallback((items: any[], renderItem: (item: any, index: number) => React.ReactNode) => {
     if (!Array.isArray(items) || items.length === 0) return null;
     
     return items
@@ -325,7 +326,6 @@ const ArticleDetail = ({ route }) => {
         style={styles.scrollView} 
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
-        maxToRenderPerBatch={5}
       >
         {/* Hero Image with error handling */}
         <Image 

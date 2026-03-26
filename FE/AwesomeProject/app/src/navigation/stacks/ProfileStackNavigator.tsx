@@ -1,7 +1,7 @@
 // ProfileStackNavigator.js - FIXED: Quick Logout Routing Issue
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { CommonActions, useFocusEffect, useNavigationState } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { CommonActions, useFocusEffect, useNavigationState, useNavigation } from '@react-navigation/native';
 import { useAuth } from '@/context/AuthContext';
 
 // Import screens
@@ -11,25 +11,27 @@ import LoginScreen from '@/screens/LoginScreen';
 import RegisterScreen from '@/screens/RegisterScreen';
 import LoginSuccessScreen from '@/screens/LoginSuccessScreen';
 
-const Stack = createStackNavigator();
+import { ProfileStackParamList } from '@/types/navigation';
+
+const Stack = createStackNavigator<ProfileStackParamList>();
 
 // Common screen options
-const commonStackScreenOptions = {
+const commonStackScreenOptions: StackNavigationOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   transitionSpec: {
     open: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: { duration: 250 },
     },
     close: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: { duration: 200 },
     },
   },
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -45,12 +47,12 @@ const commonStackScreenOptions = {
   },
 };
 
-const ProfileStackNavigator = ({ navigation }) => {
+const ProfileStackNavigator = ({ navigation: rootNavigation }: { navigation: any }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
-  const stackNavigatorRef = useRef(null);
+  const internalNavigation = useNavigation<StackNavigationProp<ProfileStackParamList>>();
   const [isNavigatorReady, setIsNavigatorReady] = useState(false);
-  const lastAuthStateRef = useRef(null);
-  const navigationTimeoutRef = useRef(null);
+  const lastAuthStateRef = useRef<string | null>(null);
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [forceUpdate, setForceUpdate] = useState(0);
 
   // 🔥 CRITICAL FIX: Get current route name safely
@@ -68,21 +70,19 @@ const ProfileStackNavigator = ({ navigation }) => {
   }, [isAuthenticated, user, isLoading]);
 
   // 🔥 CRITICAL FIX: Immediate navigation with better error handling
-  const performNavigation = useCallback((targetRoute, reason) => {
+  const performNavigation = useCallback((targetRoute: keyof ProfileStackParamList, reason: string) => {
     // Clear any pending navigation
     if (navigationTimeoutRef.current) {
-      clearTimeout(navigationTimeoutRef.current);
+      clearTimeout(navigationTimeoutRef.current as any);
       navigationTimeoutRef.current = null;
     }
 
-    if (!stackNavigatorRef.current || !isNavigatorReady) {
+    if (!isNavigatorReady) {
       console.log('⚠️ Navigator not ready for:', targetRoute);
       // Retry after navigator is ready
       navigationTimeoutRef.current = setTimeout(() => {
-        if (isNavigatorReady) {
           performNavigation(targetRoute, reason + ' (retry)');
-        }
-      }, 50);
+      }, 50) as any;
       return;
     }
 
@@ -98,7 +98,7 @@ const ProfileStackNavigator = ({ navigation }) => {
     });
 
     try {
-      stackNavigatorRef.current.dispatch(
+      internalNavigation.dispatch(
         CommonActions.reset({
           index: 0,
           routes: [{ name: targetRoute }],
@@ -114,21 +114,21 @@ const ProfileStackNavigator = ({ navigation }) => {
       
       // Fallback navigation
       try {
-        if (navigation?.reset) {
-          navigation.reset({
+        if ((rootNavigation as any)?.reset) {
+          (rootNavigation as any).reset({
             index: 0,
             routes: [{ name: targetRoute }],
           });
           console.log('✅ Fallback navigation successful');
-        } else if (navigation?.navigate) {
-          navigation.navigate(targetRoute);
+        } else if ((rootNavigation as any)?.navigate) {
+          (rootNavigation as any).navigate(targetRoute);
           console.log('✅ Fallback navigate successful');
         }
       } catch (fallbackError) {
         console.error('❌ All navigation methods failed:', fallbackError);
       }
     }
-  }, [currentRouteName, navigation, isNavigatorReady]);
+  }, [currentRouteName, rootNavigation, internalNavigation, isNavigatorReady]);
 
   // 🔥 CRITICAL FIX: Enhanced auth state monitoring
   useEffect(() => {
@@ -239,7 +239,7 @@ const ProfileStackNavigator = ({ navigation }) => {
   };
 
   // Navigation state change handler
-  const handleNavigationStateChange = useCallback((state) => {
+  const handleNavigationStateChange = useCallback((state: any) => {
     try {
       if (state?.routes?.length > 0) {
         const newRoute = state.routes[state.index]?.name;
@@ -249,6 +249,10 @@ const ProfileStackNavigator = ({ navigation }) => {
       console.error('❌ Navigation state change error:', error);
     }
   }, []);
+
+  useEffect(() => {
+    handleNavigatorReady();
+  }, [handleNavigatorReady]);
 
   console.log('🔄 ProfileStackNavigator render:', {
     isAuthenticated,
@@ -262,11 +266,8 @@ const ProfileStackNavigator = ({ navigation }) => {
 
   return (
     <Stack.Navigator
-      ref={stackNavigatorRef}
-      initialRouteName={getInitialRouteName()}
+      initialRouteName={getInitialRouteName() as any}
       screenOptions={commonStackScreenOptions}
-      onStateChange={handleNavigationStateChange}
-      onReady={handleNavigatorReady}
       key={forceUpdate} 
     >
    
@@ -275,7 +276,7 @@ const ProfileStackNavigator = ({ navigation }) => {
         component={ProtectedProfileScreen}
         options={{
           ...commonStackScreenOptions,
-          animationEnabled: false,
+          animation: 'none' as any,
         }}
       />
 
@@ -284,7 +285,7 @@ const ProfileStackNavigator = ({ navigation }) => {
         component={ProfileScreen}
         options={{
           ...commonStackScreenOptions,
-          animationEnabled: false,
+          animation: 'none' as any,
         }}
       />
 
@@ -293,7 +294,7 @@ const ProfileStackNavigator = ({ navigation }) => {
         component={LoginScreen}
         options={{
           ...commonStackScreenOptions,
-          animationEnabled: true,
+          animation: 'default' as any,
           presentation: 'modal',
         }}
       />
@@ -307,11 +308,11 @@ const ProfileStackNavigator = ({ navigation }) => {
 
       {/* 🎉 Login Success Screen */}
       <Stack.Screen
-        name="LoginSucces"
+        name="LoginSuccess"
         component={LoginSuccessScreen}
         options={{
           ...commonStackScreenOptions,
-          animationEnabled: true,
+          animation: 'default' as any,
           gestureEnabled: false,
           presentation: 'modal',
         }}

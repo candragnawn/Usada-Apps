@@ -1,4 +1,9 @@
 console.log('🔴🔴🔴 [CRITICAL DEBUG] app/index.tsx EVALUATING LINE 1');
+import { OrderContextType } from '@/types/order';
+import { CartItem } from '@/context/CartContext';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +18,13 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainerRef, CommonActions, NavigationContainer } from '@react-navigation/native';
+import { 
+  RootStackParamList, 
+  UsadaStackParamList, 
+  ProductStackParamList, 
+  CartStackParamList,
+  MainTabParamList 
+} from '../types/navigation';
 
 // SplashScreen.hideAsync().catch(err => console.error('❌ [DEBUG] hideAsync failed:', err));
 
@@ -37,11 +49,11 @@ import withProviders from '../utils/withProviders';
 import ProfileStackNavigator from './src/navigation/stacks/ProfileStackNavigator';
 
 // Create navigation instances
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-const UsadaStack = createStackNavigator();
-const ProductStack = createStackNavigator();
-const CartStack = createStackNavigator();
+const Tab = createBottomTabNavigator<MainTabParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
+const UsadaStack = createStackNavigator<UsadaStackParamList>();
+const ProductStack = createStackNavigator<ProductStackParamList>();
+const CartStack = createStackNavigator<CartStackParamList>();
 
 // Define colors for consistency
 const COLORS = {
@@ -285,7 +297,7 @@ const AppNavigatorContent = () => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <NavigationContainer independent={true}>
+        <NavigationContainer>
           <RootStackNavigator />
         </NavigationContainer>
       </SafeAreaView>

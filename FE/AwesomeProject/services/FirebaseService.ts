@@ -1,6 +1,31 @@
 // import firestore from '@react-native-firebase/firestore';
-const firestore = () => ({ collection: () => ({ doc: () => ({ get: () => ({ exists: false }), set: () => {}, update: () => {}, collection: () => ({ doc: () => ({ set: () => {}, update: () => {}, collection: () => ({ orderBy: () => ({ onSnapshot: () => () => {} }) }) }) }) }) }) }) as any;
-(firestore as any).FieldValue = { serverTimestamp: () => ({}) } as any;
+const firestore: any = (() => {
+  const instance = {
+    collection: () => ({
+      doc: () => ({
+        get: () => ({ exists: false }),
+        set: () => {},
+        update: () => {},
+        collection: () => ({
+          doc: () => ({
+            set: () => {},
+            update: () => {},
+            collection: () => ({
+              orderBy: () => ({ onSnapshot: () => () => {} })
+            })
+          })
+        })
+      })
+    }),
+    batch: () => ({
+      set: () => ({}),
+      update: () => ({}),
+      commit: async () => {}
+    })
+  };
+  return instance;
+}) as any;
+firestore.FieldValue = { serverTimestamp: () => ({}) };
 
 export interface Message {
   id?: string;
@@ -92,9 +117,9 @@ class FirebaseService {
       .doc(chatId)
       .collection('messages')
       .orderBy('timestamp', 'desc')
-      .onSnapshot((snapshot) => {
+      .onSnapshot((snapshot: any) => {
         const messages: Message[] = [];
-        snapshot.forEach((doc) => {
+        snapshot.forEach((doc: any) => {
           messages.push({ id: doc.id, ...doc.data() } as Message);
         });
         onUpdate(messages);

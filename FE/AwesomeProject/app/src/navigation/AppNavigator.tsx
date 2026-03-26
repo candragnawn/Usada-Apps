@@ -19,7 +19,7 @@ import OpeningScreen from '@/screens/OpeningScreen';
 // Import Auth Screens
 import LoginScreen from '@/screens/LoginScreen';
 import RegisterScreen from '@/screens/RegisterScreen';
-import LoginSuccesScreen from '@/screens/LoginSuccessScreen';
+import LoginSuccessScreen from '@/screens/LoginSuccessScreen';
 
 // Import Order Success Screen
 import OrderSuccessScreen from '@/screens/OrderSuccessScreen';
@@ -36,8 +36,10 @@ import CartScreen from '@/screens/CartScreen';
 import UsadaScreen from '@/screens/UsadaScreen';
 import HerbalScanScreen from '@/screens/HerbalScanScreen';
 
+import { RootStackParamList } from '@/types/navigation';
+
 // Create stack navigator instance
-const RootStack = createStackNavigator();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 const linking = {
   prefixes: ['myapp://'],
@@ -46,7 +48,7 @@ const linking = {
       OrderSuccess: {
         path: '/order-success/:orderId',
         parse: {
-          orderId: (orderId) => orderId,
+          orderId: (orderId: string) => orderId,
         },
       },
     },
@@ -64,24 +66,24 @@ const COLORS = {
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight || (Platform.OS === 'ios' ? 47 : 0);
 
-const openingScreenOptions = {
+const openingScreenOptions: any = {
   headerShown: false,
   cardStyle: { backgroundColor: '#1B4332' },
   gestureEnabled: false, 
-  animationEnabled: false, 
+  animation: 'none', 
 };
 
 const fastScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   gestureResponseDistance: 50,
   transitionSpec: {
-    open: { animation: 'timing', config: { duration: 200 } },
-    close: { animation: 'timing', config: { duration: 150 } },
+    open: { animation: 'timing' as const, config: { duration: 200 } },
+    close: { animation: 'timing' as const, config: { duration: 150 } },
   },
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -109,28 +111,26 @@ const consultationScreenOptions = {
     flex: 1 // Ensure full height untuk scroll
   },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   gestureResponseDistance: 80, // Responsive gesture area
-  presentation: 'card',
-  animationEnabled: true,
+  presentation: 'card' as const,
+  animation: 'default' as any,
   // Smooth transition untuk consultation screen
   transitionSpec: {
-    open: { 
-      animation: 'timing', 
-      config: { 
+    open: {
+      animation: 'timing' as const,
+      config: {
         duration: 300,
-        useNativeDriver: true // Hardware acceleration
-      } 
+      }
     },
-    close: { 
-      animation: 'timing', 
-      config: { 
+    close: {
+      animation: 'timing' as const,
+      config: {
         duration: 250,
-        useNativeDriver: true
       } 
     },
   },
-  cardStyleInterpolator: ({ current, next, layouts }) => {
+  cardStyleInterpolator: ({ current, next, layouts }: { current: any; next?: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -171,14 +171,14 @@ const modalScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  presentation: 'modal',
-  gestureDirection: 'vertical',
+  presentation: 'modal' as const,
+  gestureDirection: 'vertical' as const,
   gestureResponseDistance: 100,
   transitionSpec: {
-    open: { animation: 'timing', config: { duration: 300 } },
-    close: { animation: 'timing', config: { duration: 250 } },
+    open: { animation: 'timing' as const, config: { duration: 300 } },
+    close: { animation: 'timing' as const, config: { duration: 250 } },
   },
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -199,26 +199,24 @@ const orderSuccessScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: false, // Prevent swipe to dismiss untuk memastikan user melihat success message
-  presentation: 'modal',
-  animationEnabled: true,
+  presentation: 'modal' as const,
+  animation: 'default' as any,
   transitionSpec: {
     open: { 
-      animation: 'timing', 
+      animation: 'timing' as const, 
       config: { 
         duration: 400,
-        useNativeDriver: true
       } 
     },
     close: { 
-      animation: 'timing', 
+      animation: 'timing' as const, 
       config: { 
         duration: 300,
-        useNativeDriver: true
       } 
     },
   },
   // Custom animation untuk success screen - scale up effect
-  cardStyleInterpolator: ({ current, layouts }) => {
+  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -280,21 +278,19 @@ const AppNavigator = () => {
             gestureEnabled: false,
             transitionSpec: {
               open: { 
-                animation: 'timing', 
+                animation: 'timing' as const, 
                 config: { 
                   duration: 500,
-                  useNativeDriver: true
                 } 
               },
               close: { 
-                animation: 'timing', 
+                animation: 'timing' as const, 
                 config: { 
                   duration: 300,
-                  useNativeDriver: true
                 } 
               },
             },
-            cardStyleInterpolator: ({ current }) => {
+            cardStyleInterpolator: ({ current }: { current: any }) => {
               return {
                 cardStyle: {
                   opacity: current.progress.interpolate({
@@ -360,7 +356,6 @@ const AppNavigator = () => {
         
         {/* 🎉 ORDER SUCCESS SCREEN - Modal dengan animasi khusus */}
         <RootStack.Screen 
-          linking={linking}
           name="OrderSuccess"
           component={OrderSuccessScreen}
           options={orderSuccessScreenOptions}
@@ -377,15 +372,15 @@ const AppNavigator = () => {
           component={RegisterScreen}
           options={{
             ...modalScreenOptions,
-            gestureDirection: 'horizontal', // Horizontal untuk register
-            presentation: 'card'
+            gestureDirection: 'horizontal' as const, // Horizontal untuk register
+            presentation: 'card' as const
           }}
         />
         <RootStack.Screen 
           name="LoginSuccess" 
-          component={LoginSuccesScreen}
+          component={LoginSuccessScreen}
           options={{ 
-            ...modalScreenOptions,
+            ...modalScreenOptions as any,
             gestureEnabled: false, // Disable gesture untuk success screen
           }}
         />

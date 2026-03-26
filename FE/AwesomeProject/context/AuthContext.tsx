@@ -323,7 +323,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
       
       console.log('✅ Login successful for:', userData.email);
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Login failed:', error);
       
       if (error.name === 'AbortError') {
@@ -402,7 +402,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       console.log('✅ Registration successful for:', email);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Registration failed:', error);
       
       if (error.name === 'AbortError') {

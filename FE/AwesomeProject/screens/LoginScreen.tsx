@@ -11,6 +11,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  KeyboardTypeOptions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -24,10 +25,10 @@ const LoginScreen = () => {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [showRegisterPrompt, setShowRegisterPrompt] = useState(false);
   
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { login, isLoading, isAuthenticated, checkAuthStatus } = useAuth();
 
   // Check if user is already authenticated
@@ -51,26 +52,26 @@ const LoginScreen = () => {
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      (newErrors as any).email = 'Email is required';
     } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = 'Please enter a valid email address';
+      (newErrors as any).email = 'Please enter a valid email address';
     }
     
     // Validate password
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      (newErrors as any).password = 'Password is required';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      (newErrors as any).password = 'Password must be at least 6 characters';
     }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
-    if (errors[field]) {
+    if ((errors as any)[field]) {
       setErrors(prev => ({ ...prev, [field]: null }));
     }
     // Hide register prompt when user starts typing
@@ -88,7 +89,7 @@ const LoginScreen = () => {
       await login(formData.email.trim().toLowerCase(), formData.password);
       
       // Navigation will be handled by the useEffect hook when isAuthenticated changes
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
       
       // Check if error indicates user doesn't exist
@@ -116,7 +117,7 @@ const LoginScreen = () => {
     navigation.navigate('Register');
   };
 
-  const renderInputContainer = (field, placeholder, icon, keyboardType = 'default', isPassword = false) => (
+  const renderInputContainer = (field: keyof typeof formData, placeholder: string, icon: any, keyboardType: KeyboardTypeOptions = 'default', isPassword = false) => (
     <View style={styles.inputWrapper}>
       <View style={[
         styles.inputContainer,

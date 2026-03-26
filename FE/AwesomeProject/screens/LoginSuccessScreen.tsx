@@ -15,7 +15,20 @@ import withProviders from '@/utils/withProviders';
 
 const { width, height } = Dimensions.get('window');
 
-const LoginSuccessScreen = ({ navigation, route, authNav }) => {
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp, CompositeNavigationProp } from '@react-navigation/native';
+import { RootStackParamList, ProfileStackParamList } from '@/types/navigation';
+
+type Props = {
+  navigation: CompositeNavigationProp<
+    StackNavigationProp<ProfileStackParamList, 'LoginSuccess'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+  route: RouteProp<ProfileStackParamList, 'LoginSuccess'>;
+  authNav?: any;
+};
+
+const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
   const { user } = useAuth();
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.3));
@@ -56,7 +69,7 @@ const LoginSuccessScreen = ({ navigation, route, authNav }) => {
             index: 0,
             routes: [
               {
-                name: 'MainApp',
+                name: 'MainTabs',
                 state: {
                   index: 4, // ProfileStack tab index
                   routes: [
@@ -68,9 +81,9 @@ const LoginSuccessScreen = ({ navigation, route, authNav }) => {
                       name: 'ProfileStack',
                       state: {
                         index: 0,
-                        routes: [{ name: 'ProfileMain' }] // Navigate to ProfileMain
+                        routes: [{ name: 'ProfileMain' }]
                       }
-                    },
+                    } as any,
                   ],
                 },
               },
@@ -84,7 +97,7 @@ const LoginSuccessScreen = ({ navigation, route, authNav }) => {
           navigation.replace('ProfileMain');
         } catch (fallbackError) {
           console.error('❌ Fallback navigation failed:', fallbackError);
-          navigation.navigate('MainApp');
+          navigation.navigate('MainTabs');
         }
       }
     }, 2500); // 2.5 seconds delay for animation
@@ -154,7 +167,7 @@ const LoadingDots = () => {
   const [dot3] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    const createAnimation = (animValue, delay) => {
+    const createAnimation = (animValue: Animated.Value, delay: number) => {
       return Animated.loop(
         Animated.sequence([
           Animated.timing(animValue, {

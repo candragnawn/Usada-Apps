@@ -6,33 +6,33 @@ import UsadaScreen from '@/screens/UsadaScreen';
 import ArticleDetailScreen from '@/screens/ArticleDetailScreen';
 import ConsultationScreen from '@/screens/ConsultationScreen';
 
-const UsadaStack = createStackNavigator();
+import { UsadaStackParamList } from '@/types/navigation';
+
+const UsadaStack = createStackNavigator<UsadaStackParamList>();
 
 // Enhanced screen options with better performance and navigation handling
 const commonStackScreenOptions = {
   headerShown: false,
   cardStyle: { backgroundColor: '#F8FDF8' },
   gestureEnabled: true,
-  gestureDirection: 'horizontal',
+  gestureDirection: 'horizontal' as const,
   // Enhanced animation config for smoother transitions
   transitionSpec: {
     open: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 300,
-        useNativeDriver: true,
       },
     },
     close: {
-      animation: 'timing',
+      animation: 'timing' as const,
       config: {
         duration: 250,
-        useNativeDriver: true,
       },
     },
   },
   // Improved card style interpolator
-  cardStyleInterpolator: ({ current, next, layouts }) => {
+  cardStyleInterpolator: ({ current, next, layouts }: { current: any; next?: any; layouts: any }) => {
     return {
       cardStyle: {
         transform: [
@@ -89,9 +89,7 @@ const UsadaStackNavigator = () => {
         options={{
           ...commonStackScreenOptions,
           // Add specific options for main screen
-          gestureResponseDistance: {
-            horizontal: 100,
-          },
+          gestureResponseDistance: 100,
         }}
         initialParams={{
           // Default parameters to handle edge cases

@@ -10,6 +10,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  KeyboardTypeOptions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -26,11 +27,11 @@ const RegisterScreen = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { register, isLoading, isAuthenticated } = useAuth();
 
   // Navigate away if user is already authenticated
@@ -38,7 +39,7 @@ const RegisterScreen = () => {
     if (isAuthenticated) {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Profile' }],
+        routes: [{ name: 'ProfileMain' }],
       });
     }
   }, [isAuthenticated, navigation]);
@@ -48,43 +49,43 @@ const RegisterScreen = () => {
     
     // Validate name
     if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
+      (newErrors as any).name = 'Full name is required';
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+      (newErrors as any).name = 'Name must be at least 2 characters';
     }
     
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      (newErrors as any).email = 'Email is required';
     } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = 'Please enter a valid email address';
+      (newErrors as any).email = 'Please enter a valid email address';
     }
     
     // Validate password
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      (newErrors as any).password = 'Password is required';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      (newErrors as any).password = 'Password must be at least 6 characters';
     } else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one letter and one number';
+      (newErrors as any).password = 'Password must contain at least one letter and one number';
     }
     
     // Validate confirm password
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      (newErrors as any).confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      (newErrors as any).confirmPassword = 'Passwords do not match';
     }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
-    if (errors[field]) {
+    if ((errors as any)[field]) {
       setErrors(prev => ({ ...prev, [field]: null }));
     }
     // Hide login prompt when user starts typing
@@ -107,7 +108,7 @@ const RegisterScreen = () => {
       setRegistrationSuccess(true);
       // Optional: You can still show Alert if you want
       // Alert.alert('Registrasi Berhasil', 'Akun Anda berhasil dibuat! Silakan login untuk melanjutkan.');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error);
       
       // Check if error indicates user already exists
@@ -135,7 +136,7 @@ const RegisterScreen = () => {
     navigation.navigate('Login');
   };
 
-  const renderInputContainer = (field, placeholder, icon, keyboardType = 'default', isPassword = false) => {
+  const renderInputContainer = (field: keyof typeof formData, placeholder: string, icon: any, keyboardType: KeyboardTypeOptions = 'default', isPassword = false) => {
     const isPasswordField = field === 'password';
     const isConfirmPasswordField = field === 'confirmPassword';
     const showPasswordState = isPasswordField ? showPassword : showConfirmPassword;
