@@ -2,7 +2,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { ProductScreen as ProductComponent } from '@/components/Product/Products';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 import { useNavigation } from '@react-navigation/native';
 
 const ProductScreen = () => {
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(ProductScreen);
+export default ProductScreen;

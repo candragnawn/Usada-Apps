@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const COLORS = {
   primary: '#4F7942',
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(LoginRequiredScreen);
+export default LoginRequiredScreen;

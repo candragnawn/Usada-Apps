@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useCart } from '@/context/CartContext';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 import { Feather } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
@@ -89,7 +89,8 @@ const getImageUrl = (imagePath: string | string[]): string => {
   if (imageString.startsWith('http')) return imageString;
   
   const cleanPath = imageString.startsWith('/') ? imageString.slice(1) : imageString;
-  return `${IMAGE_BASE_URL}${cleanPath}`;
+  const baseUrl = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL : `${IMAGE_BASE_URL}/`;
+  return `${baseUrl}${cleanPath}`;
 };
 
 // Helper function to get auth token (implement based on your auth system)
@@ -130,39 +131,6 @@ const fetchProductDetail = async (productId: number): Promise<ProductDetail> => 
     return data.data || data;
   } catch (error) {
     console.error('Error fetching product detail:', error);
-    throw error;
-  }
-};
-
-// API function to add to cart
-const addToCartApi = async (productId: number, quantity: number): Promise<any> => {
-  try {
-    const token = getAuthToken();
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-    
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ 
-        product_id: productId, 
-        quantity: quantity 
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error adding to cart:', error);
     throw error;
   }
 };
@@ -374,7 +342,7 @@ const ProductDetailScreen = () => {
     ]).start();
   }, [cartButtonScale, cartButtonRotate]);
   
-  const handleAddToCart = useCallback(async () => {
+  const handleAddToCart = useCallback(() => {
     if (!product) return;
     
     // Validate stock before adding
@@ -401,10 +369,7 @@ const ProductDetailScreen = () => {
     setIsAddingToCart(true);
     
     try {
-      // Try to add to cart via API
-      await addToCartApi(product.id, quantity);
-      
-      // Also add to local cart context for immediate UI update
+      // Local cart update (since cart is managed locally/AsyncStorage)
       addToCart(product, quantity);
       
       // Animate the cart button
@@ -427,19 +392,7 @@ const ProductDetailScreen = () => {
       
     } catch (error) {
       console.error('Error adding to cart:', error);
-      // Fallback to local cart only
-      addToCart(product, quantity);
-      animateCartButton();
-      setNotificationMessage(`${formatPrice(product.price * quantity)} added (offline)`);
-      setCartNotification(true);
-      
-      setTimeout(() => {
-        setCartNotification(false);
-        setNotificationMessage('');
-      }, 3000);
-      
-      // Reset quantity to 1 after adding to cart
-      setQuantity(1);
+      Alert.alert('Error', 'Failed to add to cart. Please try again.');
     } finally {
       setIsAddingToCart(false);
     }
@@ -1440,4 +1393,4 @@ manufacturerIcon: {
   
 });
 
-export default withProviders(ProductDetailScreen);
+export default ProductDetailScreen;

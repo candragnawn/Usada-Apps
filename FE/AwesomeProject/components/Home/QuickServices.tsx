@@ -10,11 +10,11 @@ const QuickServices = () => {
   const [scanModalVisible, setScanModalVisible] = useState(false);
 
   const handleConsultationPress = () => {
-    navigation.navigate('ConsultationScreen');
+    (navigation as any).navigate('ConsultationScreen');
   };
 
   const handleUsadaPress = () => {
-    navigation.navigate('ArticlesTab', { screen: 'UsadaMain' });
+    (navigation as any).navigate('MainApp', { screen: 'ArticlesTab', params: { screen: 'UsadaMain' } });
   };
 
   const handleScanPress = () => {
@@ -23,12 +23,12 @@ const QuickServices = () => {
 
   const handleScanCamera = () => {
     setScanModalVisible(false);
-    navigation.navigate('HerbalScanScreen');
+    (navigation as any).navigate('HerbalScanScreen');
   };
 
   const handleScanUpload = () => {
     setScanModalVisible(false);
-    navigation.navigate('HerbalScanScreen', { mode: 'upload' });
+    (navigation as any).navigate('HerbalScanScreen', { mode: 'upload' });
   };
 
   return (

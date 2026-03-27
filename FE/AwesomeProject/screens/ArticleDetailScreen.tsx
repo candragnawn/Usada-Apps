@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import ArticleDetail from '@/components/ArticleUsada/ArticleDetail';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const ArticleDetailScreen = ({ route }) => {
   return (
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
 });
 
 // Wrap the component with all providers
-export default withProviders(ArticleDetailScreen);
+export default ArticleDetailScreen;

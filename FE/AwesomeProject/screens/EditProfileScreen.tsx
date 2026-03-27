@@ -20,7 +20,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const EditProfileScreen = () => {
   const { user, updateUser, isLoading } = useAuth();
@@ -494,4 +494,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(EditProfileScreen);
+export default EditProfileScreen;

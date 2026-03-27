@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import Usada from '@/components/ArticleUsada/Article';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const UsadaScreen = () => {
   return (
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
 });
 
 // Wrap the component with all providers
-export default withProviders(UsadaScreen);
+export default UsadaScreen;

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native'; // Optional for animation
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const OrderSuccessScreen = ({ navigation, route }) => {
   const { orderData } = route.params || {};
@@ -213,4 +213,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(OrderSuccessScreen);
+export default OrderSuccessScreen;

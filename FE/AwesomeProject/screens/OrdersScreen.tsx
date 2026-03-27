@@ -17,7 +17,7 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useOrder } from '@/context/OrderContext'; // Make sure this path is correct
 import { useFocusEffect } from '@react-navigation/native';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const OrdersScreen = ({ navigation }) => {
   const { 
@@ -513,4 +513,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(OrdersScreen);
+export default OrdersScreen;

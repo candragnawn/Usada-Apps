@@ -20,7 +20,7 @@ const Header = () => {
   }
   
   const handleUsadaPress = () => {
-    (navigation as any).navigate('ArticlesTab', { screen: 'UsadaMain' });
+    (navigation as any).navigate('MainApp', { screen: 'ArticlesTab', params: { screen: 'UsadaMain' } });
   }
   
   return (

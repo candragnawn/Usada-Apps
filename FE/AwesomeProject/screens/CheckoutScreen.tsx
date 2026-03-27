@@ -17,7 +17,7 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useCart } from '@/context/CartContext';
 import { useOrder } from '@/context/OrderContext';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 import { OrderContextType } from '@/types/order';
 import { CartItem } from '@/context/CartContext';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -75,7 +75,17 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
       Alert.alert(
         'Empty Cart',
         'Your cart is empty. Please add items before checkout.',
-        [{ text: 'Go Back', onPress: () => navigation.goBack() }]
+        [{ text: 'Go Back', onPress: () => {
+          if (navigation.canGoBack()) {
+            navigation.goBack();
+          } else {
+            // Corrected: ArticlesTab is nested in MainApp
+            navigation.navigate('MainApp', { 
+              screen: 'ArticlesTab', 
+              params: { screen: 'UsadaMain' } 
+            } as any);
+          }
+        } }]
       );
     }
   }, [cartItems, isLoading, navigation]);
@@ -435,7 +445,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
           <Text style={styles.emptyText}>Your cart is empty</Text>
           <TouchableOpacity 
             style={styles.backToShopButton}
-            onPress={() => navigation.navigate('ArticlesTab', { screen: 'UsadaMain' })}
+            onPress={() => navigation.navigate('MainApp', { screen: 'ArticlesTab', params: { screen: 'UsadaMain' } } as any)}
           >
             <Text style={styles.backToShopText}>Continue Shopping</Text>
           </TouchableOpacity>
@@ -457,7 +467,17 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
       >
         <TouchableOpacity 
           style={styles.backButton} 
-          onPress={() => navigation.goBack()}
+        onPress={() => {
+          if (navigation.canGoBack()) {
+            navigation.goBack();
+          } else {
+            // Corrected: ArticlesTab is nested in MainApp
+            navigation.navigate('MainApp', { 
+              screen: 'ArticlesTab', 
+              params: { screen: 'UsadaMain' } 
+            } as any);
+          }
+        }}
           disabled={isSubmitting || loading}
         >
           <Feather name="arrow-left" size={24} color="white" />
@@ -1033,4 +1053,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(CheckoutScreen);
+export default CheckoutScreen;

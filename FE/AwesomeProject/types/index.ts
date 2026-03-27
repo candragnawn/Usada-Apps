@@ -32,7 +32,9 @@ export interface Product {
   variants?: ProductVariant[];
   sku?: string;
   status?: 'active' | 'inactive';
-  featured?: boolean;
+  is_wishlisted?: boolean;
+  wishlisted?: boolean;
+  company?: string;
   created_at?: string;
   updated_at?: string;
 }

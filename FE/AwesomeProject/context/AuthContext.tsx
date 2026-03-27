@@ -318,19 +318,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (navigation) {
         console.log('🎯 Navigating to LoginSuccess screen');
         setTimeout(() => {
-          navigation.navigate('LoginSucces');
+          navigation.navigate('LoginSuccess');
         }, 100);
       }
       
       console.log('✅ Login successful for:', userData.email);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('❌ Login failed:', error);
       
-      if (error.name === 'AbortError') {
+      const err = error as any;
+      if (err.name === 'AbortError') {
         throw new Error('Login timeout. Please check your internet connection.');
       }
       
-      throw new Error(error instanceof Error ? error.message : 'Login failed. Please check your credentials.');
+      throw new Error(err instanceof Error ? err.message : 'Login failed. Please check your credentials.');
     } finally {
       if (isMounted.current) {
         setIsLoading(false);
@@ -402,14 +403,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       console.log('✅ Registration successful for:', email);
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('❌ Registration failed:', error);
       
-      if (error.name === 'AbortError') {
+      const err = error as any;
+      if (err.name === 'AbortError') {
         throw new Error('Registration timeout. Please check your internet connection.');
       }
       
-      throw new Error(error instanceof Error ? error.message : 'Registration failed. Please try again.');
+      throw new Error(err instanceof Error ? err.message : 'Registration failed. Please try again.');
     } finally {
       if (isMounted.current) {
         setIsLoading(false);

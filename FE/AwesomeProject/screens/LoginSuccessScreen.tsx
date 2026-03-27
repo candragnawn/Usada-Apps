@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { CommonActions } from '@react-navigation/native';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const { width, height } = Dimensions.get('window');
 
@@ -69,7 +69,7 @@ const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
             index: 0,
             routes: [
               {
-                name: 'MainTabs',
+                name: 'MainApp',
                 state: {
                   index: 4, // ProfileStack tab index
                   routes: [
@@ -282,4 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(LoginSuccessScreen);
+export default LoginSuccessScreen;

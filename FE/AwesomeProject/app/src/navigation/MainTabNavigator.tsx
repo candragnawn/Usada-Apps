@@ -61,36 +61,11 @@ const MainTabNavigator = () => {
   const tabNavigatorRef = useRef(null);
   const prevAuthState = useRef(isAuthenticated);
 
-  // Handle auth state changes and navigation reset
+  // Auth state change monitoring (optional logs)
   useEffect(() => {
-    if (tabNavigatorRef.current && prevAuthState.current !== isAuthenticated) {
+    if (prevAuthState.current !== isAuthenticated) {
+      console.log(`🔐 Auth state changed: ${prevAuthState.current} -> ${isAuthenticated}`);
       prevAuthState.current = isAuthenticated;
-      
-      // Reset navigation when user logs out (authenticated -> not authenticated)
-      if (!isAuthenticated) {
-        console.log('🔄 User logged out - resetting to ProfileStackNavigator');
-        
-        (tabNavigatorRef.current as any).dispatch(
-          CommonActions.reset({
-            index: 4, // Navigate to Profile tab (index 4)
-            routes: [
-              { name: 'HomeScreen' },
-              { name: 'ArticlesTab' },
-              { name: 'ProductScreen' },
-              { name: 'CartStack' },
-              { 
-                name: 'ProfileStack',
-                state: {
-                  index: 0,
-                  routes: [{ name: 'ProtectedProfile' }]
-                }
-              }
-            ],
-          })
-        );
-      } else {
-        console.log('✅ User logged in - ProfileStackNavigator will handle routing');
-      }
     }
   }, [isAuthenticated]);
 

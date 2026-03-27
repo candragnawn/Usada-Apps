@@ -20,7 +20,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const { width } = Dimensions.get('window');
 
@@ -730,4 +730,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(ProfileScreen);
+export default ProfileScreen;

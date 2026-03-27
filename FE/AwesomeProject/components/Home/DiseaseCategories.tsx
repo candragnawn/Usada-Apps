@@ -68,9 +68,12 @@ const DiseaseCategories = () => {
         timestamp: Date.now()
       };
 
-      (navigation as any).navigate('ArticlesTab', {
-        screen: 'UsadaMain',
-        params: navigationParams
+      (navigation as any).navigate('MainApp', {
+        screen: 'ArticlesTab',
+        params: {
+          screen: 'UsadaMain',
+          params: navigationParams
+        }
       });
 
     } catch (error: any) {
@@ -104,12 +107,15 @@ const DiseaseCategories = () => {
       <View style={(styles as any).sectionHeader}>
         <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
         <TouchableOpacity 
-          onPress={() => (navigation as any).navigate('ArticlesTab', {
-            screen: 'UsadaMain',
-            params: { 
-              selectedCategory: 'Semua', 
-              resetFilter: true,
-              timestamp: Date.now() 
+          onPress={() => (navigation as any).navigate('MainApp', {
+            screen: 'ArticlesTab',
+            params: {
+              screen: 'UsadaMain',
+              params: { 
+                selectedCategory: 'Semua', 
+                resetFilter: true,
+                timestamp: Date.now() 
+              }
             }
           })}
         >

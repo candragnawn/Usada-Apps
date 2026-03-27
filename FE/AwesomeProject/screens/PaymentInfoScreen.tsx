@@ -18,7 +18,7 @@ import {
 import { WebView } from 'react-native-webview';
 import { Feather } from '@expo/vector-icons';
 import { useOrder } from '@/context/OrderContext';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const { width, height } = Dimensions.get('window');
 
@@ -1012,4 +1012,4 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
-export default withProviders(PaymentInfoScreen);
+export default PaymentInfoScreen;

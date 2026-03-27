@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('is_active')->default(true);
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('company');
             $table->unsignedBigInteger('category_id');
             $table->float('price');

@@ -19,7 +19,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext'; // Import useAuth
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 interface CartScreenProps {
   navigation?: any;
@@ -815,4 +815,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(CartScreen);
+export default CartScreen;

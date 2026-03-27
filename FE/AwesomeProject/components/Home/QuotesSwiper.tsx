@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
+  Text,
   Image,
   Animated,
   Dimensions,
@@ -11,7 +12,14 @@ import {
 
 const { width } = Dimensions.get('window');
 
-const QuotesSwiper = ({ 
+interface QuotesSwiperProps {
+  quotes?: any[];
+  autoSwipeInterval?: number;
+  showIndicators?: boolean;
+  showNavigation?: boolean;
+}
+
+const QuotesSwiper: React.FC<QuotesSwiperProps> = ({ 
   quotes = [
     require('@/assets/images/q1.png'),
     require('@/assets/images/q2.png'),
@@ -25,7 +33,7 @@ const QuotesSwiper = ({
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<any>(null);
 
   useEffect(() => {
     startAutoSwipe();
@@ -64,7 +72,7 @@ const QuotesSwiper = ({
     });
   };
 
-  const swipeToIndex = (index) => {
+  const swipeToIndex = (index: number) => {
     if (index !== currentIndex) {
       stopAutoSwipe();
       animateTransition(() => {
@@ -74,7 +82,7 @@ const QuotesSwiper = ({
     }
   };
 
-  const animateTransition = (callback) => {
+  const animateTransition = (callback: () => void) => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -202,7 +210,7 @@ const QuotesSwiper = ({
 };
 
 // Floating Decorative Element Component
-const FloatingElement = ({ delay, emoji }) => {
+const FloatingElement: React.FC<{ delay: number; emoji: string }> = ({ delay, emoji }) => {
   const floatAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0.3)).current;
 

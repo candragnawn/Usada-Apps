@@ -20,8 +20,8 @@ const LIST_IMAGE_WIDTH = 140;
 const LIST_IMAGE_HEIGHT = 320;
 
 // API Configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE || 'http://127.0.0.1:8000/storage/';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage/`;
 
 // Helper function to get authentication token
 const getAuthToken = (): string | null => {
@@ -42,7 +42,8 @@ const getImageUrl = (imagePath: string | string[]): string => {
   if (imageString.startsWith('http')) return imageString;
   
   const cleanPath = imageString.startsWith('/') ? imageString.slice(1) : imageString;
-  return `${IMAGE_BASE_URL}${cleanPath}`;
+  const baseUrl = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL : `${IMAGE_BASE_URL}/`;
+  return `${baseUrl}${cleanPath}`;
 };
 
 // Helper function to format price
@@ -126,39 +127,6 @@ const toggleWishlist = async (productId: number): Promise<boolean> => {
   }
 };
 
-// API function to add to cart
-const addToCartApi = async (productId: number, quantity: number = 1): Promise<any> => {
-  try {
-    const token = getAuthToken();
-    if (!token) {
-      throw new Error('Authentication required');
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({ 
-        product_id: productId, 
-        quantity: quantity 
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error adding to cart:', error);
-    throw error;
-  }
-};
 
 export const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
@@ -198,7 +166,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     );
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (isCartLoading) return;
     
     const totalStock = calculateTotalStock(product.variants, product.stock);
@@ -207,16 +175,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       return;
     }
 
-    const token = getAuthToken();
-    if (!token) {
-      showFeedback?.('Please login to add items to cart', 'error');
-      return;
-    }
-    
-    setIsCartLoading(true);
     try {
-      await addToCartApi(product.id, 1);
+      setIsCartLoading(true);
       
+      // Local cart update
       if (onAddToCart) {
         onAddToCart(product.id, 1);
       }

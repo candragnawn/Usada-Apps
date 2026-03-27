@@ -39,14 +39,18 @@ class ArticleController extends Controller
                 $query->published();
             }
 
+            // Paging
+            $perPage = min((int) $request->input('per_page', 12), 50);
+
             // Apply ordering
             $orderBy = $request->input('order_by', 'published_at');
             $orderDirection = $request->input('order_direction', 'desc');
             $query->orderBy($orderBy, $orderDirection);
 
-            // Pagination
-            $perPage = min((int) $request->input('per_page', 10), 50); // Max 50 items per page
-            $articles = $query->paginate($perPage);
+            // Paginate with specific columns to avoid large 'content' field in list view
+            $articles = $query->paginate($perPage, [
+                'id', 'title', 'slug', 'image_url', 'category', 'description', 'published_at', 'views_count'
+            ]);
 
             return response()->json([
                 'data' => $articles->items(),
@@ -63,6 +67,10 @@ class ArticleController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('❌ [ArticleController] Error in getArticles: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all()
+            ]);
             return response()->json([
                 'data' => null,
                 'success' => false,
@@ -261,6 +269,10 @@ class ArticleController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('❌ [ArticleController] Error in getLatestArticles: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all()
+            ]);
             return response()->json([
                 'data' => null,
                 'success' => false,
@@ -278,9 +290,9 @@ class ArticleController extends Controller
             $limit = min((int) $request->input('limit', 5), 20); // Max 20 articles
 
             $articles = Article::published()
-                ->orderBy('view_count', 'desc')
+                ->orderBy('views_count', 'desc')
                 ->take($limit)
-                ->get(['id', 'title', 'slug', 'description', 'image_url', 'category', 'view_count', 'published_at']);
+                ->get(['id', 'title', 'slug', 'description', 'image_url', 'category', 'views_count', 'published_at']);
 
             return response()->json([
                 'data' => $articles,

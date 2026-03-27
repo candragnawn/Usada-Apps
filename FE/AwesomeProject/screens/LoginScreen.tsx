@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/context/AuthContext';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState({
@@ -429,4 +429,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(LoginScreen);
+export default LoginScreen;

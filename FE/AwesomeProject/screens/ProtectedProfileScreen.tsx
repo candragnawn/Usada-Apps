@@ -16,7 +16,7 @@ import { useAuth } from '@/context/AuthContext';
 
 // Import actual ProfileScreen
 import ProfileScreen from '@/screens/ProfileScreen';
-import withProviders from '@/utils/withProviders';
+// import withProviders from '@/utils/withProviders';
 
 const COLORS = {
   primary: '#4F7942',
@@ -196,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withProviders(ProtectedProfileScreen);
+export default ProtectedProfileScreen;
