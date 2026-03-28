@@ -6,8 +6,8 @@ use App\Http\Controllers\CategoryController;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 
 Route::get('index_Product', function() {
   return view('products.index');
@@ -28,3 +28,41 @@ Route::prefix("admin")->middleware('auth')->group(function () {
 Route::get('/login',[AuthController::class,'index'])->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login')->middleware('guest');
 Route::post('/forgot-password',[AuthController::class,'forgotpassword']);
+
+// Resilient Image Serving for Windows Development (Handles hidden chars/spaces)
+Route::get('/media/{path}', function ($path) {
+    if (empty($path)) abort(404);
+    
+    $cleanPath = str_replace(['../', '..\\'], '', $path);
+    $filename = basename($cleanPath);
+    $dir = storage_path('app/public/products');
+    
+    $files = is_dir($dir) ? scandir($dir) : [];
+    foreach ($files as $f) {
+        if (trim($f) === trim($filename) || str_contains($f, $filename)) {
+            $fullPath = $dir . DIRECTORY_SEPARATOR . $f;
+            if (file_exists($fullPath) && !is_dir($fullPath)) {
+                $mime = ($f && str_ends_with($f, '.png')) ? 'image/png' : 'image/jpeg';
+                
+                // Ensure no previous output or buffering interferes with binary data
+                while (ob_get_level()) ob_end_clean();
+                
+                return response(file_get_contents($fullPath))
+                    ->header('Content-Type', $mime)
+                    ->header('Access-Control-Allow-Origin', '*');
+            }
+        }
+    }
+    
+    abort(404, "File not found: " . $path);
+})->where('path', '.*');
+
+Route::get('/test-serve/{index}', function ($index) {
+    $dir = storage_path('app/public/products');
+    $files = array_values(array_filter(scandir($dir), function($f) {
+        return !in_array($f, ['.', '..']);
+    }));
+    if (!isset($files[$index])) return "Index $index not found";
+    $fullPath = $dir . DIRECTORY_SEPARATOR . $files[$index];
+    return response()->file($fullPath);
+});
