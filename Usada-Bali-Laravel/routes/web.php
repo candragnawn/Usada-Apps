@@ -7,7 +7,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Log;
 
 Route::get('index_Product', function() {
   return view('products.index');
@@ -56,13 +55,3 @@ Route::get('/media/{path}', function ($path) {
     
     abort(404, "File not found: " . $path);
 })->where('path', '.*');
-
-Route::get('/test-serve/{index}', function ($index) {
-    $dir = storage_path('app/public/products');
-    $files = array_values(array_filter(scandir($dir), function($f) {
-        return !in_array($f, ['.', '..']);
-    }));
-    if (!isset($files[$index])) return "Index $index not found";
-    $fullPath = $dir . DIRECTORY_SEPARATOR . $files[$index];
-    return response()->file($fullPath);
-});
