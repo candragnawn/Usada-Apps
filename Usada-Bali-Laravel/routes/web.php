@@ -28,7 +28,6 @@ Route::get('/login',[AuthController::class,'index'])->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login')->middleware('guest');
 Route::post('/forgot-password',[AuthController::class,'forgotpassword']);
 
-// Resilient Image Serving for Windows Development (Handles hidden chars/spaces)
 Route::get('/media/{path}', function ($path) {
     if (empty($path)) abort(404);
     
