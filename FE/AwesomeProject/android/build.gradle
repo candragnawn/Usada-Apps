@@ -13,28 +13,11 @@ buildscript {
   }
 }
 
-def reactNativeAndroidDir = new File(
-  providers.exec {
-    workingDir(rootDir)
-    commandLine("node", "--print", "require.resolve('react-native/package.json')")
-  }.standardOutput.asText.get().trim(),
-  "../android"
-)
-
 allprojects {
-  configurations.all {
-    resolutionStrategy {
-      force 'androidx.browser:browser:1.8.0'
-    }
-  }
   repositories {
-    maven {
-      url = reactNativeAndroidDir
-    }
-
     google()
     mavenCentral()
-    maven { url = 'https://www.jitpack.io' }
+    maven { url 'https://www.jitpack.io' }
   }
 }
 

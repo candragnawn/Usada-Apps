@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "awesomeproject",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.adikaananda.AwesomeProject",
@@ -20,7 +19,6 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": false,
       "package": "com.awesomeproject",
       "googleServicesFile": "./google-services.json"
     },
@@ -46,15 +44,12 @@
     "experiments": {
       "typedRoutes": true
     },
+    "runtimeVersion": "1.0.0",
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "92c85085-e5a7-44ce-b62a-b6ac01d73b48"
+        "projectId": "08616d23-474a-4c74-8e2a-59ffe9ee1a69"
       }
-    },
-    "runtimeVersion": "1.0.0",
-    "updates": {
-      "url": "https://u.expo.dev/92c85085-e5a7-44ce-b62a-b6ac01d73b48"
     }
   }
 }
