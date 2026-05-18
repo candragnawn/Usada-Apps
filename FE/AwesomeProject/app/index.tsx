@@ -1,52 +1,56 @@
-console.log('🔴🔴🔴 [CRITICAL DEBUG] app/index.tsx EVALUATING LINE 1');
-import { OrderContextType } from '@/types/order';
-import { CartItem } from '@/context/CartContext';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useEffect, useRef } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Ionicons } from '@expo/vector-icons';
-import { 
-  View, 
-  StyleSheet, 
-  StatusBar, 
+console.log("🔴🔴🔴 [CRITICAL DEBUG] app/index.tsx EVALUATING LINE 1");
+import { OrderContextType } from "@/types/order";
+import { CartItem } from "@/context/CartContext";
+import { StackScreenProps } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import React, { useEffect, useRef } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  View,
+  StyleSheet,
+  StatusBar,
   ActivityIndicator,
   Platform,
-} from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainerRef, CommonActions, NavigationContainer } from '@react-navigation/native';
-import { 
-  RootStackParamList, 
-  UsadaStackParamList, 
-  ProductStackParamList, 
+} from "react-native";
+import * as SplashScreen from "expo-splash-screen";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import {
+  NavigationContainerRef,
+  CommonActions,
+  NavigationContainer,
+} from "@react-navigation/native";
+import {
+  RootStackParamList,
+  UsadaStackParamList,
+  ProductStackParamList,
   CartStackParamList,
-  MainTabParamList 
-} from '../types/navigation';
+  MainTabParamList,
+} from "../types/navigation";
 
 // SplashScreen.hideAsync().catch(err => console.error('❌ [DEBUG] hideAsync failed:', err));
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 
-
-import HomeScreen from '../screens/HomeScreen';
-import UsadaScreen from '../screens/UsadaScreen';
-import ProductScreen from '../screens/ProductScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
-import ArticleDetailScreen from '../screens/ArticleDetailScreen';
-import CartScreen from '../screens/CartScreen';
-import CheckoutScreen from '../screens/CheckoutScreen';
-import HerbalScanScreen from '../screens/HerbalScanScreen';
-import ScanHistoryScreen from '../screens/ScanHistoryScreen';
-import ConsultationScreen from '../screens/ConsultationScreen';
-import ConsultationBookingScreen from '../screens/ConsultationBookingScreen';
-import ChatScreen from '../screens/ChatScreen';
-import withProviders from '../utils/withProviders';
+import HomeScreen from "../screens/HomeScreen";
+import UsadaScreen from "../screens/UsadaScreen";
+import ProductScreen from "../screens/ProductScreen";
+import ProductDetailScreen from "../screens/ProductDetailScreen";
+import ArticleDetailScreen from "../screens/ArticleDetailScreen";
+import CartScreen from "../screens/CartScreen";
+import CheckoutScreen from "../screens/CheckoutScreen";
+import HerbalScanScreen from "../screens/HerbalScanScreen";
+import ScanHistoryScreen from "../screens/ScanHistoryScreen";
+import ConsultationScreen from "../screens/ConsultationScreen";
+import ConsultationBookingScreen from "../screens/ConsultationBookingScreen";
+import ChatScreen from "../screens/ChatScreen";
+import withProviders from "../utils/withProviders";
 
 // Import separated ProfileStackNavigator
-import ProfileStackNavigator from './src/navigation/stacks/ProfileStackNavigator';
+import ProfileStackNavigator from "./src/navigation/stacks/ProfileStackNavigator";
+import PaymentInfoScreen from "@/screens/PaymentInfoScreen";
 
 // Create navigation instances
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -57,41 +61,53 @@ const CartStack = createStackNavigator<CartStackParamList>();
 
 // Define colors for consistency
 const COLORS = {
-  primary: '#4F7942',
-  lightPrimary: 'rgba(79, 121, 66, 0.15)',
-  background: '#FFFFFF',
-  border: '#E8F3E8',
-  inactive: '#86A789',
+  primary: "#4F7942",
+  lightPrimary: "rgba(79, 121, 66, 0.15)",
+  background: "#FFFFFF",
+  border: "#E8F3E8",
+  inactive: "#86A789",
 };
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || (Platform.OS === 'ios' ? 47 : 0);
-const IS_IPHONE_WITH_DYNAMIC_ISLAND = Platform.OS === 'ios' && 
-  (Platform.constants?.interfaceIdiom === 'phone') && 
-  (STATUSBAR_HEIGHT > 40 || (Platform.constants?.osVersion && parseInt(Platform.constants.osVersion) >= 16));
+const STATUSBAR_HEIGHT =
+  StatusBar.currentHeight || (Platform.OS === "ios" ? 47 : 0);
+const IS_IPHONE_WITH_DYNAMIC_ISLAND =
+  Platform.OS === "ios" &&
+  Platform.constants?.interfaceIdiom === "phone" &&
+  (STATUSBAR_HEIGHT > 40 ||
+    (Platform.constants?.osVersion &&
+      parseInt(Platform.constants.osVersion) >= 16));
 
-const TabBarIcon = ({ focused, color, iconName }: { focused: boolean; color: string; iconName: React.ComponentProps<typeof Ionicons>['name'] }) => {
+const TabBarIcon = ({
+  focused,
+  color,
+  iconName,
+}: {
+  focused: boolean;
+  color: string;
+  iconName: React.ComponentProps<typeof Ionicons>["name"];
+}) => {
   return (
     <View style={styles.iconContainer}>
       {focused && <View style={styles.activeBackground} />}
-      <Ionicons 
-        name={iconName} 
-        size={24}
-        color={color} 
-        style={styles.icon}
-      />
+      <Ionicons name={iconName} size={24} color={color} style={styles.icon} />
       {focused && <View style={styles.activeDot} />}
     </View>
   );
-};  
-
+};
 
 const commonStackScreenOptions = {
   headerShown: false,
   // cardStyle: { backgroundColor: '#F8FDF8' }, // Remove, not supported in TS
   gestureEnabled: true,
-  gestureDirection: 'horizontal' as const,
+  gestureDirection: "horizontal" as const,
   // Remove transitionSpec, use default transitions
-  cardStyleInterpolator: ({ current, layouts }: { current: any; layouts: any }) => {
+  cardStyleInterpolator: ({
+    current,
+    layouts,
+  }: {
+    current: any;
+    layouts: any;
+  }) => {
     return {
       cardStyle: {
         transform: [
@@ -114,10 +130,7 @@ const UsadaStackNavigator = () => {
       initialRouteName="UsadaMain"
       screenOptions={commonStackScreenOptions}
     >
-      <UsadaStack.Screen 
-        name="UsadaMain" 
-        component={UsadaScreen}
-      />
+      <UsadaStack.Screen name="UsadaMain" component={UsadaScreen} />
     </UsadaStack.Navigator>
   );
 };
@@ -141,7 +154,7 @@ const ProductStackNavigator = () => {
 // Cart Stack Navigator with auth check for checkout
 const CartStackNavigator = () => {
   const { isAuthenticated } = useAuth();
-  
+
   return (
     <CartStack.Navigator
       initialRouteName="CartMain"
@@ -149,10 +162,7 @@ const CartStackNavigator = () => {
     >
       <CartStack.Screen name="CartMain" component={CartScreen} />
       {isAuthenticated && (
-        <CartStack.Screen 
-          name="Checkout" 
-          component={CheckoutScreen}
-        />
+        <CartStack.Screen name="Checkout" component={CheckoutScreen} />
       )}
     </CartStack.Navigator>
   );
@@ -164,7 +174,7 @@ const MainTabNavigator = () => {
 
   return (
     <Tab.Navigator
-      key={isAuthenticated ? 'authed' : 'unauthed'}
+      key={isAuthenticated ? "authed" : "unauthed"}
       initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
@@ -181,61 +191,83 @@ const MainTabNavigator = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIcon focused={focused} color={color} iconName="home" />
-          ),
+          tabBarIcon: ({
+            focused,
+            color,
+          }: {
+            focused: boolean;
+            color: string;
+          }) => <TabBarIcon focused={focused} color={color} iconName="home" />,
         }}
       />
-      
+
       <Tab.Screen
         name="ArticlesTab"
         component={UsadaStackNavigator}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIcon focused={focused} color={color} iconName="book" />
-          ),
+          tabBarIcon: ({
+            focused,
+            color,
+          }: {
+            focused: boolean;
+            color: string;
+          }) => <TabBarIcon focused={focused} color={color} iconName="book" />,
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            console.log('📖 [TAB PRESS] ArticlesTab button clicked');
+            console.log("📖 [TAB PRESS] ArticlesTab button clicked");
             e.preventDefault();
-            navigation.navigate('ArticlesTab', {
-              screen: 'UsadaMain',
+            navigation.navigate("ArticlesTab", {
+              screen: "UsadaMain",
               params: {
                 resetFilter: true,
                 fromTabNavigation: true,
-                timestamp: Date.now()
-              }
+                timestamp: Date.now(),
+              },
             });
           },
         })}
       />
-      
+
       <Tab.Screen
         name="ProductScreen"
         component={ProductStackNavigator}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIcon focused={focused} color={color} iconName="leaf" />
-          ),
+          tabBarIcon: ({
+            focused,
+            color,
+          }: {
+            focused: boolean;
+            color: string;
+          }) => <TabBarIcon focused={focused} color={color} iconName="leaf" />,
         }}
       />
-      
+
       <Tab.Screen
         name="CartStack"
         component={CartStackNavigator}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-            <TabBarIcon focused={focused} color={color} iconName="cart" />
-          ),
+          tabBarIcon: ({
+            focused,
+            color,
+          }: {
+            focused: boolean;
+            color: string;
+          }) => <TabBarIcon focused={focused} color={color} iconName="cart" />,
         }}
       />
-      
+
       <Tab.Screen
         name="ProfileScreen"
         component={ProfileStackNavigator}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
+          tabBarIcon: ({
+            focused,
+            color,
+          }: {
+            focused: boolean;
+            color: string;
+          }) => (
             <TabBarIcon focused={focused} color={color} iconName="person" />
           ),
         }}
@@ -251,9 +283,13 @@ const RootStackNavigator = () => (
     <Stack.Screen name="HerbalScanScreen" component={HerbalScanScreen} />
     <Stack.Screen name="ScanHistory" component={ScanHistoryScreen} />
     <Stack.Screen name="ConsultationScreen" component={ConsultationScreen} />
-    <Stack.Screen name="ConsultationBooking" component={ConsultationBookingScreen} />
+    <Stack.Screen
+      name="ConsultationBooking"
+      component={ConsultationBookingScreen}
+    />
     <Stack.Screen name="ChatScreen" component={ChatScreen} />
     <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
+    <Stack.Screen name="PaymentInfo" component={PaymentInfoScreen} />
   </Stack.Navigator>
 );
 
@@ -261,37 +297,40 @@ const RootStackNavigator = () => (
 const AppNavigatorContent = () => {
   try {
     const { isLoading, isAuthenticated } = useAuth();
-    console.log('🔄 [DEBUG] AppNavigatorContent rendering:', { isLoading, isAuthenticated });
+    console.log("🔄 [DEBUG] AppNavigatorContent rendering:", {
+      isLoading,
+      isAuthenticated,
+    });
 
-  // Track auth state changes for cleanup
-  useEffect(() => {
-    if (isAuthenticated) {
+    // Track auth state changes for cleanup
+    useEffect(() => {
+      if (isAuthenticated) {
         // User logged in
-        console.log('User logged in - initializing user data...');
-    } else {
+        console.log("User logged in - initializing user data...");
+      } else {
         // User logged out
-        console.log('User logged out - clearing cache...');
-    }
-    
-    // Hide splash screen once we're done loading auth
-    if (!isLoading) {
-      SplashScreen.hideAsync().catch(() => {});
-    }
-  }, [isAuthenticated, isLoading]);
+        console.log("User logged out - clearing cache...");
+      }
 
-  // Show loading screen while checking authentication
-  if (isLoading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      </SafeAreaView>
-    );
-  }
+      // Hide splash screen once we're done loading auth
+      if (!isLoading) {
+        SplashScreen.hideAsync().catch(() => {});
+      }
+    }, [isAuthenticated, isLoading]);
+
+    // Show loading screen while checking authentication
+    if (isLoading) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </SafeAreaView>
+      );
+    }
 
     return (
-      <SafeAreaView style={styles.container} edges={['right', 'left']}>
+      <SafeAreaView style={styles.container} edges={["right", "left"]}>
         <StatusBar
           barStyle="light-content"
           backgroundColor="transparent"
@@ -303,9 +342,16 @@ const AppNavigatorContent = () => {
       </SafeAreaView>
     );
   } catch (error) {
-    console.error('💥 [DEBUG] AppNavigatorContent CRASHED:', error);
+    console.error("💥 [DEBUG] AppNavigatorContent CRASHED:", error);
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "red",
+        }}
+      >
         <ActivityIndicator size="large" color="white" />
       </View>
     );
@@ -324,13 +370,13 @@ const AppNavigator = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F8FDF8',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F8FDF8",
   },
   tabBar: {
     backgroundColor: COLORS.background,
@@ -338,41 +384,40 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.border,
     paddingHorizontal: 10,
     elevation: 8,
-    shadowColor: '#000000',
+    shadowColor: "#000000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
     paddingTop: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: Platform.OS === 'ios' ? (
-      IS_IPHONE_WITH_DYNAMIC_ISLAND ? 95 : 85
-    ) : 75,
-    paddingBottom: Platform.OS === 'ios' ? 
-      (IS_IPHONE_WITH_DYNAMIC_ISLAND ? 35 : 25) : 10,
+    height:
+      Platform.OS === "ios" ? (IS_IPHONE_WITH_DYNAMIC_ISLAND ? 95 : 85) : 75,
+    paddingBottom:
+      Platform.OS === "ios" ? (IS_IPHONE_WITH_DYNAMIC_ISLAND ? 35 : 25) : 10,
   },
   iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: 50,
     height: 50,
   },
   icon: {},
   activeBackground: {
-    position: 'absolute',
+    position: "absolute",
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: COLORS.lightPrimary,
   },
   activeDot: {
-    position: 'absolute',
+    position: "absolute",
     bottom: -8,
     width: 5,
     height: 5,
     borderRadius: 2.5,
     backgroundColor: COLORS.primary,
-  }
+  },
 });
 
 // CATATAN PENTING:

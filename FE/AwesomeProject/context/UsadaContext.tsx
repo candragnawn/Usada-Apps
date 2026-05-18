@@ -45,7 +45,7 @@ const UsadaContext = createContext<UsadaContextType>({
 });
 
 // API Configuration
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || '';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://10.0.2.2:8000';
 // FIX 1: REACT_APP_IMAGE → REACT_APP_IMAGE_URL (typo fix)
 const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE_URL || `${API_BASE_URL}/storage`;
 

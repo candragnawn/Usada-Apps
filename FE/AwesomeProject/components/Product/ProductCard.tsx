@@ -20,7 +20,7 @@ const LIST_IMAGE_WIDTH = 140;
 const LIST_IMAGE_HEIGHT = 320;
 
 // API Configuration
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || process.env.REACT_APP_API_URL || 'http://10.0.2.2:8000';
 const IMAGE_BASE_URL = process.env.EXPO_PUBLIC_IMAGE_URL || process.env.REACT_APP_IMAGE || `${API_BASE_URL}/storage/`;
 
 // Helper function to get authentication token

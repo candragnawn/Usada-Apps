@@ -351,8 +351,8 @@ class OrderController extends Controller
                 'currency' => 'IDR',
                 'reminder_time' => 1,
                 'payer_email' => $order->email,
-                'success_redirect_url' => env('APP_URL') . '/order-success/' . $order->id,
-                'failure_redirect_url' => env('APP_URL') . '/order-failed/' . $order->id,
+                'success_redirect_url' =>'/order-success/' . $order->id,
+                'failure_redirect_url' =>'/order-failed/' . $order->id,
             ]);
 
             // Generate invoice via Xendit API
