@@ -44,6 +44,7 @@ export interface Order {
 
 export interface OrderContextType {
   orders: Order[];
+   getUserOrders: Order
   currentOrder: Order | null;
   loading: boolean;
   error: string | null;

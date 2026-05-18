@@ -1,10 +1,17 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
-import { useUsada } from '@/context/UsadaContext';
-import { DISEASE_CATEGORIES } from '@/constants/data';
-import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
-import withProviders from '@/utils/withProviders';
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
+import { useUsada } from "@/context/UsadaContext";
+import { DISEASE_CATEGORIES } from "@/constants/data";
+import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
+import withProviders from "@/utils/withProviders";
 
 const DiseaseCategories = () => {
   const navigation = useNavigation();
@@ -12,29 +19,30 @@ const DiseaseCategories = () => {
     articles,
     categories: contextCategories,
     loading,
-    categoryHasArticles
+    categoryHasArticles,
   } = useUsada();
 
-
   const getProcessedCategories = () => {
-  
-    const rawCategories: string[] = contextCategories ? 
-      contextCategories.filter((cat: any) => cat !== 'Semua' && cat !== 'All') : 
-      [];
+    const rawCategories: string[] = contextCategories
+      ? contextCategories.filter((cat: any) => cat !== "Semua" && cat !== "All")
+      : [];
 
     return rawCategories.map((catName: string, index: number) => {
-      const staticIcon = DISEASE_CATEGORIES.find((icon: any) => 
-        (icon as any).name === catName ||
-        (icon as any).category === catName
-      ) || DISEASE_CATEGORIES[index % DISEASE_CATEGORIES.length];
-      
+      const staticIcon =
+        DISEASE_CATEGORIES.find(
+          (icon: any) =>
+            (icon as any).name === catName ||
+            (icon as any).category === catName,
+        ) || DISEASE_CATEGORIES[index % DISEASE_CATEGORIES.length];
+
       return {
         id: `category-${catName}`,
         name: catName,
         category: catName,
         icon: staticIcon ? staticIcon.image : null,
-        color: (staticIcon as any).color || '#E8F5E8',
-        articleCount: articles.filter((a: any) => a.category === catName).length
+        color: (staticIcon as any).color || "#E8F5E8",
+        articleCount: articles.filter((a: any) => a.category === catName)
+          .length,
       };
     });
   };
@@ -45,43 +53,41 @@ const DiseaseCategories = () => {
   const handleCategoryPress = async (category: any) => {
     try {
       const categoryName = category.category || category.name;
-      
+
       if (!categoryName) {
-        console.error(' Category name missing:', category);
+        console.error(" Category name missing:", category);
 
         return;
       }
 
       // Check if category has articles
       if (categoryHasArticles && !categoryHasArticles(categoryName)) {
-        Alert.alert('Info', `Tidak ada artikel untuk kategori ${categoryName}`);
+        Alert.alert("Info", `Tidak ada artikel untuk kategori ${categoryName}`);
         return;
       }
 
-      console.log('Navigating to category:', categoryName);
+      console.log("Navigating to category:", categoryName);
 
       // Create clear navigation parameters
       const navigationParams = {
         selectedCategory: categoryName,
-        searchText: '',
+        searchText: "",
         fromCategorySelection: true,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
-      (navigation as any).navigate('MainApp', {
-        screen: 'ArticlesTab',
+      (navigation as any).navigate("MainTabs", {
+        screen: "ArticlesTab",
         params: {
-          screen: 'UsadaMain',
-          params: navigationParams
-        }
+          screen: "UsadaMain",
+          params: navigationParams,
+        },
       });
-
     } catch (error: any) {
-      console.error('❌ Critical navigation error:', error);
-      Alert.alert('Error', `Navigation failed: ${error.message}`);
+      console.error("❌ Critical navigation error:", error);
+      Alert.alert("Error", `Navigation failed: ${error.message}`);
     }
   };
-
 
   // Handle loading and empty states
   if (loading && (!diseaseCategories || diseaseCategories.length === 0)) {
@@ -106,23 +112,25 @@ const DiseaseCategories = () => {
     <View style={styles.sectionContainer}>
       <View style={(styles as any).sectionHeader}>
         <Text style={styles.sectionTitle}>Kategori Penyakit</Text>
-        <TouchableOpacity 
-          onPress={() => (navigation as any).navigate('MainApp', {
-            screen: 'ArticlesTab',
-            params: {
-              screen: 'UsadaMain',
-              params: { 
-                selectedCategory: 'Semua', 
-                resetFilter: true,
-                timestamp: Date.now() 
-              }
-            }
-          })}
+        <TouchableOpacity
+          onPress={() =>
+            (navigation as any).navigate("MainTabs", {
+              screen: "ArticlesTab",
+              params: {
+                screen: "UsadaMain",
+                params: {
+                  selectedCategory: "Semua",
+                  resetFilter: true,
+                  timestamp: Date.now(),
+                },
+              },
+            })
+          }
         >
           <Text style={(styles as any).seeAllText}>Lihat Semua</Text>
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -130,14 +138,16 @@ const DiseaseCategories = () => {
         contentContainerStyle={styles.categoriesContent}
       >
         {diseaseCategories.map((category: any) => {
-          const hasArticles = categoryHasArticles ? categoryHasArticles(category.category) : true;
-          
+          const hasArticles = categoryHasArticles
+            ? categoryHasArticles(category.category)
+            : true;
+
           return (
             <TouchableOpacity
               key={`category-${category.id}`}
               style={[
-                styles.categoryCard, 
-                !hasArticles && (styles as any).disabledCategoryCard
+                styles.categoryCard,
+                !hasArticles && (styles as any).disabledCategoryCard,
               ]}
               onPress={() => handleCategoryPress(category)}
               activeOpacity={hasArticles ? 0.7 : 0.3}
@@ -149,17 +159,19 @@ const DiseaseCategories = () => {
                     source={category.icon}
                     style={[
                       styles.categoryImage,
-                      !hasArticles && (styles as any).disabledCategoryImage
+                      !hasArticles && (styles as any).disabledCategoryImage,
                     ]}
                     resizeMode="contain"
                   />
                 )}
               </View>
-              <Text style={[
-                styles.categoryName,
-                !hasArticles && (styles as any).disabledCategoryName
-              ]}>
-                {category.category || category.name || 'Unknown Category'}
+              <Text
+                style={[
+                  styles.categoryName,
+                  !hasArticles && (styles as any).disabledCategoryName,
+                ]}
+              >
+                {category.category || category.name || "Unknown Category"}
               </Text>
             </TouchableOpacity>
           );

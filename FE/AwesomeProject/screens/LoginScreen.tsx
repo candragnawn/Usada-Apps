@@ -1,5 +1,5 @@
 // src/Screens/LoginScreen.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,22 +12,22 @@ import {
   ScrollView,
   Alert,
   KeyboardTypeOptions,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '@/context/AuthContext';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "@/context/AuthContext";
 // import withProviders from '@/utils/withProviders';
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [showRegisterPrompt, setShowRegisterPrompt] = useState(false);
-  
+
   const navigation = useNavigation<any>();
   const { login, isLoading, isAuthenticated, checkAuthStatus } = useAuth();
 
@@ -36,7 +36,7 @@ const LoginScreen = () => {
     if (isAuthenticated) {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'MainApp' }],
+        routes: [{ name: "MainTabs" }],
       });
     }
   }, [isAuthenticated, navigation]);
@@ -48,31 +48,31 @@ const LoginScreen = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      (newErrors as any).email = 'Email is required';
+      (newErrors as any).email = "Email is required";
     } else if (!emailRegex.test(formData.email.trim())) {
-      (newErrors as any).email = 'Please enter a valid email address';
+      (newErrors as any).email = "Please enter a valid email address";
     }
-    
+
     // Validate password
     if (!formData.password) {
-      (newErrors as any).password = 'Password is required';
+      (newErrors as any).password = "Password is required";
     } else if (formData.password.length < 6) {
-      (newErrors as any).password = 'Password must be at least 6 characters';
+      (newErrors as any).password = "Password must be at least 6 characters";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if ((errors as any)[field]) {
-      setErrors(prev => ({ ...prev, [field]: null }));
+      setErrors((prev) => ({ ...prev, [field]: null }));
     }
     // Hide register prompt when user starts typing
     if (showRegisterPrompt) {
@@ -87,43 +87,62 @@ const LoginScreen = () => {
 
     try {
       await login(formData.email.trim().toLowerCase(), formData.password);
-      
+
       // Navigation will be handled by the useEffect hook when isAuthenticated changes
     } catch (error: any) {
-      console.error('Login error:', error);
-      
+      console.error("Login error:", error);
+
       // Check if error indicates user doesn't exist
-      if (error.message.includes('credentials') || 
-          error.message.includes('user not found') || 
-          error.message.includes('invalid') ||
-          error.message.includes('Unauthorized')) {
+      if (
+        error.message.includes("credentials") ||
+        error.message.includes("user not found") ||
+        error.message.includes("invalid") ||
+        error.message.includes("Unauthorized")
+      ) {
         setShowRegisterPrompt(true);
       } else {
         // Handle other errors
-        let errorMessage = 'Please try again later';
-        
-        if (error.message.includes('network') || error.message.includes('fetch')) {
-          errorMessage = 'Network error. Please check your internet connection and try again.';
+        let errorMessage = "Please try again later";
+
+        if (
+          error.message.includes("network") ||
+          error.message.includes("fetch")
+        ) {
+          errorMessage =
+            "Network error. Please check your internet connection and try again.";
         } else if (error.message) {
           errorMessage = error.message;
         }
-        
-        Alert.alert('Login Failed', errorMessage);
+
+        Alert.alert("Login Failed", errorMessage);
       }
     }
   };
 
   const navigateToRegister = () => {
-    navigation.navigate('Register');
+    navigation.navigate("Register");
   };
 
-  const renderInputContainer = (field: keyof typeof formData, placeholder: string, icon: any, keyboardType: KeyboardTypeOptions = 'default', isPassword = false) => (
+  const renderInputContainer = (
+    field: keyof typeof formData,
+    placeholder: string,
+    icon: any,
+    keyboardType: KeyboardTypeOptions = "default",
+    isPassword = false,
+  ) => (
     <View style={styles.inputWrapper}>
-      <View style={[
-        styles.inputContainer,
-        errors[field] && styles.inputContainerError
-      ]}>
-        <Ionicons name={icon} size={22} color="#4F7942" style={styles.inputIcon} />
+      <View
+        style={[
+          styles.inputContainer,
+          errors[field] && styles.inputContainerError,
+        ]}
+      >
+        <Ionicons
+          name={icon}
+          size={22}
+          color="#4F7942"
+          style={styles.inputIcon}
+        />
         <TextInput
           style={styles.input}
           placeholder={placeholder}
@@ -141,16 +160,14 @@ const LoginScreen = () => {
             style={styles.eyeIcon}
           >
             <Ionicons
-              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              name={showPassword ? "eye-off-outline" : "eye-outline"}
               size={22}
               color="#86A789"
             />
           </TouchableOpacity>
         )}
       </View>
-      {errors[field] && (
-        <Text style={styles.errorText}>{errors[field]}</Text>
-      )}
+      {errors[field] && <Text style={styles.errorText}>{errors[field]}</Text>}
     </View>
   );
 
@@ -160,7 +177,8 @@ const LoginScreen = () => {
         <Ionicons name="person-add-outline" size={40} color="#4F7942" />
         <Text style={styles.promptTitle}>Account Not Found</Text>
         <Text style={styles.promptMessage}>
-          It looks like you don't have an account yet. Would you like to create one?
+          It looks like you don't have an account yet. Would you like to create
+          one?
         </Text>
         <View style={styles.promptButtons}>
           <TouchableOpacity
@@ -185,10 +203,10 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -199,13 +217,24 @@ const LoginScreen = () => {
           </View>
 
           <View style={styles.formContainer}>
-            {renderInputContainer('email', 'Email Address', 'mail-outline', 'email-address')}
-            {renderInputContainer('password', 'Password', 'lock-closed-outline', 'default', true)}
+            {renderInputContainer(
+              "email",
+              "Email Address",
+              "mail-outline",
+              "email-address",
+            )}
+            {renderInputContainer(
+              "password",
+              "Password",
+              "lock-closed-outline",
+              "default",
+              true,
+            )}
 
             <TouchableOpacity
               style={[
                 styles.loginButton,
-                isLoading && styles.loginButtonDisabled
+                isLoading && styles.loginButtonDisabled,
               ]}
               onPress={handleLogin}
               disabled={isLoading}
@@ -223,7 +252,10 @@ const LoginScreen = () => {
 
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={navigateToRegister} activeOpacity={0.7}>
+              <TouchableOpacity
+                onPress={navigateToRegister}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.registerLinkText}>Register</Text>
               </TouchableOpacity>
             </View>
@@ -239,7 +271,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
   keyboardView: {
     flex: 1,
@@ -248,40 +280,40 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     paddingBottom: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   headerContainer: {
     marginBottom: 40,
-    alignItems: 'center',
+    alignItems: "center",
   },
   titleText: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#4F7942',
+    fontWeight: "bold",
+    color: "#4F7942",
     marginBottom: 8,
   },
   subtitleText: {
     fontSize: 16,
-    color: '#86A789',
+    color: "#86A789",
   },
   formContainer: {
-    width: '100%',
+    width: "100%",
   },
   inputWrapper: {
     marginBottom: 16,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E8F3E8',
+    borderColor: "#E8F3E8",
     height: 60,
     paddingHorizontal: 16,
   },
   inputContainerError: {
-    borderColor: '#FF6B6B',
+    borderColor: "#FF6B6B",
     borderWidth: 1.5,
   },
   inputIcon: {
@@ -289,29 +321,29 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: '100%',
-    color: '#333',
+    height: "100%",
+    color: "#333",
     fontSize: 16,
   },
   eyeIcon: {
     padding: 10,
   },
   errorText: {
-    color: '#FF6B6B',
+    color: "#FF6B6B",
     fontSize: 12,
     marginTop: 5,
     marginLeft: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   loginButton: {
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     height: 56,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
-    shadowColor: '#4F7942',
+    shadowColor: "#4F7942",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -324,54 +356,54 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   loginButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   loadingText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 10,
   },
   registerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 16,
   },
   registerText: {
-    color: '#86A789',
+    color: "#86A789",
     fontSize: 14,
   },
   registerLinkText: {
-    color: '#4F7942',
+    color: "#4F7942",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   // Register Prompt Styles
   promptContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   promptCard: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 16,
     padding: 24,
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
     maxWidth: 320,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -382,22 +414,22 @@ const styles = StyleSheet.create({
   },
   promptTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#4F7942',
+    fontWeight: "bold",
+    color: "#4F7942",
     marginTop: 16,
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   promptMessage: {
     fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     lineHeight: 20,
     marginBottom: 24,
   },
   promptButtons: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     gap: 12,
   },
   promptButtonSecondary: {
@@ -405,27 +437,27 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#4F7942',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: "#4F7942",
+    justifyContent: "center",
+    alignItems: "center",
   },
   promptButtonSecondaryText: {
-    color: '#4F7942',
+    color: "#4F7942",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   promptButtonPrimary: {
     flex: 1,
     height: 44,
     borderRadius: 8,
-    backgroundColor: '#4F7942',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#4F7942",
+    justifyContent: "center",
+    alignItems: "center",
   },
   promptButtonPrimaryText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

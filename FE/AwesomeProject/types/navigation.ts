@@ -1,11 +1,11 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { NavigatorScreenParams } from "@react-navigation/native";
 
 export type RootStackParamList = {
   Opening: undefined;
-  MainApp: NavigatorScreenParams<MainTabParamList> | undefined;
+  MainTabs: NavigatorScreenParams<MainTabParamList> | undefined;
   MainTabs: undefined;
   Auth: undefined;
-  HomeScreen: undefined;
+  MainTabs: undefined;
   UsadaScreen: undefined;
   UsadaMain: undefined;
   ProductScreen: undefined;
@@ -21,8 +21,8 @@ export type RootStackParamList = {
     amount: number;
     orderData: any;
   };
-  HerbalScanScreen: { mode?: 'upload' } | undefined;
-  ScanScreen: { mode?: 'upload' } | undefined;
+  HerbalScanScreen: { mode?: "upload" } | undefined;
+  ScanScreen: { mode?: "upload" } | undefined;
   ScanHistory: undefined;
   ConsultationScreen: undefined;
   ConsultationBooking: { doctor?: any } | undefined;
@@ -31,7 +31,9 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   LoginSuccess: undefined;
-  ProfileScreen: { screen: keyof ProfileStackParamList; params?: any } | undefined;
+  ProfileScreen:
+    | { screen: keyof ProfileStackParamList; params?: any }
+    | undefined;
   ProfileMain: undefined;
 };
 
@@ -58,24 +60,30 @@ export type ProductStackParamList = {
 };
 
 export type UsadaStackParamList = {
-  UsadaMain: {
-    selectedCategory?: string;
-    searchText?: string;
-    fromCategorySelection?: boolean;
-    resetFilter?: boolean;
-    fromTabNavigation?: boolean;
-    timestamp?: number;
-  } | undefined;
-  UsadaScreen: {
-    selectedCategory?: string;
-    searchText?: string;
-    fromCategorySelection?: boolean;
-  } | undefined;
-  Usada: {
-    selectedCategory?: string;
-    searchText?: string;
-    fromCategorySelection?: boolean;
-  } | undefined;
+  UsadaMain:
+    | {
+        selectedCategory?: string;
+        searchText?: string;
+        fromCategorySelection?: boolean;
+        resetFilter?: boolean;
+        fromTabNavigation?: boolean;
+        timestamp?: number;
+      }
+    | undefined;
+  UsadaScreen:
+    | {
+        selectedCategory?: string;
+        searchText?: string;
+        fromCategorySelection?: boolean;
+      }
+    | undefined;
+  Usada:
+    | {
+        selectedCategory?: string;
+        searchText?: string;
+        fromCategorySelection?: boolean;
+      }
+    | undefined;
   ArticleDetail: { article: any; fromCategory?: any };
 };
 
@@ -88,9 +96,11 @@ export type ProfileStackParamList = {
 };
 
 export type MainTabParamList = {
-  HomeScreen: undefined;
+  MainTabs: undefined;
   ArticlesTab: { screen: keyof UsadaStackParamList; params?: any } | undefined;
   ProductScreen: undefined;
   CartStack: { screen: keyof CartStackParamList; params?: any } | undefined;
-  ProfileScreen: { screen: keyof ProfileStackParamList; params?: any } | undefined;
+  ProfileScreen:
+    | { screen: keyof ProfileStackParamList; params?: any }
+    | undefined;
 };

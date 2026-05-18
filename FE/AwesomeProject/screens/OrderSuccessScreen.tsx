@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -7,38 +7,35 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import LottieView from 'lottie-react-native'; // Optional for animation
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import LottieView from "lottie-react-native"; // Optional for animation
 // import withProviders from '@/utils/withProviders';
 
 const OrderSuccessScreen = ({ navigation, route }) => {
   const { orderData } = route.params || {};
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
       minimumFractionDigits: 0,
     }).format(price);
   };
 
   const handleContinueShopping = () => {
     // Navigate to home and reset the stack
-    navigation.navigate('HomeScreen');
+    navigation.navigate("MainTabs");
   };
 
   const handleViewOrders = () => {
     // Navigate to orders screen
-    navigation.navigate('OrdersScreen');
+    navigation.navigate("OrdersScreen");
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="#4F7942"
-      />
+      <StatusBar barStyle="light-content" backgroundColor="#4F7942" />
 
       <View style={styles.content}>
         <View style={styles.iconContainer}>
@@ -47,28 +44,33 @@ const OrderSuccessScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-    
         <Text style={styles.title}>Order Placed Successfully!</Text>
         <Text style={styles.subtitle}>
-          Thank you for your purchase. Your order has been received and will be processed shortly.
+          Thank you for your purchase. Your order has been received and will be
+          processed shortly.
         </Text>
-
 
         {orderData && (
           <View style={styles.orderDetails}>
             <Text style={styles.orderDetailsTitle}>Order Details</Text>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Items:</Text>
-              <Text style={styles.detailValue}>{orderData.itemCount} items</Text>
+              <Text style={styles.detailValue}>
+                {orderData.itemCount} items
+              </Text>
             </View>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Total Amount:</Text>
-              <Text style={styles.detailValue}>{formatPrice(orderData.total)}</Text>
+              <Text style={styles.detailValue}>
+                {formatPrice(orderData.total)}
+              </Text>
             </View>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Payment Method:</Text>
               <Text style={styles.detailValue}>
-                {orderData.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Bank Transfer'}
+                {orderData.paymentMethod === "cod"
+                  ? "Cash on Delivery"
+                  : "Bank Transfer"}
               </Text>
             </View>
           </View>
@@ -100,12 +102,12 @@ const OrderSuccessScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   iconContainer: {
@@ -115,10 +117,10 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#4F7942',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
+    backgroundColor: "#4F7942",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -126,25 +128,25 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2E5233',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#2E5233",
+    textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#86A789',
-    textAlign: 'center',
+    color: "#86A789",
+    textAlign: "center",
     marginBottom: 30,
     lineHeight: 24,
   },
   orderDetails: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 15,
     padding: 20,
     marginBottom: 30,
-    width: '100%',
-    shadowColor: '#000',
+    width: "100%",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
@@ -152,63 +154,63 @@ const styles = StyleSheet.create({
   },
   orderDetailsTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2E5233',
+    fontWeight: "bold",
+    color: "#2E5233",
     marginBottom: 15,
   },
   detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 10,
   },
   detailLabel: {
     fontSize: 15,
-    color: '#86A789',
+    color: "#86A789",
   },
   detailValue: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#2E5233',
+    fontWeight: "600",
+    color: "#2E5233",
   },
   buttonContainer: {
-    width: '100%',
+    width: "100%",
   },
   primaryButton: {
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     borderRadius: 15,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 3,
   },
   primaryButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   secondaryButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 15,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 2,
-    borderColor: '#4F7942',
+    borderColor: "#4F7942",
   },
   secondaryButtonText: {
-    color: '#4F7942',
+    color: "#4F7942",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
 });

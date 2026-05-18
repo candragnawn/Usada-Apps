@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,47 +13,51 @@ import {
   ImageBackground,
   ActivityIndicator,
   KeyboardAvoidingView,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { useCart } from '@/context/CartContext';
-import { useOrder } from '@/context/OrderContext';
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useCart } from "@/context/CartContext";
+import { useOrder } from "@/context/OrderContext";
 // import withProviders from '@/utils/withProviders';
-import { OrderContextType } from '@/types/order';
-import { CartItem } from '@/context/CartContext';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/types/navigation';
+import { OrderContextType } from "@/types/order";
+import { CartItem } from "@/context/CartContext";
+import { StackScreenProps } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "@/types/navigation";
 // REMOVED: import styles from './styles';
 
-type Props = StackScreenProps<RootStackParamList, 'Checkout'>;
+type Props = StackScreenProps<RootStackParamList, "Checkout">;
 
 const CheckoutScreen = ({ navigation, route }: Props) => {
   const { cartItems, totalAmount, clearCart, isLoading } = useCart();
-  const { 
-    shippingInfo, 
-    updateShippingInfo, 
-    createOrder, 
+  const {
+    shippingInfo,
+    updateShippingInfo,
+    createOrder,
     generatePaymentInvoice,
-    loading, 
-    error, 
-    clearError 
+    loading,
+    error,
+    clearError,
   } = useOrder() as OrderContextType;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formErrors, setFormErrors] = useState<Record<string, string | null>>({});
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const [formErrors, setFormErrors] = useState<Record<string, string | null>>(
+    {},
+  );
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
 
   const shippingFee = 10000;
   const taxAmount = Math.round(totalAmount * 0.1);
   const grandTotal = totalAmount + shippingFee + taxAmount;
-  const itemCount = cartItems?.reduce((total, item) => total + item.quantity, 0) || 0;
-  const fullName = `${shippingInfo.first_name || ''} ${shippingInfo.last_name || ''}`.trim();
+  const itemCount =
+    cartItems?.reduce((total, item) => total + item.quantity, 0) || 0;
+  const fullName =
+    `${shippingInfo.first_name || ""} ${shippingInfo.last_name || ""}`.trim();
 
   const paymentMethods = [
-    { key: 'BANK_TRANSFER', label: 'Bank Transfer' },
-    { key: 'EWALLET', label: 'E-Wallet (OVO, DANA, dll)' },
-    { key: 'CREDIT_CARD', label: 'Kartu Kredit/Debit' },
+    { key: "BANK_TRANSFER", label: "Bank Transfer" },
+    { key: "EWALLET", label: "E-Wallet (OVO, DANA, dll)" },
+    { key: "CREDIT_CARD", label: "Kartu Kredit/Debit" },
   ];
 
   useEffect(() => {
@@ -63,9 +67,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert('Error', error, [
-        { text: 'OK', onPress: clearError }
-      ]);
+      Alert.alert("Error", error, [{ text: "OK", onPress: clearError }]);
     }
   }, [error]);
 
@@ -73,54 +75,59 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
     // Only show alert if we finished loading and cart is still empty
     if (!isLoading && (!cartItems || cartItems.length === 0)) {
       Alert.alert(
-        'Empty Cart',
-        'Your cart is empty. Please add items before checkout.',
-        [{ text: 'Go Back', onPress: () => {
-          if (navigation.canGoBack()) {
-            navigation.goBack();
-          } else {
-            // Corrected: ArticlesTab is nested in MainApp
-            navigation.navigate('MainApp', { 
-              screen: 'ArticlesTab', 
-              params: { screen: 'UsadaMain' } 
-            } as any);
-          }
-        } }]
+        "Empty Cart",
+        "Your cart is empty. Please add items before checkout.",
+        [
+          {
+            text: "Go Back",
+            onPress: () => {
+              if (navigation.canGoBack()) {
+                navigation.goBack();
+              } else {
+                // Corrected: ArticlesTab is nested in MainTabs
+                navigation.navigate("MainTabs", {
+                  screen: "ArticlesTab",
+                  params: { screen: "UsadaMain" },
+                } as any);
+              }
+            },
+          },
+        ],
       );
     }
   }, [cartItems, isLoading, navigation]);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
       minimumFractionDigits: 0,
     }).format(price);
   };
 
   const handleInputChange = (field: string, value: string) => {
     if (formErrors[field]) {
-      setFormErrors(prev => ({ ...prev, [field]: null }));
+      setFormErrors((prev) => ({ ...prev, [field]: null }));
     }
 
-    if (field === 'name') {
-      const nameParts = value.trim().split(' ');
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-      
+    if (field === "name") {
+      const nameParts = value.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
       updateShippingInfo({
         first_name: firstName,
-        last_name: lastName
+        last_name: lastName,
       });
     } else {
       const fieldMapping = {
-        phone: 'phone',
-        email: 'email',
-        address: 'address',
-        city: 'city',
-        postalCode: 'postal_code',
-        country: 'country',
-        addressDescription: 'address_description'
+        phone: "phone",
+        email: "email",
+        address: "address",
+        city: "city",
+        postalCode: "postal_code",
+        country: "country",
+        addressDescription: "address_description",
       };
 
       const mappedField = fieldMapping[field as keyof typeof fieldMapping];
@@ -133,63 +140,65 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
   const handlePaymentMethodSelect = (methodKey: string) => {
     setSelectedPaymentMethod(methodKey);
     // Clear error if any
-    setFormErrors(prev => ({ ...prev, paymentMethod: null }));
+    setFormErrors((prev) => ({ ...prev, paymentMethod: null }));
   };
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
-    
+
     if (!shippingInfo.first_name?.trim()) {
-      errors.name = 'Please enter your full name';
+      errors.name = "Please enter your full name";
     }
-    
+
     if (!shippingInfo.phone?.trim()) {
-      errors.phone = 'Please enter your phone number';
-    } else if (!/^(\+62|62|0)[0-9]{9,13}$/.test(shippingInfo.phone.replace(/\s/g, ''))) {
-      errors.phone = 'Please enter a valid Indonesian phone number';
+      errors.phone = "Please enter your phone number";
+    } else if (
+      !/^(\+62|62|0)[0-9]{9,13}$/.test(shippingInfo.phone.replace(/\s/g, ""))
+    ) {
+      errors.phone = "Please enter a valid Indonesian phone number";
     }
-    
+
     if (!shippingInfo.email?.trim()) {
-      errors.email = 'Please enter your email';
+      errors.email = "Please enter your email";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shippingInfo.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
-    
+
     if (!shippingInfo.address?.trim()) {
-      errors.address = 'Please enter your address';
+      errors.address = "Please enter your address";
     }
-    
+
     if (!shippingInfo.city?.trim()) {
-      errors.city = 'Please enter your city';
+      errors.city = "Please enter your city";
     }
-    
+
     if (!shippingInfo.postal_code?.trim()) {
-      errors.postalCode = 'Please enter your postal code';
+      errors.postalCode = "Please enter your postal code";
     } else if (!/^[0-9]{5}$/.test(shippingInfo.postal_code)) {
-      errors.postalCode = 'Please enter a valid 5-digit postal code';
+      errors.postalCode = "Please enter a valid 5-digit postal code";
     }
-    
+
     if (!shippingInfo.country?.trim()) {
-      errors.country = 'Please enter your country';
+      errors.country = "Please enter your country";
     }
 
     if (!cartItems || cartItems.length === 0) {
-      Alert.alert('Error', 'Your cart is empty');
+      Alert.alert("Error", "Your cart is empty");
       return false;
     }
 
     if (totalAmount <= 0) {
-      Alert.alert('Error', 'Invalid cart total');
+      Alert.alert("Error", "Invalid cart total");
       return false;
     }
 
     if (grandTotal <= 0) {
-      Alert.alert('Error', 'Invalid order total');
+      Alert.alert("Error", "Invalid order total");
       return false;
     }
 
     if (!selectedPaymentMethod) {
-      errors.paymentMethod = 'Please select a payment method';
+      errors.paymentMethod = "Please select a payment method";
     }
 
     setFormErrors(errors);
@@ -198,18 +207,22 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
   const extractItemPrice = (item: any) => {
     const priceFields = [
-      'price',           
-      'product_price',   
-      'unit_price',
-      'unitPrice',
-      'selling_price',
-      'final_price',
-      'cost',
-      'amount'
+      "price",
+      "product_price",
+      "unit_price",
+      "unitPrice",
+      "selling_price",
+      "final_price",
+      "cost",
+      "amount",
     ];
 
     for (const field of priceFields) {
-      if (item[field] !== undefined && item[field] !== null && item[field] !== '') {
+      if (
+        item[field] !== undefined &&
+        item[field] !== null &&
+        item[field] !== ""
+      ) {
         const price = parseFloat(item[field]);
         if (!isNaN(price) && price > 0) {
           return price;
@@ -244,12 +257,12 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
   const extractVariantId = (item: any) => {
     const variantFields = [
-      'product_variant_id',
-      'variant_id', 
-      'productVariantId',
-      'id'
+      "product_variant_id",
+      "variant_id",
+      "productVariantId",
+      "id",
     ];
-    
+
     for (const field of variantFields) {
       if (item[field]) {
         const id = parseInt(item[field]);
@@ -278,7 +291,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
   const prepareOrderData = () => {
     if (!cartItems || cartItems.length === 0) {
-      throw new Error('Cart is empty');
+      throw new Error("Cart is empty");
     }
 
     const products = [];
@@ -286,30 +299,36 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
     for (let i = 0; i < cartItems.length; i++) {
       const item = cartItems[i];
-      
+
       const variantId = extractVariantId(item);
       if (!variantId) {
-        throw new Error(`Missing product variant ID for: ${item.name || 'Unknown Product'}`);
+        throw new Error(
+          `Missing product variant ID for: ${item.name || "Unknown Product"}`,
+        );
       }
 
       const itemPrice = extractItemPrice(item);
       if (!itemPrice || itemPrice <= 0) {
-        throw new Error(`Missing or invalid price for: ${item.name || 'Unknown Product'}`);
+        throw new Error(
+          `Missing or invalid price for: ${item.name || "Unknown Product"}`,
+        );
       }
 
       const quantity = item.quantity;
       if (!quantity || quantity < 1 || quantity > 1000) {
-        throw new Error(`Invalid quantity for: ${item.name || 'Unknown Product'} (must be 1-1000)`);
+        throw new Error(
+          `Invalid quantity for: ${item.name || "Unknown Product"} (must be 1-1000)`,
+        );
       }
 
       const productData = {
         product_variant_id: variantId,
         quantity: quantity,
-        price: itemPrice
+        price: itemPrice,
       };
 
       products.push(productData);
-      calculatedSubtotal += (itemPrice * quantity);
+      calculatedSubtotal += itemPrice * quantity;
     }
 
     const finalTax = Math.round(calculatedSubtotal * 0.1);
@@ -325,67 +344,90 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
       country: shippingInfo.country?.trim(),
       price: finalTotal,
       products: products,
-      last_name: shippingInfo.last_name?.trim() || '',
-      address_description: shippingInfo.address_description?.trim() || '',
+      last_name: shippingInfo.last_name?.trim() || "",
+      address_description: shippingInfo.address_description?.trim() || "",
       payment_channel: selectedPaymentMethod,
       payment_method: selectedPaymentMethod,
     };
 
     const requiredFields = [
-      { field: 'phone', maxLength: 20 },
-      { field: 'first_name', maxLength: 100 },
-      { field: 'email', maxLength: 255 },
-      { field: 'address', maxLength: 500 },
-      { field: 'city', maxLength: 100 },
-      { field: 'postal_code', maxLength: 10 },
-      { field: 'country', maxLength: 100 },
-      { field: 'price', minValue: 0.01 }
+      { field: "phone", maxLength: 20 },
+      { field: "first_name", maxLength: 100 },
+      { field: "email", maxLength: 255 },
+      { field: "address", maxLength: 500 },
+      { field: "city", maxLength: 100 },
+      { field: "postal_code", maxLength: 10 },
+      { field: "country", maxLength: 100 },
+      { field: "price", minValue: 0.01 },
     ];
 
     for (const { field, maxLength, minValue } of requiredFields) {
-        const val = (orderData as any)[field];
-      
+      const val = (orderData as any)[field];
+
       if (!val) {
         throw new Error(`Missing required field: ${field}`);
       }
-      
-      if (maxLength && typeof val === 'string' && val.length > maxLength) {
-        throw new Error(`Field ${field} exceeds maximum length of ${maxLength} characters`);
+
+      if (maxLength && typeof val === "string" && val.length > maxLength) {
+        throw new Error(
+          `Field ${field} exceeds maximum length of ${maxLength} characters`,
+        );
       }
-      
-      if (minValue && typeof val === 'number' && val < minValue) {
+
+      if (minValue && typeof val === "number" && val < minValue) {
         throw new Error(`Field ${field} must be at least ${minValue}`);
       }
     }
 
-    if (orderData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderData.email)) {
-      throw new Error('Invalid email format');
+    if (
+      orderData.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderData.email)
+    ) {
+      throw new Error("Invalid email format");
     }
 
     if (!orderData.products || orderData.products.length === 0) {
-      throw new Error('No products in order (required|array|min:1)');
+      throw new Error("No products in order (required|array|min:1)");
     }
 
     orderData.products.forEach((product, index) => {
-      if (!product.product_variant_id || !Number.isInteger(product.product_variant_id)) {
-        throw new Error(`Product ${index + 1}: product_variant_id must be an integer`);
+      if (
+        !product.product_variant_id ||
+        !Number.isInteger(product.product_variant_id)
+      ) {
+        throw new Error(
+          `Product ${index + 1}: product_variant_id must be an integer`,
+        );
       }
-      
-      if (!product.quantity || !Number.isInteger(product.quantity) || product.quantity < 1 || product.quantity > 1000) {
-        throw new Error(`Product ${index + 1}: quantity must be integer between 1-1000`);
+
+      if (
+        !product.quantity ||
+        !Number.isInteger(product.quantity) ||
+        product.quantity < 1 ||
+        product.quantity > 1000
+      ) {
+        throw new Error(
+          `Product ${index + 1}: quantity must be integer between 1-1000`,
+        );
       }
-      
-      if (!product.price || typeof product.price !== 'number' || product.price < 0.01) {
-        throw new Error(`Product ${index + 1}: price must be numeric and at least 0.01`);
+
+      if (
+        !product.price ||
+        typeof product.price !== "number" ||
+        product.price < 0.01
+      ) {
+        throw new Error(
+          `Product ${index + 1}: price must be numeric and at least 0.01`,
+        );
       }
     });
-    
+
     return orderData;
   };
 
   const handleSubmitOrder = async () => {
     if (!validateForm()) {
-      Alert.alert('Form Error', 'Please fix the errors below and try again');
+      Alert.alert("Form Error", "Please fix the errors below and try again");
       return;
     }
 
@@ -400,8 +442,8 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
         if (paymentResult?.success && paymentResult?.invoice_url) {
           clearCart();
-          
-          navigation.navigate('PaymentInfo', {
+
+          navigation.navigate("PaymentInfo", {
             orderId: result.data.id,
             invoice_url: paymentResult.invoice_url,
             amount: grandTotal,
@@ -413,25 +455,28 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
                 subtotal: totalAmount,
                 shipping: shippingFee,
                 tax: taxAmount,
-                total: grandTotal
-              }
-            }
+                total: grandTotal,
+              },
+            },
           });
         } else {
-          throw new Error(paymentResult?.message || 'Failed to generate payment invoice');
+          throw new Error(
+            paymentResult?.message || "Failed to generate payment invoice",
+          );
         }
       } else {
         if (result?.errors) {
           const errorMessages = Object.values(result.errors).flat();
-          Alert.alert('Validation Error', errorMessages.join('\n'));
+          Alert.alert("Validation Error", errorMessages.join("\n"));
         } else {
-          const errorMessage = result?.message || 'Failed to create order';
+          const errorMessage = result?.message || "Failed to create order";
           throw new Error(errorMessage);
         }
       }
     } catch (err: any) {
-      const errorMessage = err.message || 'Failed to process order. Please try again.';
-      Alert.alert('Order Failed', errorMessage, [{ text: 'OK' }]);
+      const errorMessage =
+        err.message || "Failed to process order. Please try again.";
+      Alert.alert("Order Failed", errorMessage, [{ text: "OK" }]);
     } finally {
       setIsSubmitting(false);
     }
@@ -443,9 +488,14 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
         <View style={styles.emptyContainer}>
           <Feather name="shopping-cart" size={64} color="#C8E6C9" />
           <Text style={styles.emptyText}>Your cart is empty</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backToShopButton}
-            onPress={() => navigation.navigate('MainApp', { screen: 'ArticlesTab', params: { screen: 'UsadaMain' } } as any)}
+            onPress={() =>
+              navigation.navigate("MainTabs", {
+                screen: "ArticlesTab",
+                params: { screen: "UsadaMain" },
+              } as any)
+            }
           >
             <Text style={styles.backToShopText}>Continue Shopping</Text>
           </TouchableOpacity>
@@ -457,36 +507,36 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
-        barStyle={Platform.OS === 'ios' ? 'light-content' : 'light-content'}
+        barStyle={Platform.OS === "ios" ? "light-content" : "light-content"}
         backgroundColor="#4F7942"
       />
 
-      <ImageBackground 
-        source={require('@/assets/images/batik.png')} 
+      <ImageBackground
+        source={require("@/assets/images/batik.png")}
         style={styles.header}
       >
-        <TouchableOpacity 
-          style={styles.backButton} 
-        onPress={() => {
-          if (navigation.canGoBack()) {
-            navigation.goBack();
-          } else {
-            // Corrected: ArticlesTab is nested in MainApp
-            navigation.navigate('MainApp', { 
-              screen: 'ArticlesTab', 
-              params: { screen: 'UsadaMain' } 
-            } as any);
-          }
-        }}
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            if (navigation.canGoBack()) {
+              navigation.goBack();
+            } else {
+              // Corrected: ArticlesTab is nested in MainTabs
+              navigation.navigate("MainTabs", {
+                screen: "ArticlesTab",
+                params: { screen: "UsadaMain" },
+              } as any);
+            }
+          }}
           disabled={isSubmitting || loading}
         >
           <Feather name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
-        
+
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Checkout</Text>
           <Text style={styles.headerSubtitle}>
-            {itemCount} {itemCount === 1 ? 'item' : 'items'}
+            {itemCount} {itemCount === 1 ? "item" : "items"}
           </Text>
         </View>
 
@@ -497,12 +547,12 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
         )}
       </ImageBackground>
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView 
-          style={styles.scrollContent} 
+        <ScrollView
+          style={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -511,11 +561,13 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
             <View style={styles.orderSummary}>
               {cartItems.map((item, index) => {
                 const itemPrice = extractItemPrice(item);
-                
+
                 return (
                   <View key={index} style={styles.orderItem}>
                     <Text style={styles.itemName}>
-                      {item.name || (item as any).product?.name || 'Unknown Product'}
+                      {item.name ||
+                        (item as any).product?.name ||
+                        "Unknown Product"}
                     </Text>
                     <Text style={styles.itemDetails}>
                       Qty: {item.quantity} × {formatPrice(itemPrice)}
@@ -526,20 +578,28 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
                   </View>
                 );
               })}
-              
+
               <View style={styles.divider} />
-              
+
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryText}>Subtotal ({cartItems.length} items)</Text>
-                <Text style={styles.summaryValue}>{formatPrice(totalAmount)}</Text>
+                <Text style={styles.summaryText}>
+                  Subtotal ({cartItems.length} items)
+                </Text>
+                <Text style={styles.summaryValue}>
+                  {formatPrice(totalAmount)}
+                </Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryText}>Shipping Fee</Text>
-                <Text style={styles.summaryValue}>{formatPrice(shippingFee)}</Text>
+                <Text style={styles.summaryValue}>
+                  {formatPrice(shippingFee)}
+                </Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryText}>Tax (10%)</Text>
-                <Text style={styles.summaryValue}>{formatPrice(taxAmount)}</Text>
+                <Text style={styles.summaryValue}>
+                  {formatPrice(taxAmount)}
+                </Text>
               </View>
               <View style={styles.divider} />
               <View style={styles.summaryRow}>
@@ -551,17 +611,14 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Shipping Details</Text>
-            
+
             <View style={styles.formGroup}>
               <Text style={styles.label}>Full Name *</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  formErrors.name && styles.inputError
-                ]}
+                style={[styles.input, formErrors.name && styles.inputError]}
                 placeholder="Enter your full name"
                 value={fullName}
-                onChangeText={(text) => handleInputChange('name', text)}
+                onChangeText={(text) => handleInputChange("name", text)}
                 autoCapitalize="words"
                 editable={!isSubmitting && !loading}
               />
@@ -573,14 +630,11 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
             <View style={styles.formGroup}>
               <Text style={styles.label}>Phone Number *</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  formErrors.phone && styles.inputError
-                ]}
+                style={[styles.input, formErrors.phone && styles.inputError]}
                 placeholder="08XXXXXXXXXX"
                 keyboardType="phone-pad"
-                value={shippingInfo.phone || ''}
-                onChangeText={(text) => handleInputChange('phone', text)}
+                value={shippingInfo.phone || ""}
+                onChangeText={(text) => handleInputChange("phone", text)}
                 editable={!isSubmitting && !loading}
               />
               {formErrors.phone && (
@@ -591,16 +645,13 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
             <View style={styles.formGroup}>
               <Text style={styles.label}>Email Address *</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  formErrors.email && styles.inputError
-                ]}
+                style={[styles.input, formErrors.email && styles.inputError]}
                 placeholder="your.email@example.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={shippingInfo.email || ''}
-                onChangeText={(text) => handleInputChange('email', text)}
+                value={shippingInfo.email || ""}
+                onChangeText={(text) => handleInputChange("email", text)}
                 editable={!isSubmitting && !loading}
               />
               {formErrors.email && (
@@ -612,15 +663,15 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
               <Text style={styles.label}>Shipping Address *</Text>
               <TextInput
                 style={[
-                  styles.input, 
-                  { height: 80, textAlignVertical: 'top' },
-                  formErrors.address && styles.inputError
+                  styles.input,
+                  { height: 80, textAlignVertical: "top" },
+                  formErrors.address && styles.inputError,
                 ]}
                 placeholder="Enter your complete address"
                 multiline
                 numberOfLines={3}
-                value={shippingInfo.address || ''}
-                onChangeText={(text) => handleInputChange('address', text)}
+                value={shippingInfo.address || ""}
+                onChangeText={(text) => handleInputChange("address", text)}
                 autoCapitalize="sentences"
                 editable={!isSubmitting && !loading}
               />
@@ -633,13 +684,10 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
               <View style={{ flex: 1, marginRight: 10 }}>
                 <Text style={styles.label}>City *</Text>
                 <TextInput
-                  style={[
-                    styles.input,
-                    formErrors.city && styles.inputError
-                  ]}
+                  style={[styles.input, formErrors.city && styles.inputError]}
                   placeholder="Enter city"
-                  value={shippingInfo.city || ''}
-                  onChangeText={(text) => handleInputChange('city', text)}
+                  value={shippingInfo.city || ""}
+                  onChangeText={(text) => handleInputChange("city", text)}
                   autoCapitalize="words"
                   editable={!isSubmitting && !loading}
                 />
@@ -652,13 +700,13 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
                 <TextInput
                   style={[
                     styles.input,
-                    formErrors.postalCode && styles.inputError
+                    formErrors.postalCode && styles.inputError,
                   ]}
                   placeholder="12345"
                   keyboardType="number-pad"
                   maxLength={5}
-                  value={shippingInfo.postal_code || ''}
-                  onChangeText={(text) => handleInputChange('postalCode', text)}
+                  value={shippingInfo.postal_code || ""}
+                  onChangeText={(text) => handleInputChange("postalCode", text)}
                   editable={!isSubmitting && !loading}
                 />
                 {formErrors.postalCode && (
@@ -670,13 +718,10 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
             <View style={styles.formGroup}>
               <Text style={styles.label}>Country *</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  formErrors.country && styles.inputError
-                ]}
+                style={[styles.input, formErrors.country && styles.inputError]}
                 placeholder="Indonesia"
-                value={shippingInfo.country || 'Indonesia'}
-                onChangeText={(text) => handleInputChange('country', text)}
+                value={shippingInfo.country || "Indonesia"}
+                onChangeText={(text) => handleInputChange("country", text)}
                 autoCapitalize="words"
                 editable={!isSubmitting && !loading}
               />
@@ -690,8 +735,10 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
               <TextInput
                 style={styles.input}
                 placeholder="Landmark, building details, etc."
-                value={shippingInfo.address_description || ''}
-                onChangeText={(text) => handleInputChange('addressDescription', text)}
+                value={shippingInfo.address_description || ""}
+                onChangeText={(text) =>
+                  handleInputChange("addressDescription", text)
+                }
                 autoCapitalize="sentences"
                 editable={!isSubmitting && !loading}
               />
@@ -701,24 +748,33 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Payment Method</Text>
             <View style={styles.paymentMethodList}>
-              {paymentMethods.map(method => (
+              {paymentMethods.map((method) => (
                 <TouchableOpacity
                   key={method.key}
                   style={[
                     styles.paymentMethodItem,
-                    selectedPaymentMethod === method.key && styles.paymentMethodItemSelected
+                    selectedPaymentMethod === method.key &&
+                      styles.paymentMethodItemSelected,
                   ]}
                   onPress={() => handlePaymentMethodSelect(method.key)}
                   disabled={isSubmitting || loading}
                 >
-                  <Text style={[
-                    styles.paymentMethodLabel,
-                    selectedPaymentMethod === method.key && styles.paymentMethodLabelSelected
-                  ]}>
+                  <Text
+                    style={[
+                      styles.paymentMethodLabel,
+                      selectedPaymentMethod === method.key &&
+                        styles.paymentMethodLabelSelected,
+                    ]}
+                  >
                     {method.label}
                   </Text>
                   {selectedPaymentMethod === method.key && (
-                    <Feather name="check-circle" size={20} color="#4F7942" style={{ marginLeft: 8 }} />
+                    <Feather
+                      name="check-circle"
+                      size={20}
+                      color="#4F7942"
+                      style={{ marginLeft: 8 }}
+                    />
                   )}
                 </TouchableOpacity>
               ))}
@@ -732,9 +788,12 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
             <View style={styles.paymentInfo}>
               <Feather name="shield" size={24} color="#4F7942" />
               <View style={styles.paymentInfoText}>
-                <Text style={styles.paymentInfoTitle}>Secure Payment via Xendit</Text>
+                <Text style={styles.paymentInfoTitle}>
+                  Secure Payment via Xendit
+                </Text>
                 <Text style={styles.paymentInfoSubtitle}>
-                  Choose from various payment methods including bank transfer, e-wallet, and credit card
+                  Choose from various payment methods including bank transfer,
+                  e-wallet, and credit card
                 </Text>
               </View>
             </View>
@@ -743,15 +802,21 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
           <TouchableOpacity
             style={[
               styles.placeOrderButton,
-              (isSubmitting || loading) && styles.disabledButton
+              (isSubmitting || loading) && styles.disabledButton,
             ]}
             onPress={handleSubmitOrder}
             disabled={isSubmitting || loading}
           >
-            {(isSubmitting || loading) ? (
+            {isSubmitting || loading ? (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
-                <Text style={styles.placeOrderButtonText}>Creating Order...</Text>
+                <ActivityIndicator
+                  size="small"
+                  color="white"
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={styles.placeOrderButtonText}>
+                  Creating Order...
+                </Text>
               </View>
             ) : (
               <Text style={styles.placeOrderButtonText}>
@@ -770,75 +835,75 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
   keyboardContainer: {
     flex: 1,
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 32,
   },
   emptyText: {
     fontSize: 18,
-    color: '#86A789',
+    color: "#86A789",
     marginTop: 16,
     marginBottom: 24,
   },
   backToShopButton: {
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
   },
   backToShopText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   processingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 32,
   },
   processingTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2E5233',
+    fontWeight: "bold",
+    color: "#2E5233",
     marginTop: 20,
     marginBottom: 10,
   },
   processingText: {
     fontSize: 16,
-    color: '#86A789',
-    textAlign: 'center',
+    color: "#86A789",
+    textAlign: "center",
     lineHeight: 24,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 15,
     paddingVertical: 20,
-    paddingTop: Platform.OS === 'android' ? 40 : 20,
+    paddingTop: Platform.OS === "android" ? 40 : 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerTitleContainer: {
     flex: 1,
@@ -846,12 +911,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: "rgba(255, 255, 255, 0.9)",
     marginTop: 2,
   },
   loadingIndicator: {
@@ -862,11 +927,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 15,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
@@ -874,12 +939,12 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2E5233',
+    fontWeight: "bold",
+    color: "#2E5233",
     marginBottom: 16,
   },
   orderSummary: {
-    backgroundColor: '#F0F8F0',
+    backgroundColor: "#F0F8F0",
     borderRadius: 12,
     padding: 15,
   },
@@ -887,126 +952,126 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#E8F5E8',
+    borderBottomColor: "#E8F5E8",
   },
   itemName: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#2E5233',
+    fontWeight: "600",
+    color: "#2E5233",
     marginBottom: 4,
   },
   itemDetails: {
     fontSize: 13,
-    color: '#86A789',
+    color: "#86A789",
     marginBottom: 2,
   },
   itemSubtotal: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#4F7942',
-    textAlign: 'right',
+    fontWeight: "600",
+    color: "#4F7942",
+    textAlign: "right",
   },
   debugText: {
     fontSize: 11,
-    color: '#FF6B6B',
-    fontFamily: 'monospace',
+    color: "#FF6B6B",
+    fontFamily: "monospace",
     marginTop: 2,
   },
   summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
   },
   summaryText: {
     fontSize: 15,
-    color: '#2E5233',
+    color: "#2E5233",
   },
   summaryValue: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#2E5233',
+    fontWeight: "600",
+    color: "#2E5233",
   },
   divider: {
     height: 1,
-    backgroundColor: '#C8E6C9',
+    backgroundColor: "#C8E6C9",
     marginVertical: 10,
   },
   totalText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2E5233',
+    fontWeight: "bold",
+    color: "#2E5233",
   },
   totalValue: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4F7942',
+    fontWeight: "bold",
+    color: "#4F7942",
   },
   formGroup: {
     marginBottom: 16,
   },
   rowFormGroup: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 16,
   },
   label: {
     fontSize: 15,
-    color: '#2E5233',
+    color: "#2E5233",
     marginBottom: 8,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   input: {
-    backgroundColor: '#F0F8F0',
+    backgroundColor: "#F0F8F0",
     borderRadius: 12,
     paddingHorizontal: 15,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#2E5233',
+    color: "#2E5233",
     borderWidth: 1,
-    borderColor: '#C8E6C9',
+    borderColor: "#C8E6C9",
   },
   inputError: {
-    borderColor: '#FF6B6B',
-    backgroundColor: '#FFF5F5',
+    borderColor: "#FF6B6B",
+    backgroundColor: "#FFF5F5",
   },
   errorText: {
     fontSize: 12,
-    color: '#FF6B6B',
+    color: "#FF6B6B",
     marginTop: 4,
     paddingLeft: 4,
   },
   paymentMethodList: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginBottom: 8,
   },
   paymentMethodItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 10,
-    backgroundColor: '#F0F8F0',
+    backgroundColor: "#F0F8F0",
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#C8E6C9',
+    borderColor: "#C8E6C9",
   },
   paymentMethodItemSelected: {
-    backgroundColor: '#4F7942',
-    borderColor: '#4F7942',
+    backgroundColor: "#4F7942",
+    borderColor: "#4F7942",
   },
   paymentMethodLabel: {
     fontSize: 15,
-    color: '#2E5233',
-    fontWeight: '500',
+    color: "#2E5233",
+    fontWeight: "500",
   },
   paymentMethodLabelSelected: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   paymentInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F0F8F0',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0F8F0",
     borderRadius: 12,
     padding: 16,
   },
@@ -1016,40 +1081,40 @@ const styles = StyleSheet.create({
   },
   paymentInfoTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#2E5233',
+    fontWeight: "600",
+    color: "#2E5233",
   },
   paymentInfoSubtitle: {
     fontSize: 14,
-    color: '#86A789',
+    color: "#86A789",
     marginTop: 4,
     lineHeight: 20,
   },
   placeOrderButton: {
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     borderRadius: 15,
     padding: 18,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 8,
-    shadowColor: '#4F7942',
+    shadowColor: "#4F7942",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
   },
   disabledButton: {
-    backgroundColor: '#A8C3A8',
+    backgroundColor: "#A8C3A8",
     shadowOpacity: 0.1,
   },
   loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   placeOrderButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

@@ -1,5 +1,5 @@
 // LoginSuccessScreen.js - For ProfileStackNavigator approach
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,24 +7,24 @@ import {
   Animated,
   Dimensions,
   StatusBar,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '@/context/AuthContext';
-import { CommonActions } from '@react-navigation/native';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "@/context/AuthContext";
+import { CommonActions } from "@react-navigation/native";
 // import withProviders from '@/utils/withProviders';
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp, CompositeNavigationProp } from '@react-navigation/native';
-import { RootStackParamList, ProfileStackParamList } from '@/types/navigation';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp, CompositeNavigationProp } from "@react-navigation/native";
+import { RootStackParamList, ProfileStackParamList } from "@/types/navigation";
 
 type Props = {
   navigation: CompositeNavigationProp<
-    StackNavigationProp<ProfileStackParamList, 'LoginSuccess'>,
+    StackNavigationProp<ProfileStackParamList, "LoginSuccess">,
     StackNavigationProp<RootStackParamList>
   >;
-  route: RouteProp<ProfileStackParamList, 'LoginSuccess'>;
+  route: RouteProp<ProfileStackParamList, "LoginSuccess">;
   authNav?: any;
 };
 
@@ -35,8 +35,8 @@ const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
   const [slideAnim] = useState(new Animated.Value(50));
 
   useEffect(() => {
-    console.log('✅ LoginSuccess: Screen mounted, user authenticated:', !!user);
-    
+    console.log("✅ LoginSuccess: Screen mounted, user authenticated:", !!user);
+
     // Start animations
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -60,8 +60,8 @@ const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
 
     // Navigate to ProfileMain in ProfileStackNavigator
     const navigationTimer = setTimeout(() => {
-      console.log('✅ LoginSuccess: Navigating to ProfileMain');
-      
+      console.log("✅ LoginSuccess: Navigating to ProfileMain");
+
       try {
         // For ProfileStackNavigator approach
         navigation.dispatch(
@@ -69,50 +69,49 @@ const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
             index: 0,
             routes: [
               {
-                name: 'MainApp',
+                name: "MainTabs",
                 state: {
                   index: 4, // ProfileStack tab index
                   routes: [
-                    { name: 'HomeScreen' },
-                    { name: 'ArticlesTab' },
-                    { name: 'ProductScreen' },
-                    { name: 'CartStack' },
-                    { 
-                      name: 'ProfileStack',
+                    { name: "MainTabs" },
+                    { name: "ArticlesTab" },
+                    { name: "ProductScreen" },
+                    { name: "CartStack" },
+                    {
+                      name: "ProfileStack",
                       state: {
                         index: 0,
-                        routes: [{ name: 'ProfileMain' }]
-                      }
+                        routes: [{ name: "ProfileMain" }],
+                      },
                     } as any,
                   ],
                 },
               },
             ],
-          })
+          }),
         );
       } catch (error) {
-        console.error('❌ Navigation error:', error);
+        console.error("❌ Navigation error:", error);
         // Fallback: Navigate within the ProfileStack
         try {
-          navigation.replace('ProfileMain');
+          navigation.replace("ProfileMain");
         } catch (fallbackError) {
-          console.error('❌ Fallback navigation failed:', fallbackError);
-          navigation.navigate('MainTabs');
+          console.error("❌ Fallback navigation failed:", fallbackError);
+          navigation.navigate("MainTabs");
         }
       }
     }, 2500); // 2.5 seconds delay for animation
 
     return () => clearTimeout(navigationTimer);
-    
   }, [fadeAnim, scaleAnim, slideAnim, user, navigation]);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#4F7942" />
-      
+
       {/* Background gradient effect */}
       <View style={styles.backgroundGradient} />
-      
+
       {/* Success Icon */}
       <Animated.View
         style={[
@@ -140,20 +139,13 @@ const LoginSuccessScreen = ({ navigation, route, authNav }: Props) => {
       >
         <Text style={styles.successTitle}>Login Berhasil!</Text>
         <Text style={styles.welcomeText}>
-          Selamat datang, {user?.name || 'User'}
+          Selamat datang, {user?.name || "User"}
         </Text>
-        <Text style={styles.subtitleText}>
-          Mengarahkan ke profil Anda...
-        </Text>
+        <Text style={styles.subtitleText}>Mengarahkan ke profil Anda...</Text>
       </Animated.View>
 
       {/* Animated loading dots */}
-      <Animated.View
-        style={[
-          styles.loadingContainer,
-          { opacity: fadeAnim },
-        ]}
-      >
+      <Animated.View style={[styles.loadingContainer, { opacity: fadeAnim }]}>
         <LoadingDots />
       </Animated.View>
     </View>
@@ -181,7 +173,7 @@ const LoadingDots = () => {
             duration: 400,
             useNativeDriver: true,
           }),
-        ])
+        ]),
       );
     };
 
@@ -191,10 +183,10 @@ const LoadingDots = () => {
       createAnimation(dot3, 400),
     ];
 
-    animations.forEach(anim => anim.start());
+    animations.forEach((anim) => anim.start());
 
     return () => {
-      animations.forEach(anim => anim.stop());
+      animations.forEach((anim) => anim.stop());
     };
   }, []);
 
@@ -210,74 +202,74 @@ const LoadingDots = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4F7942',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#4F7942",
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   backgroundGradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     opacity: 0.9,
   },
   iconContainer: {
     marginBottom: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   successCircle: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 3,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: "rgba(255, 255, 255, 0.3)",
   },
   textContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 50,
   },
   successTitle: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    textAlign: "center",
     marginBottom: 15,
   },
   welcomeText: {
     fontSize: 20,
-    color: '#FFFFFF',
-    textAlign: 'center',
+    color: "#FFFFFF",
+    textAlign: "center",
     marginBottom: 10,
     opacity: 0.9,
   },
   subtitleText: {
     fontSize: 16,
-    color: '#FFFFFF',
-    textAlign: 'center',
+    color: "#FFFFFF",
+    textAlign: "center",
     opacity: 0.7,
     paddingHorizontal: 20,
   },
   loadingContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 100,
   },
   dotsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     marginHorizontal: 4,
   },
 });

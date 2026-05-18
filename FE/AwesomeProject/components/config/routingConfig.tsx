@@ -1,18 +1,18 @@
 // config/routingConfig.js - Centralized routing configuration
 export const ROUTE_NAMES = {
   // Profile Stack Routes
-  PROTECTED_PROFILE: 'ProtectedProfile',
-  LOGIN: 'Login',
-  REGISTER: 'Register',
-  LOGIN_SUCCESS: 'LoginSuccess',
-  PROFILE_MAIN: 'ProfileMain',
-  
+  PROTECTED_PROFILE: "ProtectedProfile",
+  LOGIN: "Login",
+  REGISTER: "Register",
+  LOGIN_SUCCESS: "LoginSuccess",
+  PROFILE_MAIN: "ProfileMain",
+
   // Main Tab Routes
-  HOME: 'HomeScreen',
-  USADA: 'UsadaScreen',
-  PRODUCT: 'ProductScreen',
-  CART: 'CartStack',
-  PROFILE_TAB: 'ProfileTab',
+  HOME: "MainTabs",
+  USADA: "UsadaScreen",
+  PRODUCT: "ProductScreen",
+  CART: "CartStack",
+  PROFILE_TAB: "ProfileTab",
 };
 
 // 🎯 Routing flow configuration
@@ -27,13 +27,10 @@ export const ROUTING_FLOWS = {
         ROUTE_NAMES.LOGIN,
         ROUTE_NAMES.REGISTER,
       ],
-      redirectFrom: [
-        ROUTE_NAMES.PROFILE_MAIN,
-        ROUTE_NAMES.LOGIN_SUCCESS,
-      ],
+      redirectFrom: [ROUTE_NAMES.PROFILE_MAIN, ROUTE_NAMES.LOGIN_SUCCESS],
       redirectTo: ROUTE_NAMES.PROTECTED_PROFILE,
     },
-    
+
     // When user IS authenticated
     AUTHENTICATED: {
       entryPoint: ROUTE_NAMES.PROFILE_MAIN,
@@ -49,7 +46,7 @@ export const ROUTING_FLOWS = {
       redirectTo: ROUTE_NAMES.PROFILE_MAIN,
     },
   },
-  
+
   // Login success flow
   LOGIN_SUCCESS: {
     autoNavigateAfter: 2500, // 2.5 seconds
@@ -62,24 +59,29 @@ export const NavigationUtils = {
   /**
    * Get the appropriate route based on authentication state
    */
-  getRouteForAuthState: (isAuthenticated: boolean, currentRoute: string | null) => {
-    const flow = isAuthenticated 
+  getRouteForAuthState: (
+    isAuthenticated: boolean,
+    currentRoute: string | null,
+  ) => {
+    const flow = isAuthenticated
       ? ROUTING_FLOWS.AUTHENTICATION.AUTHENTICATED
       : ROUTING_FLOWS.AUTHENTICATION.UNAUTHENTICATED;
-    
+
     // Check if current route needs redirect
     if (currentRoute && flow.redirectFrom.includes(currentRoute as string)) {
       return {
         shouldRedirect: true,
         targetRoute: flow.redirectTo,
-        reason: isAuthenticated ? 'user_authenticated' : 'user_not_authenticated',
+        reason: isAuthenticated
+          ? "user_authenticated"
+          : "user_not_authenticated",
       };
     }
-    
+
     return {
       shouldRedirect: false,
       targetRoute: currentRoute,
-      reason: 'route_allowed',
+      reason: "route_allowed",
     };
   },
 
@@ -87,10 +89,10 @@ export const NavigationUtils = {
    * Check if a route is allowed for current auth state
    */
   isRouteAllowed: (isAuthenticated: boolean, routeName: string) => {
-    const flow = isAuthenticated 
+    const flow = isAuthenticated
       ? ROUTING_FLOWS.AUTHENTICATION.AUTHENTICATED
       : ROUTING_FLOWS.AUTHENTICATION.UNAUTHENTICATED;
-    
+
     return flow.allowedRoutes.includes(routeName);
   },
 
@@ -101,8 +103,8 @@ export const NavigationUtils = {
     if (isLoading) {
       return ROUTE_NAMES.PROTECTED_PROFILE;
     }
-    
-    return isAuthenticated 
+
+    return isAuthenticated
       ? ROUTING_FLOWS.AUTHENTICATION.AUTHENTICATED.entryPoint
       : ROUTING_FLOWS.AUTHENTICATION.UNAUTHENTICATED.entryPoint;
   },
@@ -112,13 +114,13 @@ export const NavigationUtils = {
    */
   getRouteDescription: (routeName: string) => {
     const descriptions: { [key: string]: string } = {
-      [ROUTE_NAMES.PROTECTED_PROFILE]: 'Protected Profile (Login Required)',
-      [ROUTE_NAMES.LOGIN]: 'Login Screen',
-      [ROUTE_NAMES.REGISTER]: 'Registration Screen',
-      [ROUTE_NAMES.LOGIN_SUCCESS]: 'Login Success Screen',
-      [ROUTE_NAMES.PROFILE_MAIN]: 'User Profile Screen',
+      [ROUTE_NAMES.PROTECTED_PROFILE]: "Protected Profile (Login Required)",
+      [ROUTE_NAMES.LOGIN]: "Login Screen",
+      [ROUTE_NAMES.REGISTER]: "Registration Screen",
+      [ROUTE_NAMES.LOGIN_SUCCESS]: "Login Success Screen",
+      [ROUTE_NAMES.PROFILE_MAIN]: "User Profile Screen",
     };
-    
+
     return descriptions[routeName] || routeName;
   },
 };
@@ -154,7 +156,7 @@ export class RoutingFlowManager {
       const state = this.navigation.getState();
       return state?.routes[state?.index]?.name || null;
     } catch (error) {
-      this.log('Error getting current route', { error });
+      this.log("Error getting current route", { error });
       return null;
     }
   }
@@ -164,7 +166,7 @@ export class RoutingFlowManager {
    */
   async navigateWithDelay(targetRoute: string, delay: number = 150) {
     if (this.isNavigating) {
-      this.log('Navigation already in progress, skipping');
+      this.log("Navigation already in progress, skipping");
       return false;
     }
 
@@ -173,11 +175,11 @@ export class RoutingFlowManager {
     return new Promise((resolve) => {
       setTimeout(() => {
         try {
-          this.log('Navigating to route', { targetRoute });
+          this.log("Navigating to route", { targetRoute });
           this.navigation.navigate(targetRoute);
           resolve(true);
         } catch (error) {
-          this.log('Navigation error', { error, targetRoute });
+          this.log("Navigation error", { error, targetRoute });
           resolve(false);
         } finally {
           this.isNavigating = false;
@@ -191,16 +193,19 @@ export class RoutingFlowManager {
    */
   handleAutoRouting() {
     const { isAuthenticated, isLoading, user } = this.authContext;
-    
+
     if (isLoading) {
-      this.log('Auth loading, skipping auto-routing');
+      this.log("Auth loading, skipping auto-routing");
       return;
     }
 
     const currentRoute = this.getCurrentRoute();
-    const routingDecision = NavigationUtils.getRouteForAuthState(isAuthenticated, currentRoute as any);
+    const routingDecision = NavigationUtils.getRouteForAuthState(
+      isAuthenticated,
+      currentRoute as any,
+    );
 
-    this.log('Auto-routing check', {
+    this.log("Auto-routing check", {
       currentRoute,
       isAuthenticated,
       hasUser: !!user,
@@ -208,12 +213,12 @@ export class RoutingFlowManager {
     });
 
     if (routingDecision.shouldRedirect) {
-      this.log('Executing auto-redirect', {
+      this.log("Executing auto-redirect", {
         from: currentRoute,
         to: routingDecision.targetRoute,
         reason: routingDecision.reason,
       });
-      
+
       this.navigateWithDelay(routingDecision.targetRoute as string);
     }
   }
@@ -223,8 +228,8 @@ export class RoutingFlowManager {
    */
   handleLoginSuccess() {
     const { autoNavigateAfter, navigateTo } = ROUTING_FLOWS.LOGIN_SUCCESS;
-    
-    this.log('Handling login success flow', {
+
+    this.log("Handling login success flow", {
       autoNavigateAfter,
       navigateTo,
     });
@@ -247,10 +252,10 @@ export class RoutingFlowManager {
 
   goToProfile() {
     const { isAuthenticated } = this.authContext;
-    const targetRoute = isAuthenticated 
-      ? ROUTE_NAMES.PROFILE_MAIN 
+    const targetRoute = isAuthenticated
+      ? ROUTE_NAMES.PROFILE_MAIN
       : ROUTE_NAMES.PROTECTED_PROFILE;
-    
+
     return this.navigateWithDelay(targetRoute);
   }
 

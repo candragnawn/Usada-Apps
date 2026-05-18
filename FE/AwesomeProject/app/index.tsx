@@ -34,7 +34,7 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 
-import HomeScreen from "../screens/HomeScreen";
+import MainTabs from "../screens/HomeScreen";
 import UsadaScreen from "../screens/UsadaScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
@@ -51,6 +51,8 @@ import withProviders from "../utils/withProviders";
 // Import separated ProfileStackNavigator
 import ProfileStackNavigator from "./src/navigation/stacks/ProfileStackNavigator";
 import PaymentInfoScreen from "@/screens/PaymentInfoScreen";
+import OrderSuccessScreen from "@/screens/OrderSuccessScreen";
+import OrdersScreen from "@/screens/OrdersScreen";
 
 // Create navigation instances
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -175,7 +177,7 @@ const MainTabNavigator = () => {
   return (
     <Tab.Navigator
       key={isAuthenticated ? "authed" : "unauthed"}
-      initialRouteName="HomeScreen"
+      initialRouteName="MainTabs"
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
@@ -188,8 +190,8 @@ const MainTabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="MainTabs"
+        component={MainTabs}
         options={{
           tabBarIcon: ({
             focused,
@@ -290,8 +292,21 @@ const RootStackNavigator = () => (
     <Stack.Screen name="ChatScreen" component={ChatScreen} />
     <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
     <Stack.Screen name="PaymentInfo" component={PaymentInfoScreen} />
+    <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
+    <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
   </Stack.Navigator>
 );
+
+const linking = {
+  prefixes: ["awesomeproject://"],
+  config: {
+    screens: {
+      MainTabs: "home",
+      OrderSuccess: "order-success/:orderId",
+      OrderFailed: "order-failed/:orderId",
+    },
+  },
+};
 
 // Main App Navigator Component with optimizations
 const AppNavigatorContent = () => {
@@ -336,7 +351,7 @@ const AppNavigatorContent = () => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <RootStackNavigator />
         </NavigationContainer>
       </SafeAreaView>
