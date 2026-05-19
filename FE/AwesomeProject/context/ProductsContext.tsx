@@ -50,6 +50,7 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
   }
 };
 
+
 // Transform product data to include full image URLs
 const transformProduct = (product: any): Product => {
   return {
@@ -78,6 +79,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
     setProductsLoading(true);
     try {
       const response = await apiCall('/api/products');
+      console.log('🛒 Products API response:', JSON.stringify(response)); // ← tambah ini
+
       
       // Laravel returns { success: true, data: [...] }
       if ((response.status === 'success' || response.success) && Array.isArray(response.data)) {

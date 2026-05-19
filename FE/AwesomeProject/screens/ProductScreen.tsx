@@ -1,13 +1,19 @@
 // src/Screens/ProductScreen.tsx
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { ProductScreen as ProductComponent } from '@/components/Product/Products';
-// import withProviders from '@/utils/withProviders';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useProductsContext } from '@/context/ProductsContext';
 
 const ProductScreen = () => {
   // Make sure to type your navigation properly
   const navigation = useNavigation();
+  const { fetchProducts } = useProductsContext();
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts();
+    }, [])
+  );
   
   const handleProductPress = (productId: number) => {
     console.log(`Navigating to product detail with ID: ${productId}`);
