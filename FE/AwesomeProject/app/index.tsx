@@ -308,7 +308,6 @@ const linking = {
   },
 };
 
-// Main App Navigator Component with optimizations
 const AppNavigatorContent = () => {
   try {
     const { isLoading, isAuthenticated } = useAuth();
@@ -317,7 +316,6 @@ const AppNavigatorContent = () => {
       isAuthenticated,
     });
 
-    // Track auth state changes for cleanup
     useEffect(() => {
       if (isAuthenticated) {
         // User logged in

@@ -11,6 +11,7 @@
       </div>
 
       <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <div class="p-6.5">
           <div class="mb-5 flex flex-col gap-6 xl:flex-row">
             <div class="w-full xl:w-1/2">
@@ -111,7 +112,7 @@
               class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">{{ $product->description ?? old('description') }}</textarea>
           </div>
 
-          <button
+          <button type="submit"
             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
             <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -447,12 +448,28 @@
 
         },
         error: function(xhr) {
-          const errors = xhr.responseJSON.errors;
           $('.error-message').remove();
-          $.each(errors, function(key, value) {
-            var inputField = $('[name="'+ key +'"]');
-            inputField.after('<p class="error-message text-red-500">' + value[0] + '</p>');
-          });
+          
+          if (xhr.status === 422 && xhr.responseJSON.errors) {
+            // Validation errors
+            $.each(xhr.responseJSON.errors, function(key, value) {
+              var inputField = $('[name="'+ key +'"]');
+              inputField.after('<p class="error-message text-red-500">❌ ' + value[0] + '</p>');
+            });
+          } else if (xhr.responseJSON) {
+            // Server error atau message lainnya
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: xhr.responseJSON.message || 'Something went wrong!'
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: 'Network error or server unavailable'
+            });
+          }
         }
       });
     });

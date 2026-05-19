@@ -37,7 +37,7 @@ FE/AwesomeProject/
 │   └── ui/                   # Base UI components (buttons, cards, dll)
 │
 ├── screens/                  # 📱 Full Page Screens
-│   ├── MainTabs.tsx
+│   ├── HomeScreen.tsx
 │   ├── ProductScreen.tsx
 │   ├── ProductDetailScreen.tsx
 │   ├── HerbalScanScreen.tsx           # 📷 Kamera scan herbal
@@ -99,7 +99,6 @@ FE/AwesomeProject/
 ```
 
 ### 🚀 Scripts Frontend
-
 ```bash
 npm start          # Jalankan dev server
 npm run android    # Build & run di emulator Android
@@ -109,7 +108,6 @@ npm run lint       # ESLint check
 ```
 
 ### 🔑 Key Libraries Frontend
-
 - **expo-router**: File-based routing (seperti Next.js)
 - **react-navigation**: Stack, Tab navigation
 - **zustand**: State management
@@ -204,7 +202,6 @@ Usada-Bali-Laravel/
 ### 🛠️ Struktur API Routes
 
 Endpoint API biasanya mengikuti REST conventions:
-
 ```
 GET    /api/products              # List semua produk
 POST   /api/products              # Create produk
@@ -222,7 +219,6 @@ POST   /api/auth/logout           # Logout
 ```
 
 ### 🚀 Artisan Commands
-
 ```bash
 php artisan serve           # Run dev server (port 8000)
 php artisan migrate         # Run migrations
@@ -251,15 +247,13 @@ herbalo/
 ```
 
 ### 🎯 Fungsi Herbalo
-
 - **Model Herbal Recognition:** Mengenali jenis tanaman herbal dari foto
 - **API Endpoint:** Menerima image dan return prediksi herbal
-- **Format Model:**
+- **Format Model:** 
   - `.h5`: Untuk backend Python
   - `.tflite`: Untuk mobile app (lebih efisien)
 
 ### 📤 Contoh API Herbalo
-
 ```
 POST /predict
 Content-Type: multipart/form-data
@@ -300,7 +294,6 @@ usada/
 ## 🔗 DATA FLOW & INTEGRASI
 
 ### 1️⃣ User Flow: Authentication
-
 ```
 Frontend (Login Screen)
     ↓
@@ -314,7 +307,6 @@ Frontend store token in AsyncStorage/MMKV
 ```
 
 ### 2️⃣ User Flow: Product Browsing
-
 ```
 Frontend (ProductScreen)
     ↓
@@ -332,7 +324,6 @@ Display in UI
 ```
 
 ### 3️⃣ User Flow: Herbal Scanning
-
 ```
 Frontend (HerbalScanScreen)
     ↓
@@ -350,7 +341,6 @@ Save to scan history (Firebase/Backend)
 ```
 
 ### 4️⃣ User Flow: Shopping Cart
-
 ```
 Frontend (ProductDetailScreen)
     ↓
@@ -373,34 +363,34 @@ Return order confirmation
 
 ## 🏗️ FOLDER NAMING CONVENTIONS
 
-| Folder        | Gunakan untuk         | Contoh                                 |
-| ------------- | --------------------- | -------------------------------------- |
-| `screens/`    | Full page/routes      | `MainTabs.tsx`, `ProfileScreen.tsx`    |
-| `components/` | Reusable components   | `ProductCard.tsx`, `Header.tsx`        |
-| `hooks/`      | Custom React hooks    | `useAuthNavigation.tsx`, `useFetch.ts` |
-| `context/`    | React Context (state) | `AuthContext.tsx`, `CartContext.tsx`   |
-| `services/`   | External integrations | `FirebaseService.ts`, `ApiService.ts`  |
-| `utils/`      | Helper functions      | `formatPrice.ts`, `validators.ts`      |
-| `types/`      | TypeScript interfaces | `User.ts`, `Product.ts`                |
-| `constants/`  | Fixed values          | `COLORS.ts`, `API_URLS.ts`             |
-| `assets/`     | Static files          | Images, fonts, videos                  |
+| Folder | Gunakan untuk | Contoh |
+|--------|---------------|--------|
+| `screens/` | Full page/routes | `HomeScreen.tsx`, `ProfileScreen.tsx` |
+| `components/` | Reusable components | `ProductCard.tsx`, `Header.tsx` |
+| `hooks/` | Custom React hooks | `useAuthNavigation.tsx`, `useFetch.ts` |
+| `context/` | React Context (state) | `AuthContext.tsx`, `CartContext.tsx` |
+| `services/` | External integrations | `FirebaseService.ts`, `ApiService.ts` |
+| `utils/` | Helper functions | `formatPrice.ts`, `validators.ts` |
+| `types/` | TypeScript interfaces | `User.ts`, `Product.ts` |
+| `constants/` | Fixed values | `COLORS.ts`, `API_URLS.ts` |
+| `assets/` | Static files | Images, fonts, videos |
 
 ---
 
 ## 🔄 TECHNOLOGY STACK SUMMARY
 
-| Layer                   | Technology                      | Purpose                   |
-| ----------------------- | ------------------------------- | ------------------------- |
-| **Frontend**            | React Native + Expo             | Cross-platform mobile app |
-| **Frontend State**      | Zustand + Context API           | State management          |
-| **Frontend Navigation** | Expo Router + React Navigation  | Screen routing            |
-| **Backend API**         | Laravel 11 + PHP                | REST API server           |
-| **Database**            | MySQL                           | Data persistence          |
-| **Authentication**      | Firebase Auth / Laravel Sanctum | User auth                 |
-| **ML Model**            | TensorFlow/Keras                | Herbal recognition        |
-| **ML Server**           | Flask + Python                  | ML inference API          |
-| **Styling (Mobile)**    | React Native Paper              | Material Design UI        |
-| **Styling (Web)**       | Tailwind CSS                    | Responsive design         |
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Frontend** | React Native + Expo | Cross-platform mobile app |
+| **Frontend State** | Zustand + Context API | State management |
+| **Frontend Navigation** | Expo Router + React Navigation | Screen routing |
+| **Backend API** | Laravel 11 + PHP | REST API server |
+| **Database** | MySQL | Data persistence |
+| **Authentication** | Firebase Auth / Laravel Sanctum | User auth |
+| **ML Model** | TensorFlow/Keras | Herbal recognition |
+| **ML Server** | Flask + Python | ML inference API |
+| **Styling (Mobile)** | React Native Paper | Material Design UI |
+| **Styling (Web)** | Tailwind CSS | Responsive design |
 
 ---
 
@@ -409,7 +399,6 @@ Return order confirmation
 ### ✅ Saat Menambah Fitur Baru:
 
 #### 1. **Backend (Laravel)**
-
 ```
 1. Create migration: php artisan make:migration create_xxx_table
 2. Create model: php artisan make:model Xxx
@@ -420,7 +409,6 @@ Return order confirmation
 ```
 
 #### 2. **Frontend (React Native)**
-
 ```
 1. Create screen component di screens/ (jika halaman baru)
 2. Create components di components/ (reusable UI)
@@ -431,7 +419,6 @@ Return order confirmation
 ```
 
 #### 3. **Data Flow**
-
 ```
 1. Define TypeScript interface di types/
 2. Create context/hook (jika state management)
@@ -446,19 +433,15 @@ Return order confirmation
 ## 🚨 COMMON ISSUES & SOLUTIONS
 
 ### ❌ CORS Error pada API
-
 **Solusi:** Check `config/cors.php` di Laravel, pastikan frontend origin di-whitelist
 
 ### ❌ Firebase Auth Error
-
 **Solusi:** Verify google-services.json, check Firebase project settings
 
 ### ❌ Model Prediction Error
-
 **Solusi:** Ensure model_herbal.tflite compatible dengan image size/format
 
 ### ❌ State Not Updating in UI
-
 **Solusi:** Verify Zustand store, check Context provider wrapping, use DevTools
 
 ---
@@ -494,7 +477,6 @@ Return order confirmation
 ## 🎯 QUICK START UNTUK DEVELOPER BARU
 
 ### Setup Backend (Laravel)
-
 ```bash
 cd Usada-Bali-Laravel
 composer install
@@ -505,7 +487,6 @@ php artisan serve
 ```
 
 ### Setup Frontend (React Native)
-
 ```bash
 cd FE/AwesomeProject
 npm install
@@ -514,7 +495,6 @@ npm start
 ```
 
 ### Setup ML Server (Python)
-
 ```bash
 cd herbalo
 pip install -r requirements.txt

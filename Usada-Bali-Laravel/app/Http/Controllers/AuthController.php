@@ -21,7 +21,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::where("email", $request->email)->first();
-        if($user->role!=="ADMIN"){
+        if(!$user || $user->role !== "ADMIN"){
             return back()->withErrors([
                 'validate'=>"Users does'nt have access"
             ])->onlyinput ("validate");

@@ -51,7 +51,7 @@ class ProductController extends Controller
             $product->company = $request->company;
             $product->category_id = $request->category_id;
             $product->description = $request->description;
-            $product->is_active = $request->is_active;
+            $product->is_active = $request->is_active ? true : false;
 
             // Menyimpan gambar
             $imagePaths = [];
@@ -84,7 +84,9 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage(),
+                'error' => $e->getMessage(),
+                'line' => $e->getLine()
             ], 500);
         }
     }
@@ -197,7 +199,9 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage(),
+                'error' => $e->getMessage(),
+                'line' => $e->getLine()
             ], 500);
         }
     }

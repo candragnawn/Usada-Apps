@@ -1,0 +1,25 @@
+[33m2c4a0ba[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fixing bug on ordersScreen
+[33m84c2a78[m fixing xendit bug on purchase
+[33mf844d3a[m clean and rebuild
+[33m47d77f0[m fixing incompatible dependencies
+[33mde88024[m new commit
+[33mdc8b15f[m fix displayed image on product screen
+[33mab37ed6[m fixing auth bug
+[33m3fb5d51[m fixing typescript errors
+[33meee1b9f[m delete all debug file
+[33mb6f66c3[m bug fixing
+[33m141ab48[m chore: remove log files and backups from tracking
+[33mb52490b[m[33m ([m[1;32mbuilt-in-android-app[m[33m)[m fix splash screen bugs
+[33m355aa57[m[33m ([m[1;31morigin/built-in-android-app[m[33m)[m fixing bug built in android app for firestore and realtime chat configure
+[33m9bdbca4[m connect to firestore schema for setup realtime chat application
+[33m2bcb443[m fix schema doctors and consultation table relation
+[33m6f2daf8[m create doctors model
+[33mf9604f5[m setup firebase to realtime chat consultation
+[33m2c8b324[m fix bug see all button
+[33mcdebb8d[m fix disease category layout
+[33mb65c276[m fix article navigation bug
+[33me221de8[m 
+[33m0434e4a[m fix bug fetch api
+[33m020e7a4[m Migrate existing .h5 files to LFS
+[33m7f2cb6a[m Standardize model files with Git LFS
+[33m7d9308f[m project collaboration setup
