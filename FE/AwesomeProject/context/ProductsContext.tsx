@@ -79,7 +79,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
     setProductsLoading(true);
     try {
       const response = await apiCall('/api/products');
-      console.log('🛒 Products API response:', JSON.stringify(response)); // ← tambah ini
+      // console.log('🛒 Products API response:', JSON.stringify(response)); // ← tambah ini
 
       
       // Laravel returns { success: true, data: [...] }
