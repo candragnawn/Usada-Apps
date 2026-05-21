@@ -211,6 +211,24 @@ const ArticleDetail = ({ route }: { route: any }) => {
       .map((item, index) => renderItem(item, index));
   }, []);
 
+  // Helper for image URLs to map /storage/ to /media/ for Android compatibility
+  const getImageUrl = useCallback((article: any) => {
+    let uri = article?.image_url_full || article?.image_url || article?.image || 'https://via.placeholder.com/400x200?text=No+Image';
+    if (typeof uri === 'string') {
+      if (uri.includes("/storage/articles/")) {
+        uri = uri.replace("/storage/articles/", "/media/");
+        uri += (uri.includes('?') ? '&' : '?') + 'v=2';
+      } else if (uri.includes("/storage/products/")) {
+        uri = uri.replace("/storage/products/", "/media/");
+        uri += (uri.includes('?') ? '&' : '?') + 'v=2';
+      } else if (uri.includes("/storage/")) {
+        uri = uri.replace("/storage/", "/media/");
+        uri += (uri.includes('?') ? '&' : '?') + 'v=2';
+      }
+    }
+    return uri;
+  }, []);
+
   // Show loading state
   if (localLoading || loading || (!currentArticle && !error)) {
     return (
@@ -329,9 +347,7 @@ const ArticleDetail = ({ route }: { route: any }) => {
       >
         {/* Hero Image with error handling */}
         <Image 
-          source={{ 
-            uri: currentArticle?.image_url_full || currentArticle?.image_url || currentArticle?.image || 'https://via.placeholder.com/400x200?text=No+Image'
-          }} 
+          source={{ uri: getImageUrl(currentArticle) }} 
           style={styles.heroImage} 
           resizeMode="cover"
           onError={(e) => {

@@ -108,7 +108,23 @@ const FeaturedRemedies = () => {
     }
   };
 
-  const renderRemedyCard = (remedy, index) => (
+  const renderRemedyCard = (remedy, index) => {
+    // FIX: Map /storage/ to /media/ for React Native compatibility on Windows
+    let imageUrl = remedy.image_url_full || remedy.image_url;
+    if (imageUrl && typeof imageUrl === 'string') {
+      if (imageUrl.includes("/storage/articles/")) {
+        imageUrl = imageUrl.replace("/storage/articles/", "/media/");
+        imageUrl += (imageUrl.includes('?') ? '&' : '?') + 'v=2';
+      } else if (imageUrl.includes("/storage/products/")) {
+        imageUrl = imageUrl.replace("/storage/products/", "/media/");
+        imageUrl += (imageUrl.includes('?') ? '&' : '?') + 'v=2';
+      } else if (imageUrl.includes("/storage/")) {
+        imageUrl = imageUrl.replace("/storage/", "/media/");
+        imageUrl += (imageUrl.includes('?') ? '&' : '?') + 'v=2';
+      }
+    }
+
+    return (
     <TouchableOpacity
       key={remedy.id || index}
       style={styles.featuredRemedyCard}
@@ -116,7 +132,7 @@ const FeaturedRemedies = () => {
       activeOpacity={0.7}
     >
       <View style={styles.featuredRemedyImagePlaceholder}>
-        {remedy.image_url_full || remedy.image_url || remedy.image ? (
+        {imageUrl || remedy.image ? (
           // Cek apakah image adalah require (local) atau url
           typeof remedy.image === "number" ? (
             <Image
@@ -131,7 +147,7 @@ const FeaturedRemedies = () => {
             />
           ) : (
             <Image
-              source={{ uri: remedy.image_url_full || remedy.image_url }}
+              source={{ uri: imageUrl }}
               style={{
                 width: "100%",
                 height: 150,
@@ -143,7 +159,7 @@ const FeaturedRemedies = () => {
                 console.log("Image load error:", e.nativeEvent.error);
                 console.log(
                   "Image URL:",
-                  remedy.image_url_full || remedy.image_url,
+                  imageUrl,
                 );
               }}
             />
@@ -186,6 +202,7 @@ const FeaturedRemedies = () => {
       </View>
     </TouchableOpacity>
   );
+  };
 
   if (isLoading && featuredRemedies.length === 0) {
     return (

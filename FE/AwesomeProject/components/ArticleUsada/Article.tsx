@@ -1,5 +1,5 @@
 // Usada.js - Fixed version with properly centered loading like ProductScreen
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -13,32 +13,37 @@ import {
   ImageBackground,
   ActivityIndicator,
   RefreshControl,
-  Alert
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
-import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
-import { useUsada } from '@/context/UsadaContext';
+  Alert,
+  __DEV__,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
+import { useUsada } from "@/context/UsadaContext";
 
 const Usada = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const searchTimeoutRef = useRef<any>(null);
-  
-  const { 
+
+  const {
     articles,
     categories,
     loading,
     error,
     searchArticles,
     getArticlesByDiseaseCategory,
-    clearError
+    clearError,
   } = useUsada();
-  
+
   // State management
-  const [selectedCategory, setSelectedCategory] = useState('Semua');
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [filteredArticles, setFilteredArticles] = useState<any[]>([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreData, setHasMoreData] = useState(true);
@@ -51,76 +56,80 @@ const Usada = () => {
       // Get parameters from route
       const params: any = route.params || {};
       const categoryFromParams = params.selectedCategory;
-      const searchTextFromParams = params.searchText || '';
+      const searchTextFromParams = params.searchText || "";
       const fromCategorySelection = params.fromCategorySelection;
       const resetFilter = params.resetFilter;
       const timestamp = params.timestamp;
-      
-      console.log('🔄 Usada Focus Effect - Params:', {
+
+      console.log("🔄 Usada Focus Effect - Params:", {
         categoryFromParams,
         searchTextFromParams,
         fromCategorySelection,
         timestamp,
         currentCategory: selectedCategory,
-        currentSearch: searchText
+        currentSearch: searchText,
       });
-      
+
       // Handle category selection or reset from Home/Tab
       if (resetFilter || fromCategorySelection || categoryFromParams) {
-        const targetCategory = categoryFromParams || 'Semua';
-        const targetSearch = searchTextFromParams || '';
-        
-        console.log('🔄 Applying navigation params:', { targetCategory, targetSearch, resetFilter });
-        
+        const targetCategory = categoryFromParams || "Semua";
+        const targetSearch = searchTextFromParams || "";
+
+        console.log("🔄 Applying navigation params:", {
+          targetCategory,
+          targetSearch,
+          resetFilter,
+        });
+
         setSelectedCategory(targetCategory);
         setSearchText(targetSearch);
-        
+
         // Force immediate filtering
         setTimeout(() => {
           handleFilterArticles(targetCategory, targetSearch);
         }, 100);
-        
+
         // Clear the route params to prevent repeated actions on subsequent focus
         navigation.setParams({
           selectedCategory: undefined,
           searchText: undefined,
           fromCategorySelection: undefined,
           resetFilter: undefined,
-          timestamp: undefined
+          timestamp: undefined,
         } as any);
       }
-      
+
       // Initialize if not done yet
       if (!isInitialized) {
         initializeComponent();
       }
-    }, [route.params, selectedCategory, searchText, isInitialized])
+    }, [route.params, selectedCategory, searchText, isInitialized]),
   );
 
   // Initialize component
   const initializeComponent = useCallback(() => {
-    console.log('🚀 Initializing Usada component...');
-    
+    console.log("🚀 Initializing Usada component...");
+
     if (articles && articles.length > 0) {
-      console.log('✅ Articles available:', articles.length);
+      console.log("✅ Articles available:", articles.length);
       setFilteredArticles(articles);
       setIsInitialized(true);
-      
+
       // Apply initial filtering based on current state
       const params = route.params || {};
       const categoryFromParams = params.selectedCategory;
-      const searchTextFromParams = params.searchText || '';
-      
+      const searchTextFromParams = params.searchText || "";
+
       if (categoryFromParams || searchTextFromParams) {
         setTimeout(() => {
           handleFilterArticles(
             categoryFromParams || selectedCategory,
-            searchTextFromParams || searchText
+            searchTextFromParams || searchText,
           );
         }, 100);
       }
     } else {
-      console.log('⏳ Waiting for articles to load...');
+      console.log("⏳ Waiting for articles to load...");
       setFilteredArticles([]);
     }
   }, [articles, route.params, selectedCategory, searchText]);
@@ -133,90 +142,106 @@ const Usada = () => {
   }, [articles, isInitialized, initializeComponent]);
 
   // Handle filtering articles
-  const handleFilterArticles = useCallback(async (category = selectedCategory, search = searchText) => {
-    try {
-      console.log('🔍 Filtering articles:', { 
-        category, 
-        search, 
-        articlesCount: articles?.length,
-        fromState: { selectedCategory, searchText }
-      });
-      
-      if (!articles || articles.length === 0) {
-        console.log('❌ No articles available for filtering');
+  const handleFilterArticles = useCallback(
+    async (category = selectedCategory, search = searchText) => {
+      try {
+        console.log("🔍 Filtering articles:", {
+          category,
+          search,
+          articlesCount: articles?.length,
+          fromState: { selectedCategory, searchText },
+        });
+
+        if (!articles || articles.length === 0) {
+          console.log("❌ No articles available for filtering");
+          setFilteredArticles([]);
+          return;
+        }
+
+        let filtered = [...articles];
+
+        // Apply search filter first
+        if (search && search.trim()) {
+          const searchLower = search.toLowerCase();
+          filtered = filtered.filter(
+            (article) =>
+              article.title?.toLowerCase().includes(searchLower) ||
+              article.description?.toLowerCase().includes(searchLower) ||
+              article.category?.toLowerCase().includes(searchLower),
+          );
+          console.log("🔍 After search filter:", filtered.length);
+        }
+
+        // Apply category filter
+        if (category && category !== "Semua") {
+          filtered = filtered.filter((article) => {
+            const articleCategory = article.category;
+            return (
+              articleCategory === category ||
+              articleCategory?.toLowerCase() === category.toLowerCase()
+            );
+          });
+          console.log("🏷️ After category filter:", filtered.length);
+        }
+
+        console.log("✅ Final filtered articles:", filtered.length);
+        setFilteredArticles(filtered);
+        setCurrentPage(1);
+        setHasMoreData(false); // Disable pagination for local filtering
+      } catch (error) {
+        console.error("❌ Error filtering articles:", error);
         setFilteredArticles([]);
+      }
+    },
+    [articles, selectedCategory, searchText],
+  );
+
+  // Handle search with debouncing
+  const handleSearch = useCallback(
+    (text: string) => {
+      console.log("🔍 Search input:", text);
+      setSearchText(text);
+
+      // Clear previous timeout
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current as any);
+      }
+
+      // Debounce search
+      searchTimeoutRef.current = setTimeout(() => {
+        handleFilterArticles(selectedCategory, text);
+      }, 300);
+    },
+    [selectedCategory, handleFilterArticles],
+  );
+
+  // Handle category selection
+  const handleCategorySelect = useCallback(
+    (category: string) => {
+      console.log(
+        "🏷️ Category selected:",
+        category,
+        "Current:",
+        selectedCategory,
+      );
+
+      if (category === selectedCategory) {
+        console.log("⏭️ Same category selected, skipping");
         return;
       }
 
-      let filtered = [...articles];
+      setSelectedCategory(category);
 
-      // Apply search filter first
-      if (search && search.trim()) {
-        const searchLower = search.toLowerCase();
-        filtered = filtered.filter(article =>
-          article.title?.toLowerCase().includes(searchLower) ||
-          article.description?.toLowerCase().includes(searchLower) ||
-          article.category?.toLowerCase().includes(searchLower)
-        );
-        console.log('🔍 After search filter:', filtered.length);
+      // Clear search timeout
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
       }
 
-      // Apply category filter
-      if (category && category !== 'Semua') {
-        filtered = filtered.filter(article => {
-          const articleCategory = article.category;
-          return articleCategory === category ||
-                 articleCategory?.toLowerCase() === category.toLowerCase();
-        });
-        console.log('🏷️ After category filter:', filtered.length);
-      }
-
-      console.log('✅ Final filtered articles:', filtered.length);
-      setFilteredArticles(filtered);
-      setCurrentPage(1);
-      setHasMoreData(false); // Disable pagination for local filtering
-      
-    } catch (error) {
-      console.error('❌ Error filtering articles:', error);
-      setFilteredArticles([]);
-    }
-  }, [articles, selectedCategory, searchText]);
-
-  // Handle search with debouncing
-  const handleSearch = useCallback((text: string) => {
-    console.log('🔍 Search input:', text);
-    setSearchText(text);
-    
-    // Clear previous timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current as any);
-    }
-    
-    // Debounce search
-    searchTimeoutRef.current = setTimeout(() => {
-      handleFilterArticles(selectedCategory, text);
-    }, 300);
-  }, [selectedCategory, handleFilterArticles]);
-
-  // Handle category selection
-  const handleCategorySelect = useCallback((category: string) => {
-    console.log('🏷️ Category selected:', category, 'Current:', selectedCategory);
-    
-    if (category === selectedCategory) {
-      console.log('⏭️ Same category selected, skipping');
-      return;
-    }
-    
-    setSelectedCategory(category);
-    
-    // Clear search timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    
-    // Apply filtering immediately
-    handleFilterArticles(category, searchText);
-  }, [selectedCategory, searchText, handleFilterArticles]);
+      // Apply filtering immediately
+      handleFilterArticles(category, searchText);
+    },
+    [selectedCategory, searchText, handleFilterArticles],
+  );
 
   // Handle refresh
   const handleRefresh = useCallback(async () => {
@@ -228,48 +253,53 @@ const Usada = () => {
         handleFilterArticles(selectedCategory, searchText);
       }
     } catch (error) {
-      console.error('Error refreshing data:', error);
-      Alert.alert('Error', 'Gagal memuat ulang data. Silakan coba lagi.');
+      console.error("Error refreshing data:", error);
+      Alert.alert("Error", "Gagal memuat ulang data. Silakan coba lagi.");
     } finally {
       setIsRefreshing(false);
     }
   }, [articles, selectedCategory, searchText, handleFilterArticles]);
 
   // Navigate to article detail
-  const navigateToArticleDetail = useCallback((article: any) => {
-    navigation.navigate('ArticleDetail', { 
-      articleId: article.id,
-      articleSlug: article.slug 
-    });
-  }, [navigation]);
+  const navigateToArticleDetail = useCallback(
+    (article: any) => {
+      navigation.navigate("ArticleDetail", {
+        articleId: article.id,
+        articleSlug: article.slug,
+      });
+    },
+    [navigation],
+  );
 
   // Get available categories with better fallback
   const getAvailableCategories = useCallback(() => {
-    const baseCategories = ['Semua'];
-    
+    const baseCategories = ["Semua"];
+
     if (articles && articles.length > 0) {
       // Extract unique categories from articles
-      const uniqueCategories = [...new Set(
-        articles
-          .map(article => article.category)
-          .filter(Boolean)
-          .filter(cat => cat.trim() !== '')
-      )].sort();
-      
-      console.log('📚 Available categories from articles:', uniqueCategories);
+      const uniqueCategories = [
+        ...new Set(
+          articles
+            .map((article) => article.category)
+            .filter(Boolean)
+            .filter((cat) => cat.trim() !== ""),
+        ),
+      ].sort();
+
+      console.log("📚 Available categories from articles:", uniqueCategories);
       return [...baseCategories, ...uniqueCategories];
     }
-    
+
     // Fallback to context categories
     if (categories && categories.length > 0) {
       const filteredCategories = categories
-        .filter(cat => cat && cat !== 'Semua' && cat.trim() !== '')
+        .filter((cat) => cat && cat !== "Semua" && cat.trim() !== "")
         .sort();
-      console.log('📚 Available categories from context:', filteredCategories);
+      console.log("📚 Available categories from context:", filteredCategories);
       return [...baseCategories, ...filteredCategories];
     }
-    
-    console.log('📚 Using base categories only');
+
+    console.log("📚 Using base categories only");
     return baseCategories;
   }, [articles, categories]);
 
@@ -285,13 +315,10 @@ const Usada = () => {
   // Render category filter chips
   const renderCategoryItem = ({ item }: { item: string }) => {
     const isSelected = selectedCategory === item;
-    
+
     return (
       <TouchableOpacity
-        style={[
-          styles.categoryChip,
-          isSelected && styles.selectedCategoryChip,
-        ]}
+        style={[styles.categoryChip, isSelected && styles.selectedCategoryChip]}
         onPress={() => handleCategorySelect(item)}
       >
         <Text
@@ -307,64 +334,104 @@ const Usada = () => {
   };
 
   // Render article list item
-  const renderArticleItem = ({ item }: { item: any }) => (
-    <TouchableOpacity 
-      style={styles.articleCard}
-      onPress={() => navigateToArticleDetail(item)}
-    >
-      <Image 
-        source={{ uri: item.image_url_full || item.image_url || item.image }} 
-        style={styles.articleImage}
-        onError={(e) => {
-          console.warn('Image load error:', e.nativeEvent.error);
-        }}
-      />
-      <View style={styles.articleContent}>
-        <View style={styles.categoryBadge}>
-          <Text style={styles.categoryText}>{item.category || 'Uncategorized'}</Text>
-          {item.view_count && (
-            <Text style={styles.additionalText}>{item.view_count} views</Text>
+  const renderArticleItem = ({ item }: { item: any }) => {
+    let imageUri = item.image_url_full || item.image_url || item.image;
+    
+    // FIX: Map /storage/ to /media/ for React Native compatibility on Windows
+    if (imageUri && typeof imageUri === 'string') {
+      if (imageUri.includes("/storage/articles/")) {
+        imageUri = imageUri.replace("/storage/articles/", "/media/");
+        imageUri += (imageUri.includes('?') ? '&' : '?') + 'v=2';
+      } else if (imageUri.includes("/storage/products/")) {
+        imageUri = imageUri.replace("/storage/products/", "/media/");
+        imageUri += (imageUri.includes('?') ? '&' : '?') + 'v=2';
+      } else if (imageUri.includes("/storage/")) {
+        imageUri = imageUri.replace("/storage/", "/media/");
+        imageUri += (imageUri.includes('?') ? '&' : '?') + 'v=2';
+      }
+    }
+
+    return (
+      <TouchableOpacity
+        style={styles.articleCard}
+        onPress={() => navigateToArticleDetail(item)}
+      >
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.articleImage}
+          onError={(e) => {
+            console.warn("❌ [Article Image Error]", {
+              article: item.title,
+              imageUri: imageUri,
+              error: e.nativeEvent.error,
+            });
+          }}
+          onLoadStart={() => {
+            if (__DEV__) {
+              console.log("📸 [Article Image Loading]", {
+                article: item.title,
+                uri: imageUri,
+              });
+            }
+          }}
+          onLoadEnd={() => {
+            if (__DEV__) {
+              console.log("✅ [Article Image Loaded]", { article: item.title });
+            }
+          }}
+        />
+        <View style={styles.articleContent}>
+          <View style={styles.categoryBadge}>
+            <Text style={styles.categoryText}>
+              {item.category || "Uncategorized"}
+            </Text>
+            {item.view_count && (
+              <Text style={styles.additionalText}>{item.view_count} views</Text>
+            )}
+          </View>
+          <Text style={styles.articleTitle} numberOfLines={3}>
+            {item.title}
+          </Text>
+          {item.description && (
+            <Text style={styles.articleDescription} numberOfLines={2}>
+              {item.description}
+            </Text>
+          )}
+          {(item.created_at || item.published_at) && (
+            <Text style={styles.articleDate}>
+              {new Date(
+                item.created_at || item.published_at,
+              ).toLocaleDateString("id-ID")}
+            </Text>
           )}
         </View>
-        <Text style={styles.articleTitle} numberOfLines={3}>{item.title}</Text>
-        {item.description && (
-          <Text style={styles.articleDescription} numberOfLines={2}>
-            {item.description}
-          </Text>
-        )}
-        {(item.created_at || item.published_at) && (
-          <Text style={styles.articleDate}>
-            {new Date(item.created_at || item.published_at).toLocaleDateString('id-ID')}
-          </Text>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   // Render empty state
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyIcon}>🌿</Text>
       <Text style={styles.emptyText}>
-        {loading ? 'Memuat artikel...' : 'Tidak ada artikel ditemukan'}
+        {loading ? "Memuat artikel..." : "Tidak ada artikel ditemukan"}
       </Text>
       {!loading && (
         <>
           <Text style={styles.emptySubtext}>
-            {searchText 
-              ? `Tidak ada artikel ditemukan untuk "${searchText}" dalam kategori ${selectedCategory}` 
-              : `Tidak ada artikel ditemukan dalam kategori ${selectedCategory}`
-            }
+            {searchText
+              ? `Tidak ada artikel ditemukan untuk "${searchText}" dalam kategori ${selectedCategory}`
+              : `Tidak ada artikel ditemukan dalam kategori ${selectedCategory}`}
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.emptyButton}
             onPress={() => {
-              setSelectedCategory('Semua');
-              setSearchText('');
+              setSelectedCategory("Semua");
+              setSearchText("");
               if (searchTimeoutRef.current) {
                 clearTimeout(searchTimeoutRef.current);
               }
-              handleFilterArticles('Semua', '');
+              handleFilterArticles("Semua", "");
             }}
           >
             <Text style={styles.emptyButtonText}>Reset Filter</Text>
@@ -387,17 +454,17 @@ const Usada = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
-        barStyle={Platform.OS === 'ios' ? 'light-content' : 'light-content'}
+        barStyle={Platform.OS === "ios" ? "light-content" : "light-content"}
         backgroundColor="#4F7942"
       />
-      
+
       {/* Header */}
-      <ImageBackground 
-        source={require('@/assets/images/batik.png')} 
+      <ImageBackground
+        source={require("@/assets/images/batik.png")}
         style={styles.header}
       >
         <View style={styles.headerContent}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
@@ -406,7 +473,9 @@ const Usada = () => {
           <View>
             <Text style={styles.headerTitle}>🌿 Usada Bali</Text>
             <Text style={styles.headerSubtitle}>
-              {selectedCategory !== 'Semua' ? `Pengobatan Tradisional - ${selectedCategory}` : "Traditional Balinese Herbal Medicine"}
+              {selectedCategory !== "Semua"
+                ? `Pengobatan Tradisional - ${selectedCategory}`
+                : "Traditional Balinese Herbal Medicine"}
             </Text>
           </View>
         </View>
@@ -414,16 +483,18 @@ const Usada = () => {
           <Text style={styles.headerStatsText}>
             {filteredArticles.length} artikel
           </Text>
-          {selectedCategory !== 'Semua' && (
-            <Text style={styles.headerStatsSubtext}>Kategori: {selectedCategory}</Text>
+          {selectedCategory !== "Semua" && (
+            <Text style={styles.headerStatsSubtext}>
+              Kategori: {selectedCategory}
+            </Text>
           )}
         </View>
-        
+
         {error && (
           <View style={styles.errorBanner}>
             <Ionicons name="warning" size={16} color="#FFB74D" />
             <Text style={styles.errorText}>{error}</Text>
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={clearError}
               style={styles.errorCloseButton}
             >
@@ -435,7 +506,12 @@ const Usada = () => {
 
       {/* Search Bar */}
       <View style={styles.searchBarContainer}>
-        <Ionicons name="search" size={18} color="#86A789" style={styles.searchIcon} />
+        <Ionicons
+          name="search"
+          size={18}
+          color="#86A789"
+          style={styles.searchIcon}
+        />
         <TextInput
           style={styles.searchInput}
           placeholder="Cari pengobatan herbal..."
@@ -451,7 +527,7 @@ const Usada = () => {
           }}
         />
         {searchText.length > 0 && (
-          <TouchableOpacity onPress={() => handleSearch('')}>
+          <TouchableOpacity onPress={() => handleSearch("")}>
             <Ionicons name="close-circle" size={18} color="#86A789" />
           </TouchableOpacity>
         )}
@@ -462,7 +538,7 @@ const Usada = () => {
         <FlatList
           data={getAvailableCategories()}
           renderItem={renderCategoryItem}
-          keyExtractor={item => item}
+          keyExtractor={(item) => item}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryListContent}
@@ -483,7 +559,7 @@ const Usada = () => {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            colors={['#4F7942']}
+            colors={["#4F7942"]}
             tintColor="#4F7942"
           />
         }
@@ -498,39 +574,39 @@ const Usada = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
-  
+
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingTop: 320,
-    backgroundColor: '#F8FDF8',
+    backgroundColor: "#F8FDF8",
   },
   loadingText: {
     marginTop: 15,
     fontSize: 16,
-    color: '#4F7942',
-    fontWeight: '500',
-    textAlign: 'center',
+    color: "#4F7942",
+    fontWeight: "500",
+    textAlign: "center",
   },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 25,
-    paddingTop: Platform.OS === 'android' ? 40 : 25,
+    paddingTop: Platform.OS === "android" ? 40 : 25,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   backButton: {
@@ -538,52 +614,52 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   headerSubtitle: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: "rgba(255, 255, 255, 0.9)",
     marginTop: 4,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   headerStats: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 20,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   headerStatsText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   headerStatsSubtext: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: "rgba(255, 255, 255, 0.8)",
     fontSize: 12,
     marginTop: 2,
   },
   errorBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 183, 77, 0.2)',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 183, 77, 0.2)",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 16,
     marginTop: 10,
   },
   errorText: {
-    color: '#FFB74D',
+    color: "#FFB74D",
     fontSize: 12,
     marginLeft: 6,
-    fontWeight: '500',
+    fontWeight: "500",
     flex: 1,
   },
   errorCloseButton: {
@@ -591,15 +667,15 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     margin: 16,
     paddingHorizontal: 16,
-    backgroundColor: '#F0F8F0',
+    backgroundColor: "#F0F8F0",
     borderRadius: 12,
     height: 50,
     borderWidth: 1,
-    borderColor: '#C8E6C9',
+    borderColor: "#C8E6C9",
   },
   searchIcon: {
     marginRight: 8,
@@ -608,7 +684,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 16,
-    color: '#2E5233',
+    color: "#2E5233",
   },
   categoryContainer: {
     paddingHorizontal: 12,
@@ -624,24 +700,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#C8E6C9',
-    backgroundColor: '#F0F8F0',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: "#C8E6C9",
+    backgroundColor: "#F0F8F0",
+    justifyContent: "center",
+    alignItems: "center",
     minWidth: 80,
     height: 40,
   },
   selectedCategoryChip: {
-    backgroundColor: '#4F7942',
-    borderColor: '#4F7942',
+    backgroundColor: "#4F7942",
+    borderColor: "#4F7942",
   },
   categoryChipText: {
     fontSize: 14,
-    color: '#2E5233',
-    fontWeight: '500',
+    color: "#2E5233",
+    fontWeight: "500",
   },
   selectedCategoryChipText: {
-    color: '#fff',
+    color: "#fff",
   },
   articleList: {
     flex: 1,
@@ -651,16 +727,16 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   articleCard: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E8F5E9',
+    borderBottomColor: "#E8F5E9",
     paddingBottom: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 12,
     borderRadius: 12,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -670,53 +746,53 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 8,
     marginRight: 12,
-    backgroundColor: '#F0F8F0',
+    backgroundColor: "#F0F8F0",
   },
   articleContent: {
     flex: 1,
   },
   categoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 6,
   },
   categoryText: {
     fontSize: 14,
-    color: '#4F7942',
-    fontWeight: '500',
+    color: "#4F7942",
+    fontWeight: "500",
     marginRight: 8,
   },
   additionalText: {
     fontSize: 12,
-    color: '#86A789',
-    backgroundColor: '#F0F8F0',
+    color: "#86A789",
+    backgroundColor: "#F0F8F0",
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 10,
   },
   articleTitle: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#2E5233',
+    fontWeight: "500",
+    color: "#2E5233",
     lineHeight: 22,
     marginBottom: 4,
   },
   articleDescription: {
     fontSize: 14,
-    color: '#86A789',
+    color: "#86A789",
     lineHeight: 18,
     marginBottom: 4,
   },
   articleDate: {
     fontSize: 12,
-    color: '#B0BDB0',
-    fontStyle: 'italic',
+    color: "#B0BDB0",
+    fontStyle: "italic",
   },
   // Enhanced empty state styles
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 60,
     paddingHorizontal: 30,
   },
@@ -726,27 +802,27 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#2E5233',
+    fontWeight: "600",
+    color: "#2E5233",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   emptySubtext: {
     fontSize: 16,
-    color: '#86A789',
-    textAlign: 'center',
+    color: "#86A789",
+    textAlign: "center",
     marginBottom: 25,
   },
   emptyButton: {
-    backgroundColor: '#4F7942',
+    backgroundColor: "#4F7942",
     paddingHorizontal: 25,
     paddingVertical: 12,
     borderRadius: 25,
   },
   emptyButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

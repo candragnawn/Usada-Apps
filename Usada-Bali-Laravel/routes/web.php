@@ -33,21 +33,29 @@ Route::get('/media/{path}', function ($path) {
     
     $cleanPath = str_replace(['../', '..\\'], '', $path);
     $filename = basename($cleanPath);
-    $dir = storage_path('app/public/products');
     
-    $files = is_dir($dir) ? scandir($dir) : [];
-    foreach ($files as $f) {
-        if (trim($f) === trim($filename) || str_contains($f, $filename)) {
-            $fullPath = $dir . DIRECTORY_SEPARATOR . $f;
-            if (file_exists($fullPath) && !is_dir($fullPath)) {
-                $mime = ($f && str_ends_with($f, '.png')) ? 'image/png' : 'image/jpeg';
-                
-                // Ensure no previous output or buffering interferes with binary data
-                while (ob_get_level()) ob_end_clean();
-                
-                return response(file_get_contents($fullPath))
-                    ->header('Content-Type', $mime)
-                    ->header('Access-Control-Allow-Origin', '*');
+    // Directories to search
+    $dirs = [
+        storage_path('app/public/products'),
+        storage_path('app/public/articles')
+    ];
+    
+    foreach ($dirs as $dir) {
+        $files = is_dir($dir) ? scandir($dir) : [];
+        foreach ($files as $f) {
+            if (trim($f) === trim($filename) || str_contains($f, $filename)) {
+                $fullPath = $dir . DIRECTORY_SEPARATOR . $f;
+                if (file_exists($fullPath) && !is_dir($fullPath)) {
+                    $mime = ($f && str_ends_with($f, '.png')) ? 'image/png' : 'image/jpeg';
+                    
+                    // Ensure no previous output or buffering interferes with binary data
+                    while (ob_get_level()) ob_end_clean();
+                    
+                    return response()->file($fullPath, [
+                        'Content-Type' => $mime,
+                        'Access-Control-Allow-Origin' => '*',
+                    ]);
+                }
             }
         }
     }

@@ -177,7 +177,7 @@ const MainTabNavigator = () => {
   return (
     <Tab.Navigator
       key={isAuthenticated ? "authed" : "unauthed"}
-      initialRouteName="MainTabs"
+      initialRouteName="HomeTab"
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
@@ -190,7 +190,7 @@ const MainTabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="MainTabs"
+        name="HomeTab"
         component={MainTabs}
         options={{
           tabBarIcon: ({
@@ -331,16 +331,8 @@ const AppNavigatorContent = () => {
       }
     }, [isAuthenticated, isLoading]);
 
-    // Show loading screen while checking authentication
-    if (isLoading) {
-      return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
-        </SafeAreaView>
-      );
-    }
+    // Loading state is now handled gracefully inside the screens (like ProtectedProfileScreen and LoginScreen)
+    // We no longer unmount the NavigationContainer to avoid resetting the navigation stack to Home.
 
     return (
       <SafeAreaView style={styles.container} edges={["right", "left"]}>
