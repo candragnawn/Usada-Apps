@@ -1,3 +1,12 @@
-../Usada-Bali-Laravel
-node_modules
-.git
+# Folder luar yang tidak perlu di-upload
+
+../../Usada-Bali-Laravel
+../../herbalo
+../../usada
+../../node_modules
+../../.idea
+../../.vscode
+
+# Gradle cache
+
+android/.gradle
