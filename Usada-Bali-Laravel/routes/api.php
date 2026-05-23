@@ -114,7 +114,11 @@ Route::middleware('auth:sanctum')->group(function () {
         'store',
         'update',
         'destroy'
-    ]);
+    ])->names([
+    'store' => 'api.categories.store',
+    'update' => 'api.categories.update',
+    'destroy' => 'api.categories.destroy',
+]);
 
     // Order management routes - DISESUAIKAN DENGAN CONTROLLER METHODS
     Route::prefix('orders')->group(function () {
