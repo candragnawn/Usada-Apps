@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\API\ArticleController;
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\BestSellerController;
-use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ConsultationController;
-use App\Http\Controllers\API\DoctorController;
-use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BestSellerController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ConsultationController;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
