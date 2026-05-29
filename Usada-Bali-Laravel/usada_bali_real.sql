@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Mar 24, 2026 at 10:52 AM
+-- Host: 127.0.0.1
+-- Generation Time: May 29, 2026 at 06:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -158,7 +158,10 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
-(3, 'Vitamin & Imunitas', 'Vitamin & Imunitas', 1, '2025-05-31 03:36:18', '2025-05-31 03:36:18');
+(3, 'Vitamin & Imunitas', 'Vitamin & Imunitas', 1, '2025-05-31 03:36:18', '2025-05-31 03:36:18'),
+(5, 'Perawatan Kulit', 'Khusus untuk oles di permukaan kulit', 1, '2026-05-19 07:09:28', '2026-05-19 07:09:28'),
+(6, 'Batuk & Flu', 'Ramuan Untuk mengatasi flu dan batuk', 1, '2026-05-19 07:12:40', '2026-05-19 07:12:40'),
+(7, 'Jamu Tradisional', 'untuk ramuan jamu tradisional', 1, '2026-05-19 07:13:23', '2026-05-19 07:13:23');
 
 -- --------------------------------------------------------
 
@@ -276,7 +279,10 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `phone`, `status`, `price`, `total`, `url`, `payment_channel`, `payment_method`, `first_name`, `last_name`, `email`, `address`, `address_description`, `city`, `postal_code`, `country`, `products_name`, `created_at`, `updated_at`) VALUES
 (53, 3, '081246662579', 'PENDING', 142000, 142000, 'https://checkout-staging.xendit.co/web/683b4c12bafdc379bf9370b6', NULL, NULL, 'Adika', 'Ananda', 'kadekadikaananda2006@gmail.com', 'Jalan Raya SIngapadu', 'aku', 'Kab. Gianyar', '12345', 'Indonesia', 'Kunyit Asem', '2025-05-31 10:36:00', '2025-05-31 10:36:03'),
-(54, 3, '081246662579', 'PENDING', 47400, 47400, 'https://checkout-staging.xendit.co/web/683bd14a905c4498109b0341', NULL, NULL, 'Adika', 'Ananda', 'kadekadikaananda2006@gmail.com', 'Jalan Raya SIngapadu', 'aku', 'Kab. Gianyar', '12345', 'Indonesia', 'Loloh Cemcem, Kunyit Asem', '2025-05-31 20:04:24', '2025-05-31 20:04:25');
+(54, 3, '081246662579', 'PENDING', 47400, 47400, 'https://checkout-staging.xendit.co/web/683bd14a905c4498109b0341', NULL, NULL, 'Adika', 'Ananda', 'kadekadikaananda2006@gmail.com', 'Jalan Raya SIngapadu', 'aku', 'Kab. Gianyar', '12345', 'Indonesia', 'Loloh Cemcem, Kunyit Asem', '2025-05-31 20:04:24', '2025-05-31 20:04:25'),
+(55, 1, '082236878772', 'PENDING', 88100, 88100, 'https://checkout-staging.xendit.co/web/6a0ddb98c458850bcfdde2ba', NULL, NULL, 'candra', '', '123@gmail.com', 'jsjsjall', 'lalal', 'denpasar', '23421', 'Indonesia', 'Loloh Cemcem, Minyak Oles Bokashi', '2026-05-20 08:04:37', '2026-05-20 08:04:42'),
+(56, 1, '082236878772', 'PENDING', 28700, 28700, 'https://checkout-staging.xendit.co/web/6a0ddc60c458850bcfdde398', NULL, NULL, 'candra', '', '123@gmail.com', 'jsjsjall', 'lalal', 'denpasar', '23421', 'Indonesia', 'Minyak Oles Bokashi', '2026-05-20 08:07:58', '2026-05-20 08:08:00'),
+(57, 1, '082236878772', 'PENDING', 28700, 28700, 'https://checkout-staging.xendit.co/web/6a0ddd7ec458850bcfdde4e7', NULL, NULL, 'candra', '', '123@gmail.com', 'jsjsjall', 'lalal', 'denpasar', '23421', 'Indonesia', 'Minyak Oles Bokashi', '2026-05-20 08:12:45', '2026-05-20 08:12:47');
 
 -- --------------------------------------------------------
 
@@ -301,7 +307,11 @@ CREATE TABLE `order_products` (
 INSERT INTO `order_products` (`id`, `order_id`, `product_variant_id`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
 (52, 53, 3, 10, 12000, '2025-05-31 10:36:00', '2025-05-31 10:36:00'),
 (53, 54, 2, 1, 10000, '2025-05-31 20:04:24', '2025-05-31 20:04:24'),
-(54, 54, 3, 2, 12000, '2025-05-31 20:04:24', '2025-05-31 20:04:24');
+(54, 54, 3, 2, 12000, '2025-05-31 20:04:24', '2025-05-31 20:04:24'),
+(55, 55, 2, 2, 10000, '2026-05-20 08:04:37', '2026-05-20 08:04:37'),
+(56, 55, 4, 3, 17000, '2026-05-20 08:04:37', '2026-05-20 08:04:37'),
+(57, 56, 4, 1, 17000, '2026-05-20 08:07:58', '2026-05-20 08:07:58'),
+(58, 57, 4, 1, 17000, '2026-05-20 08:12:45', '2026-05-20 08:12:45');
 
 -- --------------------------------------------------------
 
@@ -365,7 +375,7 @@ CREATE TABLE `personal_access_tokens` (
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
 (1, 'App\\Models\\User', 2, 'auth_token', '7012918fcc3788b12fd9329e3a4ab9b8d7a002741f3b61e6a19ce97af7e8418d', '[\"*\"]', '2025-05-27 05:01:27', NULL, '2025-05-27 02:11:48', '2025-05-27 05:01:27'),
 (19, 'App\\Models\\User', 3, 'auth_token', 'b492152d5efdcc9a9c0aab5eda91353bbcb0f650f98cae2061a64aea9500cd8c', '[\"*\"]', '2025-05-31 21:00:16', NULL, '2025-05-31 20:02:48', '2025-05-31 21:00:16'),
-(23, 'App\\Models\\User', 1, 'auth_token', '984e186dd3460d3597d8202a0a508a415e4061c884b6bf21c6347d8fbeef005c', '[\"*\"]', NULL, NULL, '2025-07-30 11:59:14', '2025-07-30 11:59:14');
+(24, 'App\\Models\\User', 1, 'auth_token', '1c6055d5cf548a1d0ca8f37c14c92549a6bdf74c8cd9766df2dc10ecee082e84', '[\"*\"]', '2026-05-20 08:20:03', NULL, '2026-05-20 08:04:15', '2026-05-20 08:20:03');
 
 -- --------------------------------------------------------
 
@@ -377,7 +387,7 @@ CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `company` varchar(255) NOT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
   `price` double NOT NULL,
@@ -392,7 +402,9 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `is_active`, `description`, `company`, `category_id`, `price`, `images`, `created_at`, `updated_at`) VALUES
 (2, 'Loloh Cemcem', 1, 'Loloh Cemcem', 'Usada', 3, 10000, '[\"products\\/gDEr8lit26fsgvytk8fsUksWYqRS0EdX43Som6CG.jpg\"]', '2025-05-31 03:37:59', '2025-05-31 09:23:50'),
-(3, 'Kunyit Asem', 1, 'Kunyit Asem Menyegarkan', 'Usada', 3, 12000, '[\"products\\/tmRu16P3ZiVqxLujBedm4ZU9AQq5Q09zqTcUexyC.jpg\"]', '2025-05-31 09:25:10', '2025-05-31 09:25:10');
+(3, 'Kunyit Asem', 1, 'Kunyit Asem Menyegarkan', 'Usada', 3, 12000, '[\"products\\/tmRu16P3ZiVqxLujBedm4ZU9AQq5Q09zqTcUexyC.jpg\"]', '2025-05-31 09:25:10', '2025-05-31 09:25:10'),
+(4, 'Minyak Oles Bokashi', 1, 'Minyak oles bokashi adalah obat bahan alam tergolong jamu yang berkhasiat untuk membantu\r\nmeredakan masalah kulit, pegal linu, masuk angin, serta digunakan sebagai minyak urut. Dibuat dari\r\nproses fermentasi berbagai tanaman berkhasiat obat dengan Teknologi Effective Microorganisms (EM)\r\nJepang. Dapat digunakan untuk semua usia, cocok sebagai pelengkap P3K keluarga.', 'PT Karya Pak Oles Tokcer', 5, 17000, '[\"products\\/NXE3zWoEQq4jSgCsKCOFEDjumeCb9WjUZTcWPsRn.jpg\"]', '2026-05-19 02:11:55', '2026-05-19 07:10:21'),
+(5, 'Bokashi Care', 1, 'Bokashi Care merupakan minyak angin aromatherapy dengan aroma yang menyegarkan dikemas\r\ndengan kemasan minimalis yang memudahkan untuk dibawa kemanapun anda berpergian.\r\nDiformulasikan menggunakan bahan aktif yang terkandung dalam Menthol dan Camphor dan bahan\r\nalami seperti rempah-rempah yang berkhasiat dan dipadukan dengan aroma green lemon dan eucalyptus.', 'PT Karya Pak Oles Tokcer', 5, 17000, '[\"products\\/14fKvTKQpYArylvzXkDUIAfoa9tjKgValP8BxQIf.jpg\"]', '2026-05-19 07:18:26', '2026-05-19 07:18:26');
 
 -- --------------------------------------------------------
 
@@ -416,8 +428,10 @@ CREATE TABLE `product_variants` (
 --
 
 INSERT INTO `product_variants` (`id`, `product_id`, `variant_name`, `stock`, `size`, `weight`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Minuman', 99, 10, 100.00, '2025-05-31 03:37:59', '2025-05-31 20:04:24'),
-(3, 3, 'Minuman', 18, 10, 117.00, '2025-05-31 09:25:10', '2025-05-31 20:04:24');
+(2, 2, 'Minuman', 97, 10, 100.00, '2025-05-31 03:37:59', '2026-05-20 08:04:37'),
+(3, 3, 'Minuman', 18, 10, 117.00, '2025-05-31 09:25:10', '2025-05-31 20:04:24'),
+(4, 4, 'Minyak Oles', 15, 140, 138.00, '2026-05-19 02:11:56', '2026-05-20 08:12:45'),
+(5, 5, 'Minyak angin', 50, 100, 100.00, '2026-05-19 07:18:26', '2026-05-19 07:18:26');
 
 -- --------------------------------------------------------
 
@@ -439,10 +453,13 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('aMkKqsxixmNVhZfjPqoaQ0ErTAbjjxGVf09RGkKX', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMWFsNWNlQjJrM2pVRFVyWDhCbDNDa29vZUdvVUwzQjZlRlg5UWJkdiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQzOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vYXJ0aWNsZXM/cGFnZT0yIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1753926592),
-('lZb5fP9OsqYdAijHGpsbnCsdBxe3ytEm4MUIu4Aa', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMVpaOFVNamdwWnJGN3ZvelJQWHdWY2E5Y21ueU96TE1UMTQxZXg3eCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wcm9kdWN0cyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1774345830),
-('qOSsHSUDBSmHihJas6zUrNZZG00gyRlxEh3Kzpfe', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoicldLeWJ0YzR1Z0dMRHozM1BkT3hZSXd5eVQ4ODVQcE9wc3lJMzgwViI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1762667436),
-('T6Y5uVpKLG53nyz1ZV82mA8j4t8oh5m5LqWdlgoZ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSHgwemc0TlU4Q3RGS1dVNEZFeVFwQnJ2M21IRUNIQTRCMUFTNXhhNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9hcnRpY2xlcz9wYWdlPTIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1753936541);
+('8wWu45pbBEismI0rCLCWXWNZYTCKcJRbCMAyeVC3', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoic2pXRGIxRWpJZzUzSlRTOUFZQWtVeUdDejhSSkllUW9VNnFVZkliQSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM2OiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYWRtaW4vcHJvZHVjdHMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1779289655),
+('BFLOwPS8TIG2mAAF7VW5u3O1QDOvhS9hHCAVT3rc', NULL, '127.0.0.1', 'curl/8.19.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiU2NsaUU4dkFtRFU1d09NcjUwb3JEdklyVTI4RDlxRXdGQzRQWnNuMyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1779292156),
+('GI6ixEI2IurghmM2UChGsHHNSgSf3TF9IUrvb6GL', NULL, '127.0.0.1', 'curl/8.19.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibHZrYU5mOE9QYzl1R21MRnNEbkJOQ0VOSUlOVUhPcWY0ZlBtS0k1RyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1779292180),
+('HYD3Bc69JA386OZgE9VoQfLust1xWWjIADgfxbAF', NULL, '127.0.0.1', 'okhttp/4.12.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZFpQWEVHZVoyS0JCdDAwRWpkRnNhbERXa0ZoSkRzYVNSMlhjMTNGMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NzU6Imh0dHA6Ly8xMC4wLjIuMjo4MDAwL21lZGlhL2p1RGhaZHJJTDdxeHV6V1p1aWVjTE5JYmw5Y1JOY25HVnBQcWg5cGgucG5nP3Y9MiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1779293598),
+('IOj2aTIZ7wb6LDeUdEJcbQ7fIRpnn6fG8CDw5hQJ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.8457', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiY3NicWs1ODJnV1NOQTN0NFRvQTBaWmluVkRzRTM4S3YwenFtRHhRQSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9tZWRpYS9nREVyOGxpdDI2ZnNndnl0azhmc1Vrc1dZcVJTMEVkWDQzU29tNkNHLmpwZyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1779291209),
+('lrdZselF9W4JSi8X9gSTl5z6n67qOFpT5HicJxe8', NULL, '127.0.0.1', 'curl/8.19.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibzJlZ1U4ejZHbmZ1eFRyTGw1d3U3V2ExOW5udFRZWVZPOFZDQWZ6RCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9tZWRpYS9qdURoWmRySUw3cXh1eldadWllY0xOSWJsOWNSTmNuR1ZwUHFoOXBoLnBuZyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1779292456),
+('zlL1cFI8hM6DTLrHU0TpQYyXOwYGJi2mFbUS2iKt', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.8457', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiY1Q4VmZIVWd2RFZYSGlMRHJNekxLczlVOHcyRmxBZWJvUVVPMmNzaCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1779292122);
 
 -- --------------------------------------------------------
 
@@ -467,7 +484,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
-(1, 'admin', 'admin@gmail.com', NULL, '$2y$12$ZDu0UhKTpB8frP.q3L1vv.OZeRr0liFQKa2btyEpVg13choGmfmYG', NULL, '2025-05-27 01:57:01', '2025-05-27 01:57:01', 'ADMIN'),
+(1, 'admin', 'admin@gmail.com', NULL, '$2y$12$I9XKBDwE9z42W3QFtKa0oe/UipH04jjY6IURzFVYIMG7bSRQxpurC', NULL, '2025-05-27 01:57:01', '2026-05-20 08:03:34', 'ADMIN'),
 (2, 'Adika Ananda', 'kadekadikaananda2006@gmail.com', NULL, '$2y$12$2gku.v7IvLjFwGkeJJW4heJCx164AEinXQD3WS5S8QSkwiV.bpnuK', NULL, '2025-05-27 02:11:17', '2025-05-27 02:11:17', 'CUSTOMER'),
 (3, 'Adika Ananda', 'kadek@gmail.com', NULL, '$2y$12$bKXrXQ0R7OQowm.YYzE0EuFJYjEJLO9FoQaYyPtgw4J370B.WHi9G', NULL, '2025-05-31 10:34:50', '2025-05-31 10:34:50', 'CUSTOMER');
 
@@ -614,7 +631,7 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -638,13 +655,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -656,19 +673,19 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product_variants`
 --
 ALTER TABLE `product_variants`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`

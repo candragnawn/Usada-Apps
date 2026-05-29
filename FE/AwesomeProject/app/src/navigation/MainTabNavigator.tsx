@@ -8,7 +8,7 @@ import { CommonActions } from "@react-navigation/native";
 import { useAuth } from "@/context/AuthContext";
 
 // Import screens
-import MainTabs from "@/screens/MainTabs";
+import MainTabs from "@/screens/HomeScreen";
 
 // Import stack navigators
 import UsadaStackNavigator from "./stacks/UsadaStackNavigator";
